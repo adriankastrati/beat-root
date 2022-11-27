@@ -12,9 +12,10 @@ function ToneJSExperiment() {
         //init sampler
         sampler.current = new Sampler({
             urls: {
-                A2: "hihat.mp3",
+                A2: "A2.mp3",
             },
-            baseUrl: "https://tonejs.github.io/audio/drum-samples/Stark/",
+            //baseUrl: "https://tonejs.github.io/audio/drum-samples/Stark/",
+            baseUrl: "https://tonejs.github.io/audio/casio/",
         }).toDestination();
 
         //init loop by first update
@@ -86,6 +87,7 @@ function ToneJSExperiment() {
             <button onClick={()=>Transport.start()}>start</button>
             <button onClick={()=>Transport.stop()}>stop</button>
             <button onClick={()=>setCpm(Math.max(cpm-5, 5))}>cpm -</button>
+                {cpm}
             <button onClick={()=>setCpm(cpm+5)}>cpm +</button>
             <div>obs cpm +- funkar inte så bra än</div>
         </div>
