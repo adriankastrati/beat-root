@@ -21,14 +21,12 @@ export class Feed {
 
 
 function DrawFeed() {
-    const [, setFeed] = useState()
-
-    const p0st = useRef<Post|null>(null)
+    //const p0st = useRef<Post|null>(null)
 
     const sampelf33d = new Feed();
     const composer1 = ({
-        username: "muskrat71", 
-        user_avatar: 'https://upload.wikimedia.org/wikipedia/commons/3/34/Elon_Musk_Royal_Society_%28crop2%29.jpg'
+        username: "muskrat19", 
+        user_avatar: "https://upload.wikimedia.org/wikipedia/commons/3/34/Elon_Musk_Royal_Society_%28crop2%29.jpg"
     })
     const postInteractions = ({
         likes: 57, 
@@ -48,9 +46,9 @@ function DrawFeed() {
         <div>
             {composer1.username} | 
             <div>
-                <a href="google.com"><img alt="test" src={composer1.user_avatar}></img></a>
+                <a href="#"><img alt="test" src={composer1.user_avatar}></img></a>
             </div>
-            <p> {"<3: "} {postInteractions.likes}</p>
+            <p>{"<3: "} {postInteractions.likes}</p>
             <p>{postInteractions.midi_link}</p>
         </div>
     )

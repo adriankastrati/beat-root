@@ -14,7 +14,3 @@ export interface Interaction {
     likes: number
     midi_link: string
 }
-
-//export interface Date { // might be an aggregator of more fields l8r
-    //date: string    
-//}
