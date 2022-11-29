@@ -36,3 +36,34 @@
     transform: rotate(360deg);
   }
 }
+.button{
+  display:inline-flex;
+  width: fit-content;
+  text-align: center;
+  align-items: center;
+  background-color: rgb(255, 255, 255); 
+  border: 1px solid rgb(155, 155, 155); 
+  height: fit-content;
+  border-radius: 5px;
+  color: rgb(0, 0, 0); 
+  padding: 12px; 
+  font-size: 22px; 
+  cursor: pointer; /* Mouse pointer on hover */ 
+}
+.button:hover {
+  background-color: rgb(212, 212, 212);
+}
+#colorBtn{
+  white-space: nowrap;
+  width: 220px;
+}
+#editBtn{
+  width:100px;
+}
+#createBtn{
+  width: 180px;
+}
+.btnIcon{
+  max-width: 32px;
+  max-width: 32px;
+}
