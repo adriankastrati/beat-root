@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import ToneJSExperiment from './components/ToneJSExperiment';
 
-import FeedPresenter, { Feed } from './components/Feed/FeedPresenter';
+import FeedPresenter  from './components/Feed/FeedPresenter';
 
 function App() {
   

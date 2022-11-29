@@ -1,10 +1,45 @@
+body {
+    background-color: rgba(255, 255, 255, 0.481);
+    justify-content: center;
+    align-content: center;
+}
+
 #feed-parent {
-    align-items: center;
+    position: relative;
     overflow-y: scroll;
     flex-direction: row;
 }
 
-#post-item {
-    height: 150px;
-    width: 150px;
+.post-item {
+    width: 400px;
+    height: 450px;
+    border-radius: 5%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    background-color: rgb(236, 228, 178);
+    margin: 5%;
+}
+.post-item-beat-graphic-fake {
+    width: 350px;
+    height: 350px;
+    margin: 5%;
+    position:relative;
+    display: flex;
+    border-radius: 50%;
+    background-color: rgb(231, 163, 163);
+    justify-content: center;
+    align-content: center;
+}
+
+
+.post-item-beat-graphic {
+    width:400px;
+    border-radius: 5%;
+    position:relative;
+    display: flex;
+    background-color: rgb(176, 115, 255);
+    justify-content: center;
+    align-content: center;
 }

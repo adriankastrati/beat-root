@@ -22,6 +22,21 @@ export interface Beats {
 //     fetch data from firebase. 
 function FeedPresenter () { // prop stack 
 
+    function createBeat() {
+
+        let beat : Beat = {
+                composer: "markymerk", 
+                title: '\"sampel b33t :)\"',
+                glyph:[1, 3, 19] ,
+                likes: 13,
+                samples: ["hihat.wav"],
+                theme: "#37FA20",
+                avatar: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Elon_Musk_2015.jpg/113px-Elon_Musk_2015.jpg",
+        }
+
+        return beat
+    }
+
     function createBeatArray() {
 
         let beat_arr: Beats = {beats: []}
@@ -34,27 +49,10 @@ function FeedPresenter () { // prop stack
 
     let beat_array = createBeatArray()
 
-    function createBeat() {
-
-        let beat : Beat = {
-                composer: "Ludwig", 
-                title: "sampel b33t :)",
-                glyph:[1, 3, 19] ,
-                likes: 13,
-                samples: ["hihat.wav"],
-                theme: "#37FA20",
-                avatar: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Elon_Musk_2015.jpg/113px-Elon_Musk_2015.jpg",
-        }
-
-        return beat
-    }
-
-    let cool_beat = createBeat()
 
     return (
         <div>
             <FeedView 
-                beat ={cool_beat} 
                 beats = {beat_array}
             />
         </div>
@@ -92,21 +90,21 @@ function FeedPresenter () { // prop stack
 //}
 
 // trash
-export class Feed {
-
-    beats: Beat[] = []
-    //composers: Composer[] = []
-    //interactions: Interaction[] = []
-
-    //public createComposer = 
-    //    (composer: Composer) => this.composers.push(composer)
-
-    //public createInteraction = //likes and midi-link
-    //    (interactions: Interaction) => this.interactions.push(interactions)
-
-    public createBeat = 
-        (beat: Beat) => this.beats.push(beat)
-
-}
+//export class Feed {
+//
+//    beats: Beat[] = []
+//    //composers: Composer[] = []
+//    //interactions: Interaction[] = []
+//
+//    //public createComposer = 
+//    //    (composer: Composer) => this.composers.push(composer)
+//
+//    //public createInteraction = //likes and midi-link
+//    //    (interactions: Interaction) => this.interactions.push(interactions)
+//
+//    public createBeat = 
+//        (beat: Beat) => this.beats.push(beat)
+//
+//}
 
 export default FeedPresenter;
