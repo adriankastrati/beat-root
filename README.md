@@ -1,4 +1,4 @@
-# OI M8 DIS IS AYE STOOPID POC M8
+# OI M8 DIS IS AYE POC M8
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

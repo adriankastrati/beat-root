@@ -1,0 +1,10 @@
+#feed-parent {
+    align-items: center;
+    overflow-y: scroll;
+    flex-direction: row;
+}
+
+#post-item {
+    height: 150px;
+    width: 150px;
+}

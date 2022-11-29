@@ -2,12 +2,14 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import ToneJSExperiment from './components/ToneJSExperiment';
-import DrawFeed from './components/Feed/DrawFeed';
+
+import FeedPresenter, { Feed } from './components/Feed/FeedPresenter';
 
 function App() {
+  
   return (
-    <div className="App">
-      <DrawFeed/>
+    <div>
+      <FeedPresenter />
     </div>
   );
 }
