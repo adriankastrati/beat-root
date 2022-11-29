@@ -1,24 +1,14 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import MainButton, { MainButtonType } from './button';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <MainButton type={MainButtonType.ChooseColorTheme} text = "pick color theme"></MainButton>
+      <MainButton type={MainButtonType.Edit} text = "edit"></MainButton>
+      <MainButton type={MainButtonType.Create} text = "add sample"></MainButton>
     </div>
   );
 }
