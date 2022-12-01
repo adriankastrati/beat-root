@@ -1,19 +1,34 @@
+import {Auth} from "firebase/auth"
 export const MAX_GLYPH = 32;
 
+export interface User{
+    firestoreUserID: string,
+    username: string,
+}
+
 export interface Sample{
+    firestoreSampleID:string,
     name: string,
     url: string,
 }
 
+export interface Track{
+    rhythm:Rhythm,
+    sample:Sample,
+}
+
 export interface Beat{
-    composerID: string,
+    firestoreBeatID:string
+    composerID: string,     //user ID
     title: string,
     description: string,
     theme: string[],
-    rhythmAndSamples:{rhythm:Rhythm, sample:Sample}[],
+    tracks: Track[],
     likes: number,
     cpm: number
 }
+
+
 
 function gcd(a:number, b:number):number {
     //not very effient, however ok for b <= 32 (only used in this file) 
