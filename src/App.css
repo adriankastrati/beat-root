@@ -1,0 +1,72 @@
+<<<<<<< HEAD
+=======
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.button{
+  display:inline-flex;
+  width: fit-content;
+  text-align: center;
+  align-items: center;
+  background-color: rgb(255, 255, 255); 
+  border: 1px solid rgb(155, 155, 155); 
+  height: fit-content;
+  border-radius: 5px;
+  color: rgb(0, 0, 0); 
+  padding: 12px; 
+  font-size: 22px; 
+  cursor: pointer; /* Mouse pointer on hover */ 
+}
+.button:hover {
+  background-color: rgb(212, 212, 212);
+}
+#colorBtn{
+  white-space: nowrap;
+  width: 220px;
+}
+#editBtn{
+  width:100px;
+}
+#createBtn{
+  width: 180px;
+}
+.btnIcon{
+  max-width: 32px;
+  max-width: 32px;
+}
+>>>>>>> be24aeb30819b8fc5bdf9ed589dd890f42931f56
