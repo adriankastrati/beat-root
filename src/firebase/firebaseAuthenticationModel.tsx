@@ -3,11 +3,12 @@ import {
     signInWithEmailAndPassword, updateProfile,
     signOut,
     connectAuthEmulator,
-    User
+    User,
+    Auth
 } from "firebase/auth";
 import {initializeApp} from "firebase/app"
 import { firebaseConfig } from "./firebaseConfig";
-import { addDoc, collection, getFirestore } from "firebase/firestore";
+import { addDoc, collection, getDocs, getFirestore, query, where } from "firebase/firestore";
 import { getDatabase } from "firebase/database";
 
 const firebaseApp = initializeApp(firebaseConfig)
@@ -15,11 +16,16 @@ const auth = getAuth(firebaseApp)
 const fs = getFirestore()
 /**
  * 
- * @returns returns a user instance of current user
+ * @returns returns a promise with the current users ID
  */
-function getCurrentUser(): User|null{
-    return auth.currentUser;
+async function getCurrentUserID(): Promise<string|null>{
+    const userRef = collection(fs, "users");
     
+    if (auth.currentUser){
+        return await getDocs(query(userRef, where("authID", "==", auth.currentUser.uid))).then(query=>{
+            return query.docs[0].id
+    });}
+    return null
 }
 
 /**
@@ -103,4 +109,4 @@ async function logOutAccount(){
 }
 
 
-export{getCurrentUser,logOutAccount,isUserLoggedIn,createEmailPasswordAccount,loginEmailPasswordAccount}
+export{getCurrentUserID,logOutAccount,isUserLoggedIn,createEmailPasswordAccount,loginEmailPasswordAccount}
