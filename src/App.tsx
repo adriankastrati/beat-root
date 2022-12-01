@@ -1,12 +1,16 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import ToneJSExperiment from './components/ToneJSExperiment';
+import BeatDetailPresenter from './components/presenters/BeatDetailPresenter';
+import ModelContext from './contexts/ModelContext';
+import Model from './model';
 
 function App() {
   return (
     <div className="App">
-      <ToneJSExperiment/>
+      <ModelContext.Provider value={new Model()}>
+
+        <BeatDetailPresenter/>
+
+      </ModelContext.Provider>
     </div>
   );
 }
