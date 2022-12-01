@@ -3,35 +3,21 @@ import ModelContext from "../../contexts/ModelContext";
 import BeatDetailView from "../views/BeatDetailView";
 import { Beat, Rhythm, Sample } from "../../common";
 
-async function getDummyBeat():Promise<Beat>{
-    return new Promise(resolve => setTimeout(resolve, 1000)).then(()=>{ 
-        return {
-            composerID: "abc123",
-            title: "test beat 123",
-            description: "this is a test beat \nthis is som text after linebreak",
-            theme: ["#2B3A55", "#CE7777", "#E8C4C4"],
-            rhythmAndSamples:[
-                {rhythm:new Rhythm([5,3,8]), sample: {name:"techno-hihat", url:"https://tonejs.github.io/audio/drum-samples/Techno/hihat.mp3"} as Sample},
-                {rhythm:new Rhythm([4]), sample: {name:"techno-kick", url:"https://tonejs.github.io/audio/drum-samples/Techno/kick.mp3"} as Sample}
-            ],
-            likes: 15,
-            cpm: 20
-        } as Beat
-    })
+interface BeatDetailPresenterProps{
+    beat: Beat
 }
 
-export default function BeatDetailPresenter() {
+export default function BeatDetailPresenter(props:BeatDetailPresenterProps) {
 
     let {audioModel} = useContext(ModelContext);
     const [glyphs, setGlyphs] = useState(new Set<number>())
 
-    const [beat, setBeat] = useState<Beat|null>(null)
     const [progress, setProgress] = useState(0) //TODO: update in intervals when playing
     const [amplitude, setAmplitude] = useState(0) //TODO: update in intervals when playing
     
+    const {beat} = props
 
     useEffect(()=>{
-        getDummyBeat().then(beat=>setBeat(beat))
 
         return ()=>{
             audioModel.stop()
@@ -43,7 +29,7 @@ export default function BeatDetailPresenter() {
     function handlePlay(){
         if (beat){
             audioModel.play(
-                beat.rhythmAndSamples.map(({sample, rhythm})=>({sampleURL:sample.url, rhythm})), 
+                beat.tracks.map(({sample, rhythm})=>({sampleURL:sample.url, rhythm})), 
             60/beat.cpm)
         }
     }
@@ -70,7 +56,7 @@ export default function BeatDetailPresenter() {
             onLike={handleLike}
             title={beat.title}
             decription={beat.description}
-            rhythmsAndSampleNames={beat.rhythmAndSamples.map(({rhythm, sample})=>{return{rhythm, sampleName:sample.name}})}
+            rhythmsAndSampleNames={beat.tracks.map(({rhythm, sample})=>{return{rhythm, sampleName:sample.name}})}
             currentProgress={progress}
             amplitude={amplitude}
             /> : "loading..."
