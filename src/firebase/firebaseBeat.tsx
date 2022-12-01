@@ -1,19 +1,8 @@
 import {addDoc, collection, doc, DocumentData, getDoc, getFirestore, QueryDocumentSnapshot, serverTimestamp, SnapshotOptions, WithFieldValue} from "firebase/firestore"
+import {  } from "./firebaseAuthenticationModel"
 
 
-interface rhythmSample{
-    sampleID: string
-    rhythm: number[]
-}
 
-interface BeatData {
-    composer: string
-    title: string
-    description: string
-    theme: string[]
-    likes: number
-    RhythmsSamples: rhythmSample[]
-}
 export class Rhythm {
     glyphs: Set<number>
 
@@ -26,72 +15,94 @@ export class Rhythm {
     }
 }
 
-export interface Sample{
-    sampleID: string,
-    name: string,
-    url: string
+export interface User{
+    firestoreUserID: string,
+    username: string,
+    //TODO: firebaseAuth: firebase.Auth
 }
 
-export interface track{ //non mutable
-	ID: string
-	rhythm: number[],
-	sample: string //sample ID
+export interface Sample{
+    firestoreSampleID:string,
+    name: string,
+    url: string,
+}
+
+export interface Track{
+    rhythm:Rhythm,
+    sample:Sample,
 }
 
 export interface Beat{
-    ID:string,
-    title:string,
-    description:string,
-    composer:string, //user ID
-    likedby:string[], //user IDs
-    tracks: string[], //track IDs
+    firestoreBeatID:string
+    composerID: string, //user ID
+    title: string,
+    description: string,
     theme: string[],
-    cpm:    number
+    tracks: Track[],
+    likes: number,
+    cpm: number
 }
 
 const firestore = getFirestore()
 
 const beatConverter ={
     toFirestore:(beat: WithFieldValue<Beat>): DocumentData => {
+        console.log(beat)
         return{
-            composer: beat.composer,
+            composer: beat.composerID,
             title: beat.title,
             description: beat.description,
             theme: beat.theme,
-            likedBy: beat.likedby,
-            tracks: beat.tracks,
+            likedBy: [],
+            tracks: (beat.tracks as Track[]).map((track)=> { 
+                return {sampleID: track.sample.firestoreSampleID, track: Array.from(track.rhythm.glyphs)}
+            }),
             cpm: beat.cpm,
             creationDate: serverTimestamp()
         };
     },
 
-    fromFirestore(snapshot:  QueryDocumentSnapshot<DocumentData>, options: SnapshotOptions): Beat {
+
+    fromFirestore(snapshot:  QueryDocumentSnapshot<DocumentData>, options: SnapshotOptions): any {        
         return {
             composer: snapshot.data().composer,
             title: snapshot.data().title,
             description: snapshot.data().description,
             theme: snapshot.data().theme,
-            likedBy: snapshot.data().likedBy,
+            likes: snapshot.data().likedBy.length,
             tracks: snapshot.data().tracks,
             cpm: snapshot.data().cpm        
         } as unknown as Beat
-        
     }
 }
 
-async function getBeat(beatID: string): Promise<Beat|null>{
+async function getSampleByID(sampleID: string){
+
+    let sampleRef = doc(firestore, "samples/", sampleID);
+    return getDoc(sampleRef).then(sampleSnapshot=>{
+    
+    if (sampleSnapshot.exists())
+        return {...sampleSnapshot.data(), firestoreSampleID:sampleID} as Sample 
+    
+    return null
+    })
+}
+
+async function getBeatByID(beatID: string): Promise<Beat|null>{
     let docRef = doc(firestore, "beats/", beatID).withConverter(beatConverter);
-    return getDoc(docRef).then(beatSnapshot=>{
+    return await getDoc(docRef).then(async beatSnapshot=>{
         if (beatSnapshot.exists()){
-            return {...beatSnapshot.data(), ID:beatID} as Beat}
+            console.log(beatSnapshot.data().tracks)
+            return {...beatSnapshot.data(), ID:beatID, tracks: await Promise.all(beatSnapshot.data().tracks.map((track : any)=>getSampleByID(track.sampleID)))} as Beat}
         else return null
     });
     
 }
 
+function createTrack(track: Track){}
 
 
-async function addBeat(b:Beat){
+async function createBeat(b:Beat){
     await addDoc(collection(firestore,"beats").withConverter(beatConverter), b)
 }
 
@@ -101,13 +112,19 @@ enum BeatQueryType{
 }
 
 
-function getQueryBeats(howMany:number, skip:number){
-   
-}
+// function getQueryBeats(howMany:number, skip:number, startTimeStamp: typeof serverTimestamp):Promise<Beat[]>{}
 
-export {getBeat,getQueryBeats,addBeat}
-export type { BeatData, rhythmSample, BeatQueryType}
+// function getSampleByID(sampleID: string): Promise<Sample>{}
 
+// function getTrackByID(trackID: string): Promise<Track>{}
+
+// function getUserById(userID: string): Promise<User>{}
+
+// function isBeatLikedByUserID(beatID: string): Promise<boolean>{
+//     getCurrentUser()
+// }
+
+export {getBeatByID,createBeat}
 
 
 
