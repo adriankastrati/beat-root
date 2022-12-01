@@ -5,13 +5,14 @@ import {
     connectAuthEmulator,
     User
 } from "firebase/auth";
-import {ref,getDatabase, set, connectDatabaseEmulator} from "firebase/database"
 import {initializeApp} from "firebase/app"
 import { firebaseConfig } from "./firebaseConfig";
+import { addDoc, collection, getFirestore } from "firebase/firestore";
+import { getDatabase } from "firebase/database";
 
 const firebaseApp = initializeApp(firebaseConfig)
 const auth = getAuth(firebaseApp)
-
+const fs = getFirestore()
 /**
  * 
  * @returns returns a user instance of current user
@@ -46,6 +47,7 @@ async function loginEmailPasswordAccount(email: string, password: string){
      })
 }
 
+
 /**
  * Error message thrown shows "weak-password", "invalid-email", "email-already-in-use", 
  * other error messages are thrown with message "unknown-issue"
@@ -58,15 +60,16 @@ async function loginEmailPasswordAccount(email: string, password: string){
  */
 
 async function createEmailPasswordAccount(email: string, username:string, password: string){
-    createUserWithEmailAndPassword(auth, email,password)
-        // set(ref(db,"users/"+username),{uid:response.user.uid}).catch((error) =>{
-        //     console.log(error);
-        //     throw new Error("unk");
-        // })
-
-    .catch((error)=>{
+   //TODO unique username
+    createUserWithEmailAndPassword(auth, email,password).then((authUser)=>
+        addDoc(collection(fs,"users"),{
+            username: username,
+            email: email,
+            description:"",
+            authID: authUser.user.uid
+        })).catch((error)=>{
        let errorMsg = "unknown-issue";
-
+        console.log(error)
         switch (error.code){
             case "auth/email-already-in-use":
                 errorMsg = "email-already-in-use";
