@@ -8,7 +8,7 @@ import {
 } from "firebase/auth";
 import {initializeApp} from "firebase/app"
 import { firebaseConfig } from "./firebaseConfig";
-import { addDoc, collection, getDocs, getFirestore, query, where } from "firebase/firestore";
+import { addDoc, collection, doc, getDocs, getFirestore, query, setDoc, where } from "firebase/firestore";
 
 const firebaseApp = initializeApp(firebaseConfig)
 const auth = getAuth(firebaseApp)
@@ -17,13 +17,9 @@ const fs = getFirestore()
  * 
  * @returns returns a promise with the current users ID
  */
-async function getCurrentUserID(): Promise<string|null>{
-    const userRef = collection(fs, "users");
-    
+async function getCurrentUserID(): Promise<string|null>{    
     if (auth.currentUser){
-        return await getDocs(query(userRef, where("authID", "==", auth.currentUser.uid))).then(query=>{
-            return query.docs[0].id
-    });}
+        return auth.currentUser.uid}
     return null
 }
 
@@ -67,7 +63,8 @@ async function loginEmailPasswordAccount(email: string, password: string){
 async function createEmailPasswordAccount(email: string, username:string, password: string){
    //TODO unique username
     createUserWithEmailAndPassword(auth, email,password).then((authUser)=>
-        addDoc(collection(fs,"users"),{
+        
+        setDoc(doc(fs,`users/${auth.currentUser?.uid}`),{
             username: username,
             email: email,
             description:"",
