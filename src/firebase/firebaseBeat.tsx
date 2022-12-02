@@ -123,14 +123,13 @@ enum BeatQueryType{
 }
 
 
-async function getQueryBeats(howMany:number, skip:number, startTimeStamp: Timestamp):Promise<void | Beat[]>{  
+async function getQueryBeats(howMany:number, skip:number, startTimeStamp: Timestamp):Promise<null | Beat[]>{  
     const beatRef = collection(firestore, "beats");
     let q = query(beatRef, where("creationDate","<",startTimeStamp.valueOf()), orderBy("creationDate", "asc"), limit(howMany),startAfter(skip),);
     
     
-    
-    return await getDocs(q.withConverter(beatConverter)).then(async docs=>{
-        return await Promise.all(docs.docs.map(async beatSnapshot=>{           
+    return getDocs(q.withConverter(beatConverter)).then(async docs=>{
+        return Promise.all(docs.docs.map(async beatSnapshot=>{           
             return {...beatSnapshot.data(), 
                 ID:beatSnapshot.id,
                 tracks: await Promise.all(beatSnapshot.data().tracks.map((async (track : any)=> {
