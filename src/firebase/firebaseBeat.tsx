@@ -1,5 +1,5 @@
-import {addDoc, collection, doc, DocumentData, getDoc, getFirestore, QueryDocumentSnapshot, serverTimestamp, SnapshotOptions, WithFieldValue} from "firebase/firestore"
-import {  } from "./firebaseAuthenticationModel"
+import {addDoc, collection, connectFirestoreEmulator, doc, DocumentData, getDoc, getDocs, getFirestore, limit, orderBy, query, QueryDocumentSnapshot, serverTimestamp, SnapshotOptions, startAfter, Timestamp, where, WithFieldValue} from "firebase/firestore"
+import { getCurrentUserID } from "./firebaseAuthenticationModel"
 
 
 
@@ -58,7 +58,7 @@ const beatConverter ={
                 return {sampleID: track.sample.firestoreSampleID, track: Array.from(track.rhythm.glyphs)}
             }),
             cpm: beat.cpm,
-            creationDate: serverTimestamp()
+            creationDate: Timestamp.now().valueOf()
         };
     },
 
@@ -92,18 +92,21 @@ async function getBeatByID(beatID: string): Promise<Beat|null>{
     let docRef = doc(firestore, "beats/", beatID).withConverter(beatConverter);
     return await getDoc(docRef).then(async beatSnapshot=>{
         if (beatSnapshot.exists()){
-            console.log(beatSnapshot.data().tracks)
-            return {...beatSnapshot.data(), ID:beatID, tracks: await Promise.all(beatSnapshot.data().tracks.map((track : any)=>getSampleByID(track.sampleID)))} as Beat}
+            return {...beatSnapshot.data(),
+                ID:beatID, tracks: await Promise.all(beatSnapshot.data().tracks.map(async (track : any)=> {
+                    console.log(track)
+                    return {rhythm: new Rhythm(track.track), sample: await getSampleByID(track.sampleID)}
+                }))
+            
+            } as Beat}
         else return null
     });
     
 }
 
-function createTrack(track: Track){}
 
-
-async function createBeat(b:Beat){
-    await addDoc(collection(firestore,"beats").withConverter(beatConverter), b)
+async function createBeat(beat:Beat){
+    await addDoc(collection(firestore,"beats").withConverter(beatConverter), beat)
 }
 
 enum BeatQueryType{
@@ -112,48 +115,70 @@ enum BeatQueryType{
 }
 
 
-// function getQueryBeats(howMany:number, skip:number, startTimeStamp: typeof serverTimestamp):Promise<Beat[]>{}
+async function getQueryBeats(howMany:number, skip:number, startTimeStamp: Timestamp):Promise<void | Beat[]>{  
+    const beatRef = collection(firestore, "beats");
+    let q = query(beatRef, where("creationDate","<",startTimeStamp.valueOf()), orderBy("creationDate", "asc"), limit(howMany),startAfter(skip),);
+    
+    
+    
+    return await getDocs(q.withConverter(beatConverter)).then(async docs=>{
+        return await Promise.all(docs.docs.map(async beatSnapshot=>{           
+            return {...beatSnapshot.data(), 
+                ID:beatSnapshot.id,
+                tracks: await Promise.all(beatSnapshot.data().tracks.map((async (track : any)=> {
+                    return {rhythm: new Rhythm(track.track), sample: await getSampleByID(track.sampleID)}
+                })))
+            } as Beat
+        }))
+    })
+}
+    
 
-// function getSampleByID(sampleID: string): Promise<Sample>{}
 
-// function getTrackByID(trackID: string): Promise<Track>{}
+export interface user{
+    authID: string 
+    description: string 
+    email: string
+    username: string
+}
+async function getUserById(userID: string): Promise<user|null>{
 
-// function getUserById(userID: string): Promise<User>{}
+    let userRef = doc(firestore, "users/", userID);
+    return await getDoc(userRef).then(user=> {
+        
+        if (user.exists()){
+            return user.data() as user
+        }
+        return null
+    })
+}
+async function isBeatLikedByCurrentUser(beatID: string): Promise<boolean>{
 
-// function isBeatLikedByUserID(beatID: string): Promise<boolean>{
-//     getCurrentUser()
-// }
+    let beatRef = doc(firestore, "beats/", beatID);
+   return  getCurrentUserID().then(async userID=>{
+    console.log(userID, beatRef)
 
-export {getBeatByID,createBeat}
+    return await getDoc(beatRef).then(beat =>{
+        if (beat.data()?.likedBy.includes(userID)){
+            return true
+        }
+        return false
+    })})
+    
+}
+
+async function isBeatLikedByUserID(beatID: string, userID:string): Promise<boolean>{
+    let beatRef = doc(firestore, "beats/", beatID);
+    console.log(userID, beatRef)
+
+    return await getDoc(beatRef).then(beat =>{
+        console.log(beat.data())
+        if (beat.data()?.likedBy.includes(userID)){
+            return true
+        }
+        return false
+    })
+}
 
 
-
-
-/**
- * 
- * @param id - identification of beat
- * @returns a promise with the one beat object as the data
- */
-
-// async function getBeat(id:string){
-//     return get(child(ref(db),`beatsTest/${id}`)).then( async (beatSnapshot)=>{
-
-//         const samplesAndRhythms : {sample:4, rhythm:number[]}[] = await Promise.all( beatSnapshot.child("RhythmsSamples").val().map(({rhythm, sampleID}: any)=>{
-//             // console.log("sampleID ",sampleID)
-//             // console.log("rhythm ",rhythm)
-            
-//             return get(child(ref(db),`samplesTest/${sampleID}`)).then((sampleSnapshot) => {
-//                 let mySample = sampleSnapshot.toJSON()
-//                 return {sample:mySample, rhythm:rhythm}})
-//         }));
-
-//         return {
-//             title: beatSnapshot.child("title").val() as string,
-//             composer: beatSnapshot.child("composer").val() as string,
-//             description:beatSnapshot.child("description").val() as string,
-//             theme: beatSnapshot.child("theme").val() as string[],
-//             likes: beatSnapshot.child("likes").val() as number,
-//             rhythmAndSamples: samplesAndRhythms
-//         } 
-//     })
-// }
+export {getBeatByID,createBeat, getUserById, isBeatLikedByCurrentUser, isBeatLikedByUserID, getQueryBeats}
