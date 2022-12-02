@@ -25,3 +25,7 @@ yarn-error.log*
 
 #config
 **/*Config.*
+
+#friebase log
+firebase-debug.log*
+ui-debug.log*

@@ -2,45 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
 import ModelContext from './contexts/ModelContext';
 import Model from './model';
-import BeatPage, { beatLoader } from './pages/BeatPage';
-import RootPage from './pages/RootPage';
 import AudioInitializer from './components/presenters/AudioInitializer';
-import ManualFirebaseTest from './pages/ManualFirebaseTest';
-
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <RootPage/>,
-  },
-
-  {
-    path: "test/firebase",
-      element: <ManualFirebaseTest/>,
-  },
-
-  {
-    path: "beat/:beatID",
-      element: <BeatPage/>,
-      loader: beatLoader
-  }
-]);
+import App from './App';
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
+  //NOTE: react strictmode is disabled due to bug in react-router.. Re-enabling might be handy for debugging
     <ModelContext.Provider value={new Model()}>
-      <AudioInitializer>
-        <RouterProvider router={router} />
-      </AudioInitializer>
+      <App/>
     </ModelContext.Provider>
-  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
