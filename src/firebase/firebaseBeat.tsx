@@ -106,7 +106,15 @@ async function getBeatByID(beatID: string): Promise<Beat|null>{
 
 
 async function createBeat(beat:Beat){
-    await addDoc(collection(firestore,"beats").withConverter(beatConverter), beat)
+    getCurrentUserID().then(id =>{
+        if (id)
+            beat.composerID = id
+    }).then(async ()=>{
+        await addDoc(collection(firestore,"beats").withConverter(beatConverter), beat)
+    })
+    // .catch(()=>{
+    //     throw new Error("not-signed-in")
+    // })
 }
 
 enum BeatQueryType{
@@ -155,7 +163,7 @@ async function getUserById(userID: string): Promise<user|null>{
 async function isBeatLikedByCurrentUser(beatID: string): Promise<boolean>{
 
     let beatRef = doc(firestore, "beats/", beatID);
-   return  getCurrentUserID().then(async userID=>{
+   return await getCurrentUserID().then(async userID=>{
     console.log(userID, beatRef)
 
     return await getDoc(beatRef).then(beat =>{
@@ -169,7 +177,6 @@ async function isBeatLikedByCurrentUser(beatID: string): Promise<boolean>{
 
 async function isBeatLikedByUserID(beatID: string, userID:string): Promise<boolean>{
     let beatRef = doc(firestore, "beats/", beatID);
-    console.log(userID, beatRef)
 
     return await getDoc(beatRef).then(beat =>{
         console.log(beat.data())
