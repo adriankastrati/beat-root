@@ -9,7 +9,6 @@ import {
 import {initializeApp} from "firebase/app"
 import { firebaseConfig } from "./firebaseConfig";
 import { addDoc, collection, getDocs, getFirestore, query, where } from "firebase/firestore";
-import { getDatabase } from "firebase/database";
 
 const firebaseApp = initializeApp(firebaseConfig)
 const auth = getAuth(firebaseApp)
@@ -28,7 +27,7 @@ async function getCurrentUserID(): Promise<string|null>{
     return null
 }
 
-/**
+/**s
  * 
  * @param email - email for account
  * @param password - password for account
