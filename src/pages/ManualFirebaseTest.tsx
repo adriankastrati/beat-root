@@ -1,14 +1,12 @@
 
-import { timeStamp } from 'console';
 import { User } from 'firebase/auth';
-import { serverTimestamp, Timestamp } from 'firebase/firestore';
+import {Timestamp } from 'firebase/firestore';
 import React from 'react';
-import './App.css';
-import {createEmailPasswordAccount,loginEmailPasswordAccount, getCurrentUserID, logOutAccount} from './firebase/firebaseAuthenticationModel'
+import {createEmailPasswordAccount,loginEmailPasswordAccount, getCurrentUserID, logOutAccount} from '../model/firebase/firebaseAuthenticationModel'
 
-import {Beat, Rhythm,Track, getBeatByID, Sample, createBeat, getUserById, isBeatLikedByCurrentUser, getQueryBeats} from "./firebase/firebaseBeat"
+import {Beat, Rhythm,Track, getBeatByID, Sample, createBeat, getUserById, isBeatLikedByCurrentUser, getQueryBeats} from "../model/firebase/firebaseBeat"
 
-function App(){
+export default function ManualFirebaseTest(){
 
   const [user, setUser] = React.useState<User|null>(null)
   
@@ -99,6 +97,4 @@ let time = Timestamp.now()
       <div> {user?.email||"no user"}</div>
     </div>
   );
-  }
-
-export default App;
+}
