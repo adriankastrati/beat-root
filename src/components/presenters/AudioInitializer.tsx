@@ -6,7 +6,7 @@ import ModelContext from "../../contexts/ModelContext";
 export default function AudioInitializer(props:{children: ReactNode | ReactNode[]}){
 
     const {audioModel} = useContext(ModelContext)
-    const [initialized, setInitialized] = useState(false);
+    const [initialized, setInitialized] = useState(audioModel.initialized);
 
     return initialized ? 
         <div>{props.children}</div> :
