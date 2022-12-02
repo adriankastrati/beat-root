@@ -11,6 +11,7 @@ import ModelContext from './contexts/ModelContext';
 import Model from './model';
 import BeatPage, { beatLoader } from './pages/BeatPage';
 import RootPage from './pages/RootPage';
+import AudioInitializer from './components/presenters/AudioInitializer';
 
 
 const router = createBrowserRouter([
@@ -29,7 +30,9 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ModelContext.Provider value={new Model()}>
-      <RouterProvider router={router} />
+      <AudioInitializer>
+        <RouterProvider router={router} />
+      </AudioInitializer>
     </ModelContext.Provider>
   </React.StrictMode>
 );
