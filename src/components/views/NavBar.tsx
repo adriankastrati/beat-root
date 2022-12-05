@@ -13,6 +13,10 @@ export default function NavBar(){
         <li>
             <Link to="/">home</Link>
         </li>
+
+        <li>
+            <Link to="/test/firebase">firebase test</Link>
+        </li>
         
     </div>
 }

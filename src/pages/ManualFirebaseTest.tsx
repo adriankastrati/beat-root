@@ -2,9 +2,10 @@
 import { User } from 'firebase/auth';
 import {Timestamp } from 'firebase/firestore';
 import React from 'react';
+import { Beat, Rhythm, Sample, Track } from '../common';
 import {createEmailPasswordAccount,loginEmailPasswordAccount, getCurrentUserID, logOutAccount} from '../model/firebase/firebaseAuthenticationModel'
 
-import {Beat, Rhythm,Track, getBeatByID, Sample, createBeat, getUserById, isBeatLikedByCurrentUser, getQueryBeats} from "../model/firebase/firebaseBeat"
+import {getBeatByID, createBeat, getUserById, isBeatLikedByCurrentUser, getQueryBeats} from "../model/firebase/firebaseBeat"
 
 export default function ManualFirebaseTest(){
 
@@ -72,7 +73,7 @@ export default function ManualFirebaseTest(){
   function addTestDatafirestore(){}
 
   function getQueryBeat(){
-let time = Timestamp.now()
+    console.log(getQueryBeats(3, 0, Timestamp.fromDate(new Date())))
   }
   
   function beatLikedByCurrentUser(){
@@ -81,7 +82,7 @@ let time = Timestamp.now()
 
   
   function getUser(){
-    getUserById("gwgjY95D4AyZ0yswWDyR")
+    console.log(getUserById("gwgjY95D4AyZ0yswWDyR"))
   }
   
   return (

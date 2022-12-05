@@ -3,6 +3,7 @@ import AudioInitializer from "./components/presenters/AudioInitializer";
 import BeatCreatePresenter from "./components/presenters/BeatCreatePresenter";
 import NavBar from "./components/views/NavBar";
 import BeatPage from "./pages/BeatPage";
+import ManualFirebaseTest from "./pages/ManualFirebaseTest";
 import RootPage from "./pages/RootPage";
 
 export default function App(){
@@ -12,6 +13,10 @@ export default function App(){
             <Switch>
                 <Route exact path="/">
                     <RootPage/>
+                </Route>
+
+                <Route exact path="/test/firebase">
+                    <ManualFirebaseTest/>
                 </Route>
                 
                 <Route path="/play">
