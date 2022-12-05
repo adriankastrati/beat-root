@@ -1,20 +1,20 @@
 import { type } from "@testing-library/user-event/dist/type";
-import colorpalette from "./icons/colorpalette.svg"
-import edit from "./icons/edit.svg"
-import add from "./icons/add.svg"
-import './App.css';
+import colorpalette from "../../../icons/colorpalette.svg"
+import edit from "../../../icons/edit.svg"
+import add from "../../../icons/add.svg"
+
 export enum MainButtonType{
     Edit,
     Create,
     ChooseColorTheme
 }
 
-interface Props{
+interface MainButtonProps{
     type: MainButtonType
     text: string
 }
 
-function MainButton(props: Props){
+export default function MainButton(props: MainButtonProps){
 
     let icon:string = "";
     let id = ""
@@ -38,4 +38,3 @@ function MainButton(props: Props){
         {props.text}
         </button>)
 }
-export default MainButton;

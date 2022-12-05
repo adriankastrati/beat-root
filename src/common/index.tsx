@@ -12,9 +12,20 @@ export interface Sample{
     url: string,
 }
 
+enum EffectVariant{
+    BIN = "bin",
+    OFFSET = "offset"
+}
+
+export interface Effect{
+    variant:EffectVariant,
+    arguments: number[]
+}
+
 export interface Track{
     rhythm:Rhythm,
     sample:Sample,
+    effects?:Effect[]
 }
 
 export interface Beat{
@@ -80,4 +91,18 @@ export class Rhythm {
             this.glyphs.delete(glyph)
         }
     }
+}
+
+export const theme = {
+    white: "#FFFFFF",
+    light: "#F1F2F2",
+    medium: "#D1D3D4",
+    dark: "#939598",
+    black: "#000000",
+}
+
+export const defaultSample: Sample = { //TODO: give only default firebase id instead
+    name: "default sample",
+    url: "https://tonejs.github.io/audio/drum-samples/Techno/hihat.mp3", //TODO
+    firestoreSampleID: "" //TODO
 }

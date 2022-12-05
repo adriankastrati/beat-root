@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Switch} from "react-router-dom";
 import AudioInitializer from "./components/presenters/AudioInitializer";
+import BeatCreatePresenter from "./components/presenters/BeatCreatePresenter";
 import NavBar from "./components/views/NavBar";
 import BeatPage from "./pages/BeatPage";
 import RootPage from "./pages/RootPage";
@@ -25,7 +26,7 @@ export default function App(){
                             </Route>
 
                             <Route exact path="/play/create">
-                                <div>add create page here</div>
+                                <BeatCreatePresenter/>
                             </Route>
                         </Switch>
                     </AudioInitializer>
