@@ -1,47 +1,6 @@
 import {addDoc, collection, connectFirestoreEmulator, doc, DocumentData, getDoc, getDocs, getFirestore, limit, orderBy, query, QueryDocumentSnapshot, serverTimestamp, SnapshotOptions, startAfter, Timestamp, where, WithFieldValue} from "firebase/firestore"
+import { Beat, Rhythm, Sample, Track } from "../../common"
 import { getCurrentUserID } from "./firebaseAuthenticationModel"
-
-
-
-export class Rhythm {
-    glyphs: Set<number>
-
-    constructor(glyphs:number[]){
-        if(glyphs){
-            this.glyphs = new Set(glyphs)
-        } else {
-            this.glyphs = new Set([])
-        }
-    }
-}
-
-export interface User{
-    firestoreUserID: string,
-    username: string,
-    //TODO: firebaseAuth: firebase.Auth
-}
-
-export interface Sample{
-    firestoreSampleID:string,
-    name: string,
-    url: string,
-}
-
-export interface Track{
-    rhythm:Rhythm,
-    sample:Sample,
-}
-
-export interface Beat{
-    firestoreBeatID:string
-    composerID: string, //user ID
-    title: string,
-    description: string,
-    theme: string[],
-    tracks: Track[],
-    likes: number,
-    cpm: number
-}
 
 const firestore = getFirestore()
 
