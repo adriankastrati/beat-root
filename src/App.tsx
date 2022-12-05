@@ -1,24 +1,14 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import ToneJSExperiment from './components/ToneJSExperiment';
 
-import FeedPresenter  from './components/Feed/FeedPresenter';
+import FeedPresenter from './components/Feed/FeedPresenter';
 
 function App() {
-  
+
   return (
-    <div>
+    <div className="App">
       <FeedPresenter />
     </div>
   );
 }
-//function App() {
-//  return (
-//    <div className="App">
-//      <ToneJSExperiment/>
-//    </div>
-//  );
-//}
 
 export default App;

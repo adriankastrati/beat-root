@@ -4,6 +4,19 @@ body {
     align-content: center;
 }
 
+.card {
+    width: 400px;
+    height: 450px;
+    border-radius: 5%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    background-color: rgb(236, 228, 178);
+    margin: 5%;
+
+}
+
 #feed-parent {
     position: relative;
     overflow-y: scroll;
@@ -42,4 +55,14 @@ body {
     background-color: rgb(176, 115, 255);
     justify-content: center;
     align-content: center;
+}
+
+.susp {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+}
+.susp div {
+    animation: susp 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
 }

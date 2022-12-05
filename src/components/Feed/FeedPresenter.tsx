@@ -1,110 +1,113 @@
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useState, useRef, Fragment} from "react"
+import {useIntersection } from 'react-use'
+import { Beat } from "../../common"
+import styled, {StyledComponent} from "styled-components"
 
-import FeedView from "./FeedView";
+    const ThemedCard: StyledComponent<'div', {color: string}> = styled.div`
+    width: 400px;
+    height: 450px;
+    border-radius: 5%;
+    position: relative;
+    display: flex;
+    background-color: ${(props) => props.color};
+    //background-color: rgb(176, 115, 255);
+    justify-content: center;
+    align-content: center;
+    margin: 5%;
+    `;
 
-export interface Beat {
-    composer: string
-    title: string
-    glyph: number[]
-    theme?: string
-    samples?: string[]
-    likes?: number
-    avatar: string
-    //rhythms?: Rhythm[] 
+    const BeatParent = styled.div`
+    width:400px;
+    height:400px;
+    border-radius: 5%;
+    position:relative;
+    display: flex;
+    //background-color: rgb(236, 228, 178);
+    justify-content: center;
+    align-content: center;
+    `;
+    
+
+function generateBeats(num: Number): Beat[] {
+    const beats: Beat[] = [];
+    for (let i=0; i < num; i++) {
+        beats.push({
+            composerID: "markymerk", 
+            title: "kewl beat uwu",
+            likes: 42,
+            theme: ["#37FA20", "#55B55A"],
+        })
+    }
+    return beats;
 }
 
-export interface Beats {
-    beats: Beat[]
+async function fakeBeatFetch<T>(num: Number): Promise<Beat[]>{ // <T> for future usage 
+    return new Promise(resolve => setTimeout(resolve, 1000))
+    .then(() => {
+        return generateBeats(num)
+    })
 }
 
+export const ITEMS_ON_FETCH = 5
 
-// App.tsx shoudn't need any props since feedpresenter will
-//     fetch data from firebase. 
-function FeedPresenter () { // prop stack 
+const FeedPresenter = () => {
 
-    function createBeat() {
+    const [beats, setBeats] = useState<Beat[]>([]) //might be | null?
+    const [page, setPage] = useState(0)
+    const [loading, setLoading] = useState(false)
+    const targetRef = useRef<HTMLDivElement | null>(null)
 
-        let beat : Beat = {
-                composer: "markymerk", 
-                title: '\"sampel b33t :)\"',
-                glyph:[1, 3, 19] ,
-                likes: 13,
-                samples: ["hihat.wav"],
-                theme: "#37FA20",
-                avatar: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Elon_Musk_2015.jpg/113px-Elon_Musk_2015.jpg",
+    const intersection = useIntersection(targetRef, {
+        root:null,
+        rootMargin: '500px',
+        threshold: 0.7
+    });
+
+
+    useEffect(() => {
+        async function fetchData() {
+            setLoading(true)
+            const data = await fakeBeatFetch(ITEMS_ON_FETCH)
+            setBeats((prevBeats) => prevBeats.concat(data) )
+            setLoading(false)
         }
 
-        return beat
-    }
-
-    function createBeatArray() {
-
-        let beat_arr: Beats = {beats: []}
-
-        for (let i = 0; i < 10; i++) {
-            beat_arr.beats.push(createBeat())
+    
+        if (intersection && intersection.isIntersecting ) {
+            setPage(page + ITEMS_ON_FETCH)
+            fetchData()
         }
-        return beat_arr
-    }
+    }, [intersection]) // intersection observer will only act on change
 
-    let beat_array = createBeatArray()
-
-
+    // this should be in the view instead, but I can't seem to figure out how
+    //  to send the props in a way that allows for intersection observing with refs
+    //  like below
     return (
-        <div>
-            <FeedView 
-                beats = {beat_array}
-            />
-        </div>
+            <div>
+                <div> 
+                    { beats ? 
+                        beats && beats.slice(0, page + ITEMS_ON_FETCH).map((beat, index) => {
+                        console.log(intersection?.isIntersecting)
+                        //console.log("loadin:" + loading)
+                        return (
+                            <div>
+                                <div>
+                <ThemedCard color={beat.theme[0]}>
+                                <p key={index}> index={index}
+                                <strong>Title:</strong> {beat.title}<br />
+                                <strong>Composer ID:</strong> {beat.composerID}<br />
+                                <strong>Likes:</strong> {beat.likes}<br />
+                                <strong>Theme:</strong> {beat.theme.join(',')}<br />
+                                </p>
+                </ThemedCard> 
+                                </div>
+                            </div>
+                        )
+                    }):<img src="https://media.tenor.com/tga0EoNOH-8AAAAC/loading-load.gif"></img>}  
+                    <div ref={targetRef}></div>
+                </div>
+            </div>
     )
 }
 
-
-//function postShit() {
-//    //const p0st = useRef<Post|null>(null)
-//
-//    const sampelf33d = new Feed();
-//    const composer1 = ({
-//        username: "muskrat19", 
-//        user_avatar: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Elon_Musk_2015.jpg/113px-Elon_Musk_2015.jpg"
-//    })
-//
-//    sampelf33d.createPost({
-//        title: "kewl beat :3",
-//        composer: composer1,
-//        likes: 2,
-//        date: "2022-03-13: 17:59"
-//    })
-//
-//    // how 2 create and render and entire post object?
-//    // Create post object-dom
-//    return (
-//        <div>
-//            {composer1.username} | 
-//            <div>
-//                <a href="#"><img alt="test" src={composer1.user_avatar}></img></a>
-//            </div>
-//        </div>
-//    )
-//
-//}
-
-// trash
-//export class Feed {
-//
-//    beats: Beat[] = []
-//    //composers: Composer[] = []
-//    //interactions: Interaction[] = []
-//
-//    //public createComposer = 
-//    //    (composer: Composer) => this.composers.push(composer)
-//
-//    //public createInteraction = //likes and midi-link
-//    //    (interactions: Interaction) => this.interactions.push(interactions)
-//
-//    public createBeat = 
-//        (beat: Beat) => this.beats.push(beat)
-//
-//}
-
-export default FeedPresenter;
+export default FeedPresenter
