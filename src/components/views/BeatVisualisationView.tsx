@@ -1,12 +1,15 @@
 import { Rhythm } from "../../common";
 
 interface BeatVisualisationViewProps{
-    rhythms: Rhythm[]
+    onPlay:()=>void,
+    onPause:()=>void,
+    rhythms: Rhythm[],
     currentProgress:number,
-    amplitude:number
+    amplitude:number,
 }
 export default function BeatVisualisationView(props:BeatVisualisationViewProps){
     return <div>
-        Visualisation
+        <button onClick={props.onPlay}>play</button>
+        <button onClick={props.onPause}>pause</button>
     </div>
 }

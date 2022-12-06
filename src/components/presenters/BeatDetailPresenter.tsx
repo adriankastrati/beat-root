@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import ModelContext from "../../contexts/ModelContext";
 import BeatDetailView from "../views/BeatDetailView";
-import { Beat, Rhythm, Sample } from "../../common";
+import { Beat, playTracks, Rhythm, Sample } from "../../common";
 
 interface BeatDetailPresenterProps{
     beat: Beat
@@ -27,11 +27,7 @@ export default function BeatDetailPresenter(props:BeatDetailPresenterProps) {
 
 
     function handlePlay(){
-        if (beat){
-            audioModel.play(
-                beat.tracks.map(({sample, rhythm})=>({sampleURL:sample.url, rhythm})), 
-            60/beat.cpm)
-        }
+        playTracks(beat.tracks, beat.cpm, audioModel)
     }
 
     function handleStop(){
