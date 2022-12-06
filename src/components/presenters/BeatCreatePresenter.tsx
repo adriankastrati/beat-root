@@ -1,3 +1,4 @@
+import { cloneDeep } from "lodash";
 import { useContext, useState } from "react";
 import styled from "styled-components";
 import { Beat, defaultSample, playTracks, Rhythm, Sample, textStyles, TextVaiant, Track } from "../../common";
@@ -6,6 +7,7 @@ import BeatTracksView from "../views/BeatTracksView";
 import BeatVisualisationView from "../views/BeatVisualisationView";
 import EditThemeModalView from "../views/EditThemeModalView";
 import EditTrackModalView from "../views/EditTrackModalView";
+
 
 interface BeatCreationState{
     title: string,
@@ -85,17 +87,19 @@ export default function BeatCreatePresenter(){
         return <EditTrackModalView 
             track={beatCreationState.tracks[editTrackModal]} 
             onAddGlyph={(glyph:number)=>{
-                let newTrack = beatCreationState.tracks[editTrackModal]
+                let newTrack = cloneDeep(beatCreationState.tracks[editTrackModal])
                 newTrack.rhythm.addGlyph(glyph)
                 updateTrack(newTrack, editTrackModal)
+                playTracks(beatCreationState.tracks, beatCreationState.cpm, audioModel) //TODO: fix this
             }}
             onRemoveGlyph={(glyph:number)=>{
-                let newTrack = beatCreationState.tracks[editTrackModal]
+                let newTrack = cloneDeep(beatCreationState.tracks[editTrackModal])
                 newTrack.rhythm.removeGlyph(glyph)
                 updateTrack(newTrack, editTrackModal)
+                playTracks(beatCreationState.tracks, beatCreationState.cpm, audioModel) //TODO: fix this
             }}
             onSampleSelect={(sample:Sample)=>{
-                let newTrack = beatCreationState.tracks[editTrackModal]
+                let newTrack = cloneDeep(beatCreationState.tracks[editTrackModal])
                 newTrack.sample = sample
                 updateTrack(newTrack, editTrackModal)
                 playTracks(beatCreationState.tracks, beatCreationState.cpm, audioModel) //TODO: fix this
@@ -136,5 +140,8 @@ const provisionalSamples = [
     defaultSample,
     {name:"techno-hihat", url:"https://tonejs.github.io/audio/drum-samples/Techno/hihat.mp3"} as Sample,
     {name:"techno-kick", url:"https://tonejs.github.io/audio/drum-samples/Techno/kick.mp3"} as Sample,
-    {name:"techno-tom2", url:"https://tonejs.github.io/audio/drum-samples/Techno/tom2.mp3"} as Sample
+    {name:"techno-tom2", url:"https://tonejs.github.io/audio/drum-samples/Techno/tom2.mp3"} as Sample,
+    {name:"bongo", url:"https://tonejs.github.io/audio/drum-samples/Bongos/tom1.mp3"} as Sample,
+    {name:"tom", url:"https://tonejs.github.io/audio/drum-samples/LINN/tom1.mp3"} as Sample
+
 ]
