@@ -60,7 +60,7 @@ const FeedPresenter = () => {
     function fetchData() {
             setLoading(true)
             getQueryBeats(ITEMS_ON_FETCH, page, timestamp_now).then((newBeats) => {if(newBeats){
-                console.log(ITEMS_ON_FETCH, page, timestamp_now)
+                //console.log(ITEMS_ON_FETCH, page, timestamp_now)
                 //setBeats(Array.from([...beats,...newBeats]))
                 setBeats(beats.concat(newBeats))
                 setLoading(false)
@@ -106,6 +106,8 @@ const FeedPresenter = () => {
                                 <strong>Composer ID:</strong> {beat.composerID}<br />
                                 <strong>Likes:</strong> {beat.likes}<br />
                                 <strong>Theme:</strong> {beat.theme.join(',')}<br />
+                                <strong>Sample:</strong> {beat.tracks[0].sample.name}<br />
+                                <strong>glyphs:</strong> {beat.tracks[0].rhythm.getGlyphs()}<br />
                                 </p>
                                 </ThemedCard>
                                 </div>
