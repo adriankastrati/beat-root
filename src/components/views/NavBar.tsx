@@ -18,5 +18,8 @@ export default function NavBar(){
             <Link to="/test/firebase">firebase test</Link>
         </li>
         
+        <li>
+            <Link to="/test/color">color test</Link>
+        </li>
     </div>
 }
