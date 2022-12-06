@@ -4,6 +4,7 @@ import BeatCreatePresenter from "./components/presenters/BeatCreatePresenter";
 import FeedPresenter from "./components/presenters/FeedPresenter";
 import NavBar from "./components/views/NavBar";
 import BeatPage from "./pages/BeatPage";
+import ColorTestPage from "./pages/colorTestPage";
 import ManualFirebaseTest from "./pages/ManualFirebaseTest";
 import RootPage from "./pages/RootPage";
 
@@ -18,6 +19,10 @@ export default function App(){
 
                 <Route exact path="/test/firebase">
                     <ManualFirebaseTest/>
+                </Route>
+
+                <Route exact path="/test/color">
+                    <ColorTestPage/>
                 </Route>
                 
                 <Route path="/play">
