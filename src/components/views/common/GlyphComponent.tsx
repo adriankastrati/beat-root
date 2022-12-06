@@ -3,7 +3,7 @@ import { theme } from "../../../common";
 
 interface GlyphComponentProps{
     number: number,
-    onDelete?: ()=>{}
+    onDelete?: ()=>void
 }
 
 const GlyphContainer = styled.div`
