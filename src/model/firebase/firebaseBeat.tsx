@@ -145,5 +145,6 @@ async function getAllSamples(): Promise<Sample[]>{
             return {url: url, name:name, firestoreSampleID: sample.id} as Sample
         })
     })   
-}
+} 
+
 export {getAllSamples,getBeatByID,createBeat, getUserById, isBeatLikedByCurrentUser, isBeatLikedByUserID, getQueryBeats}
