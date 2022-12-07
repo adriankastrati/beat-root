@@ -7,6 +7,7 @@ import BeatPage from "./pages/BeatPage";
 import ColorTestPage from "./pages/colorTestPage";
 import ManualFirebaseTest from "./pages/ManualFirebaseTest";
 import RootPage from "./pages/RootPage";
+import SignInTest from "./pages/signInTest";
 
 export default function App(){
     return <BrowserRouter>
@@ -23,6 +24,10 @@ export default function App(){
 
                 <Route exact path="/test/color">
                     <ColorTestPage/>
+                </Route>
+
+                <Route exact path="/test/sign-in">
+                    <SignInTest/>
                 </Route>
                 
                 <Route path="/play">
