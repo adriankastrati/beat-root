@@ -1,45 +1,49 @@
 import { useState } from "react"
 import { Link } from "react-router-dom";
-import styled from "styled-components";
+import { NavContainer, TopNav, NavBurgerIcon, NavIcon, NavLogo, NavMenu, NavItem, NavLink } from "./common/NavBarElements"
 
 
 
 export default function NavBar(){
-    const [burgerOpen, setBurgerOpen] = useState(false)
 
-    const burgerItem = styled.div`
+    const [burgerOpen, setBurgerOpen] = useState<boolean>(false)
+    {console.log(burgerOpen)}
 
-    `;
+    const [currentPageName, setCurrentPageName] = useState<string>("current page")
 
-    const navigation = styled.div`
-        display: ${burgerOpen ? 'inline' : 'none'};
-        background-color: purple;
-        height: 50vw;
-        width: 50vw;
-        margin-top: 50px;
-        position: absolute;
-    `;
+    
+    const clickHandler = () => {
+        setBurgerOpen(!burgerOpen)
+    }
 
     return (
-        <div> 
-            <li>
-                <Link to="/play/explore">explore</Link>
-            </li>
-            <li>
-                <Link to="/play/create">create</Link>
-            </li>
-            <li>
-                <Link to="/">home</Link>
-            </li>
-            <li>
-                <Link to="/test/firebase">firebase test</Link>
-            </li>
+        <>
+        <TopNav> 
+            <NavContainer>
+                <NavLogo to="/" onClick={()=>{}}> 
+                    {currentPageName}
+                </NavLogo>
 
-            <div className={burgerItem}>
+                <NavBurgerIcon onClick={(a)=>{clickHandler()}}>
+                    {burgerOpen? "cross":"burger"}
+                </NavBurgerIcon>
 
-            </div >
-
-
-        </div>
+                <NavMenu active={burgerOpen} >
+                    <NavItem>
+                        <NavLink to="/play/create">create</NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink to="/play/explore">explore</NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink to="/">home</NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink to="/test/firebase">firebase test</NavLink>
+                    </NavItem>
+                </NavMenu>
+            </NavContainer>
+        </TopNav>
+        </>
     )
 }
