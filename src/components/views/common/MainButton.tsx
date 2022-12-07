@@ -66,11 +66,11 @@ function MainButton(props: Props){
             break;
         case MainButtonType.Create:
             icon = add
-            btnWidth = 100;
+            btnWidth = 180;
             break;
         case MainButtonType.Save:
             icon = save
-            btnWidth = 180;
+            btnWidth = 220;
             break;
         case MainButtonType.Plain:
             btnWidth = props.text.length*16;

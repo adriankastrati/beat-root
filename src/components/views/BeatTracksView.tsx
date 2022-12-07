@@ -11,9 +11,16 @@ interface BeatTracksViewProps {
 }
 
 const TracksContainer = styled.div`
+    display: flex;
+    flex-direction: column;
     border-radius:10px;
     border: solid ${theme.dark};
     padding:10px;
+`
+const Center = styled.div`
+align-items: center;
+align-self: center;
+margin: 0 auto;
 `
 
 export default function BeatTracksView(props:BeatTracksViewProps){
@@ -23,7 +30,10 @@ export default function BeatTracksView(props:BeatTracksViewProps){
                 props.tracks.map((track, i)=><TrackView key={i} track={track} 
                 onEdit={props.onEditTrack ? ()=>{props.onEditTrack!(i)} : undefined}/>)
             }
-            <MainButton text = "+" type = {MainButtonType.Plain} scale = {1} onClick={props.onAddTrack} width = {35}></MainButton>
+            <Center>
+                <MainButton text = "add sample" type = {MainButtonType.Create} scale = {0.75} onClick={props.onAddTrack}></MainButton>
+
+            </Center>
         </TracksContainer>
     </div>
 }
