@@ -63,7 +63,7 @@ export default function SignInPresenter(){
             <div>password</div>
             <input id="password" 
             defaultValue={password}
-            type="text" 
+            type="password" 
             onChange={e=>handlePasswordChange(e.currentTarget.value)}
             />
           </div>
