@@ -10,18 +10,30 @@ interface GlyphComponentProps{
 const GlyphContainer = styled.div`
     background-color: ${theme.white};
     border-radius: 10px;
-    width:60px;
-    height:60px;
+    width:36px;
+    height:36px;
     margin:10px;
     padding:5px;
 `
 
+const Center = styled.div`
+align-items: center;
+text-align: center;
+font-weight: bold;
+font-size: 24px;
+`
+
+
 export default function GlyphComponent(props: GlyphComponentProps){
-    return <GlyphContainer>
-        {
-            props.onDelete ? <DeleteCrossButton onClick={props.onDelete}/> : null
-        }
+    return (
         
-        {props.number}
-    </GlyphContainer>
+            <GlyphContainer>
+                <Center>
+                    {props.number}
+                </Center>
+                {
+                    props.onDelete ? <DeleteCrossButton onClick={props.onDelete}>x</DeleteCrossButton> : null
+                }
+            </GlyphContainer>
+            )
 }

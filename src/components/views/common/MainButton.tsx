@@ -2,39 +2,94 @@ import { type } from "@testing-library/user-event/dist/type";
 import colorpalette from "../../../icons/colorpalette.svg"
 import edit from "../../../icons/edit.svg"
 import add from "../../../icons/add.svg"
+import styled from "styled-components";
+import save from "../../../icons/save.svg"
+import { isPropertySignature } from "typescript";
+
+interface ButtonInterface{
+    width: number
+    scale: number
+}
+
+const ButtonStyle = styled.button<ButtonInterface>`  display:inline-flex;
+width: ${props => props.width *props.scale}px;
+height: ${props => props.scale}%;
+text-align: center;
+align-items: center;
+background-color: rgb(255, 255, 255); 
+border: 1px solid rgb(155, 155, 155); 
+height: fit-content;
+border-radius: 5px;
+color: rgb(0, 0, 0); 
+padding: ${props => 10*props.scale}px; 
+font-size: ${props => 22*props.scale}px; 
+cursor: pointer; /* Mouse pointer on hover */ 
+margin: ${props => 10*props.scale}px;
+
+`
+
+const ButtonImg = styled.img`
+max-width: 30px;
+max-height: 30px;
+`
 
 export enum MainButtonType{
     Edit,
     Create,
-    ChooseColorTheme
+    ChooseColorTheme,
+    Save,
+    Add,
+    Plain
 }
 
-interface MainButtonProps{
+interface Props{
     type: MainButtonType
     text: string
+    onClick: any
+    scale: number
+    width?: number
 }
 
-export default function MainButton(props: MainButtonProps){
+function MainButton(props: Props){
 
     let icon:string = "";
-    let id = ""
+    let btnWidth = 100;
     
     switch(props.type){
         case MainButtonType.Edit:
             icon = edit
-            id ="editBtn"
+            btnWidth = 100;
             break;
         case MainButtonType.ChooseColorTheme:
             icon = colorpalette
-            id = "colorBtn"
+            btnWidth = 220;
             break;
         case MainButtonType.Create:
             icon = add
-            id = "createBtn"
+            btnWidth = 100;
+            break;
+        case MainButtonType.Save:
+            icon = save
+            btnWidth = 180;
+            break;
+        case MainButtonType.Plain:
+            btnWidth = props.text.length*16;
             break;
     }
-
-    return (<button id = {id} type = "button" className="button"><img className="btnIcon" src={icon}></img>
-        {props.text}
-        </button>)
+    if(props.type != MainButtonType.Plain){
+        return (
+                    <ButtonStyle scale = {props.scale} width = {props.width ? props.width : btnWidth} onClick={props.onClick}>
+                        <ButtonImg src={icon}></ButtonImg>
+                        {props.text}
+                    </ButtonStyle>
+                )
+    }else{
+        return (
+                    <ButtonStyle scale = {props.scale} width = {props.width ? props.width : btnWidth} onClick={props.onClick}>
+                    {props.text}
+                    </ButtonStyle>
+                )
+            
+    }
 }
+export default MainButton;

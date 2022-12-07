@@ -1,11 +1,13 @@
 import { BrowserRouter, Route, Switch} from "react-router-dom";
 import AudioInitializer from "./components/presenters/AudioInitializer";
 import BeatCreatePresenter from "./components/presenters/BeatCreatePresenter";
+import FeedPresenter from "./components/presenters/FeedPresenter";
 import NavBar from "./components/views/NavBar";
 import BeatPage from "./pages/BeatPage";
 import ColorTestPage from "./pages/colorTestPage";
 import ManualFirebaseTest from "./pages/ManualFirebaseTest";
 import RootPage from "./pages/RootPage";
+import SignInTest from "./pages/signInTest";
 
 export default function App(){
     return <BrowserRouter>
@@ -23,6 +25,10 @@ export default function App(){
                 <Route exact path="/test/color">
                     <ColorTestPage/>
                 </Route>
+
+                <Route exact path="/test/sign-in">
+                    <SignInTest/>
+                </Route>
                 
                 <Route path="/play">
                     <AudioInitializer>
@@ -32,7 +38,7 @@ export default function App(){
                             </Route>
 
                             <Route exact path="/play/explore">
-                                <div>add explore page here</div>
+                                <FeedPresenter/>
                             </Route>
 
                             <Route exact path="/play/create">

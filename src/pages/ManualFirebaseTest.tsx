@@ -5,21 +5,21 @@ import React from 'react';
 import { Beat, Rhythm, Sample, Track } from '../common';
 import {createEmailPasswordAccount,loginEmailPasswordAccount, getCurrentUserID, logOutAccount} from '../model/firebase/firebaseAuthenticationModel'
 
-import {getBeatByID, createBeat, getUserById, isBeatLikedByCurrentUser, getQueryBeats} from "../model/firebase/firebaseBeat"
+import {getBeatByID, createBeat, getAllSamples, isBeatLikedByCurrentUser, getQueryBeats} from "../model/firebase/firebaseBeat"
 
 export default function ManualFirebaseTest(){
 
-  const [user, setUser] = React.useState<User|null>(null)
+  const [user, setUser] = React.useState<string|null>(null)
   
   function createDummy(){
     createEmailPasswordAccount("dummys@hej.se", "pastawithrice", "pastaPasta").then(()=>{
-      let user = getCurrentUserID()
-      // if(user){
-      //   setUser(user)
-      // }else{
-      //   setUser(null)
-      // }
-    })
+      getCurrentUserID().then(user=>{
+        if(user){
+          setUser(user)
+        }else{
+          setUser(null)
+        }
+      })})
    
   }
    
@@ -29,8 +29,11 @@ export default function ManualFirebaseTest(){
   
   async function logOut(){
     logOutAccount()
+    setUser(null)
   }
-
+  function logSamples(){
+    console.log(getAllSamples())
+  }
   
   function addTestData(){
     let r1 = new Rhythm([7,2])
@@ -73,29 +76,32 @@ export default function ManualFirebaseTest(){
   function addTestDatafirestore(){}
 
   function getQueryBeat(){
-    console.log(getQueryBeats(3, 0, Timestamp.fromDate(new Date())))
+    getQueryBeats(3, 0, Timestamp.fromDate(new Date())).then(beats=>{console.log(beats)})
   }
   
   function beatLikedByCurrentUser(){
-    console.log(isBeatLikedByCurrentUser("WCOBSZJP33ctZSWHey8P"))  
+    isBeatLikedByCurrentUser("WCOBSZJP33ctZSWHey8P").then(bool=>{console.log(bool)})
   }
 
   
   function getUser(){
-    console.log(getUserById("gwgjY95D4AyZ0yswWDyR"))
+    getCurrentUserID().then(user=>{
+      setUser(user)
+    })
   }
   
   return (
     <div className="App">
       <button onClick={createDummy}> create</button>
       <button onClick={loginDummy}> login</button>
+      <button onClick={logSamples}> log samples</button>
       <button onClick={logOut}>LogOut</button>
       <button onClick={getUser}>getuser</button>
       <button onClick={addTestData}>Test data</button> 
       <button onClick={getTestData}>get beat</button>
       <button onClick={getQueryBeat}>get queryBeats</button>
       <button onClick={beatLikedByCurrentUser}>beatLikedByCurrentUser</button>
-      <div> {user?.email||"no user"}</div>
+      <div> {user ||"no user"}</div>
     </div>
   );
 }

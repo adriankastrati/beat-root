@@ -1,4 +1,4 @@
-import {addDoc, collection, connectFirestoreEmulator, doc, DocumentData, getDoc, getDocs, getFirestore, limit, orderBy, query, QueryDocumentSnapshot, serverTimestamp, SnapshotOptions, startAfter, Timestamp, where, WithFieldValue} from "firebase/firestore"
+import {addDoc, collection, doc, DocumentData, getDoc, getDocs, getFirestore, limit, orderBy, query, QueryDocumentSnapshot, serverTimestamp, SnapshotOptions, startAfter, Timestamp, where, WithFieldValue} from "firebase/firestore"
 import { Beat, Rhythm, Sample, Track } from "../../common"
 import { getCurrentUserID } from "./firebaseAuthenticationModel"
 
@@ -6,7 +6,6 @@ const firestore = getFirestore()
 
 const beatConverter ={
     toFirestore:(beat: WithFieldValue<Beat>): DocumentData => {
-        console.log(beat)
         return{
             composer: beat.composerID,
             title: beat.title,
@@ -53,7 +52,6 @@ async function getBeatByID(beatID: string): Promise<Beat|null>{
         if (beatSnapshot.exists()){
             return {...beatSnapshot.data(),
                 ID:beatID, tracks: await Promise.all(beatSnapshot.data().tracks.map(async (track : any)=> {
-                    console.log(track)
                     return {rhythm: new Rhythm(track.track), sample: await getSampleByID(track.sampleID)}
                 }))
             
@@ -74,11 +72,6 @@ async function createBeat(beat:Beat){
     // .catch(()=>{
     //     throw new Error("not-signed-in")
     // })
-}
-
-enum BeatQueryType{
-    MostLiked,
-    Newest
 }
 
 
@@ -122,7 +115,6 @@ async function isBeatLikedByCurrentUser(beatID: string): Promise<boolean>{
 
     let beatRef = doc(firestore, "beats/", beatID);
    return await getCurrentUserID().then(async userID=>{
-    console.log(userID, beatRef)
 
     return await getDoc(beatRef).then(beat =>{
         if (beat.data()?.likedBy.includes(userID)){
@@ -137,7 +129,6 @@ async function isBeatLikedByUserID(beatID: string, userID:string): Promise<boole
     let beatRef = doc(firestore, "beats/", beatID);
 
     return await getDoc(beatRef).then(beat =>{
-        console.log(beat.data())
         if (beat.data()?.likedBy.includes(userID)){
             return true
         }
@@ -145,5 +136,15 @@ async function isBeatLikedByUserID(beatID: string, userID:string): Promise<boole
     })
 }
 
+async function getAllSamples(): Promise<Sample[]>{
+    let samplesCollection = collection(firestore, "samples/");
 
-export {getBeatByID,createBeat, getUserById, isBeatLikedByCurrentUser, isBeatLikedByUserID, getQueryBeats}
+    return await getDocs(query(samplesCollection)).then(sampleSnapshot=>{
+       return sampleSnapshot.docs.map(sample =>{
+            const { url, name }: { url: string; name: string } = sample.data() as any
+            return {url: url, name:name, firestoreSampleID: sample.id} as Sample
+        })
+    })   
+} 
+
+export {getAllSamples,getBeatByID,createBeat, getUserById, isBeatLikedByCurrentUser, isBeatLikedByUserID, getQueryBeats}
