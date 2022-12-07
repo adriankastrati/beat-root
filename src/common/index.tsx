@@ -122,21 +122,21 @@ export function textStyles(variant:TextVaiant){
         case TextVaiant.BODY:
             return`
                 font-family: 'Helvetica', 'Arial', sans-serif;
-                font-size:15px
+                font-size:15px;
             `
 
         case TextVaiant.TITLE:
             return`
                 font-weight: bold;
                 font-family: 'Helvetica', 'Arial', sans-serif;
-                font-size:30px
+                font-size:30px;
             `
 
         case TextVaiant.SUBTITLE:
             return`
                 font-weight: bold;
                 font-family: 'Helvetica', 'Arial', sans-serif;
-                font-size:20px
+                font-size:20px;
             `
     }
 }

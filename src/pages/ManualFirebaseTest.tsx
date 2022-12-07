@@ -9,17 +9,17 @@ import {getBeatByID, createBeat, getUserById, isBeatLikedByCurrentUser, getQuery
 
 export default function ManualFirebaseTest(){
 
-  const [user, setUser] = React.useState<User|null>(null)
+  const [user, setUser] = React.useState<string|null>(null)
   
   function createDummy(){
     createEmailPasswordAccount("dummys@hej.se", "pastawithrice", "pastaPasta").then(()=>{
-      let user = getCurrentUserID()
-      // if(user){
-      //   setUser(user)
-      // }else{
-      //   setUser(null)
-      // }
-    })
+      getCurrentUserID().then(user=>{
+        if(user){
+          setUser(user)
+        }else{
+          setUser(null)
+        }
+      })})
    
   }
    
@@ -29,6 +29,7 @@ export default function ManualFirebaseTest(){
   
   async function logOut(){
     logOutAccount()
+    setUser(null)
   }
 
   
@@ -73,16 +74,18 @@ export default function ManualFirebaseTest(){
   function addTestDatafirestore(){}
 
   function getQueryBeat(){
-    console.log(getQueryBeats(3, 0, Timestamp.fromDate(new Date())))
+    getQueryBeats(3, 0, Timestamp.fromDate(new Date())).then(beats=>{console.log(beats)})
   }
   
   function beatLikedByCurrentUser(){
-    console.log(isBeatLikedByCurrentUser("WCOBSZJP33ctZSWHey8P"))  
+    isBeatLikedByCurrentUser("WCOBSZJP33ctZSWHey8P").then(bool=>{console.log(bool)})
   }
 
   
   function getUser(){
-    console.log(getUserById("gwgjY95D4AyZ0yswWDyR"))
+    getCurrentUserID().then(user=>{
+      setUser(user)
+    })
   }
   
   return (
@@ -95,7 +98,7 @@ export default function ManualFirebaseTest(){
       <button onClick={getTestData}>get beat</button>
       <button onClick={getQueryBeat}>get queryBeats</button>
       <button onClick={beatLikedByCurrentUser}>beatLikedByCurrentUser</button>
-      <div> {user?.email||"no user"}</div>
+      <div> {user ||"no user"}</div>
     </div>
   );
 }
