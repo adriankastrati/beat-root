@@ -1,9 +1,8 @@
 
 import styled from "styled-components";
 import { theme, Track } from "../../common";
-import BeatVisualisationView from "./BeatVisualisationView";
-import MainButton, { MainButtonType } from "./common/MainButton";
 import TrackView from "./TrackView";
+import MainButton, { MainButtonType } from "../views/common/MainButton";
 
 interface BeatTracksViewProps {
     onAddTrack?:()=>void,
@@ -11,8 +10,6 @@ interface BeatTracksViewProps {
     onEditTrack?:(index:number)=>void,
     tracks: Track[],
 }
-
-const AddTrackButton = styled.button``
 
 const TracksContainer = styled.div`
     border-radius:10px;
@@ -29,7 +26,7 @@ export default function BeatTracksView(props:BeatTracksViewProps){
                 onDelete={props.onRemoveTrack ? ()=>props.onRemoveTrack!(i) : undefined}
                 />)
             }
-            <AddTrackButton onClick={props.onAddTrack}>+</AddTrackButton>
+            <MainButton text = "+" type = {MainButtonType.Plain} scale = {1} onClick={props.onAddTrack} width = {35}></MainButton>
         </TracksContainer>
     </div>
 }

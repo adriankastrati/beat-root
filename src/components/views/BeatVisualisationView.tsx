@@ -1,4 +1,5 @@
 import { Rhythm } from "../../common";
+import MainButton, { MainButtonType } from "../views/common/MainButton";
 
 interface BeatVisualisationViewProps{
     onPlay:()=>void,
@@ -9,7 +10,7 @@ interface BeatVisualisationViewProps{
 }
 export default function BeatVisualisationView(props:BeatVisualisationViewProps){
     return <div>
-        <button onClick={props.onPlay}>play</button>
-        <button onClick={props.onPause}>pause</button>
+        <MainButton type={MainButtonType.Plain} text="play" scale = {1} onClick={props.onPlay}></MainButton>
+        <MainButton type={MainButtonType.Plain} text="pause" scale = {1} onClick={props.onPause}></MainButton>
     </div>
 }
