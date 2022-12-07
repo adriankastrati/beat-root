@@ -7,12 +7,11 @@ interface NavBarProps {
 
 export const NavBurgerIcon = styled.button`
     display: none;
+    transform: translateX(-200%);
     @media screen {
         display: block;
         position: absolute;
         top: 0;
-        right: 0;
-        transform: translate(-100%, 60%);
         font-size: 1rem;
         cursor: pointer;
     }
@@ -24,7 +23,6 @@ export const NavContainer = styled.div`
     z-index: 1;
     width: 100%;
     height: 100%;
-    max-width: 1000px
 `;
 
 export const NavLogo = styled(Link)`
@@ -39,16 +37,16 @@ export const NavLogo = styled(Link)`
 
 `;
 
-export const TopNav = styled.div`
+export const TopNav = styled.div<NavBarProps>`
     display: flex;
     background-color: blue;
     font-size: 2rem;
     width: 50vw;
-    margin-top: 50px;
     position: sticky;
     opacity: 1;
     top: 0;
-    @media screen and (max-width: 960px) {
+    @media screen {
+        flex-direction: column;
         transition: 0.5s all ease;
     };
     z-index: 199;
@@ -57,7 +55,8 @@ export const TopNav = styled.div`
 export const NavIcon = styled.button`
     margin: 0 0.5rem;
     font-size: 1.6rem;
-    align-items: center;
+    align-items: left;
+    text-align: left;
 `;
 
 export const NavMenu = styled.ul<NavBarProps>`
@@ -81,7 +80,7 @@ export const NavMenu = styled.ul<NavBarProps>`
 `;
 export const NavItem = styled.li`
     height: 3rem;
-    @media screen and (max-width: 960px) {
+    @media screen {
         width: 100%;
     }
 `;

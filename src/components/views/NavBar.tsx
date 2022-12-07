@@ -6,29 +6,32 @@ import { NavContainer, TopNav, NavBurgerIcon, NavIcon, NavLogo, NavMenu, NavItem
 
 export default function NavBar(){
 
-    const [burgerOpen, setBurgerOpen] = useState<boolean>(false)
-    {console.log(burgerOpen)}
+    const [burgerState, setBurgerOpen] = useState<boolean>(false)
+    {console.log(burgerState)}
 
     const [currentPageName, setCurrentPageName] = useState<string>("current page")
 
     
     const clickHandler = () => {
-        setBurgerOpen(!burgerOpen)
+        setBurgerOpen(!burgerState)
     }
 
     return (
         <>
-        <TopNav> 
+        <TopNav active={burgerState}> 
             <NavContainer>
                 <NavLogo to="/" onClick={()=>{}}> 
                     {currentPageName}
                 </NavLogo>
 
-                <NavBurgerIcon onClick={(a)=>{clickHandler()}}>
-                    {burgerOpen? "cross":"burger"}
-                </NavBurgerIcon>
+                <NavMenu active={burgerState}>
 
-                <NavMenu active={burgerOpen} >
+                    <NavItem>
+                    <NavBurgerIcon onClick={()=>{clickHandler()}}>
+                        {burgerState? "cross":"burger"}
+                    </NavBurgerIcon>
+                    </NavItem>
+
                     <NavItem>
                         <NavLink to="/play/create">create</NavLink>
                     </NavItem>
