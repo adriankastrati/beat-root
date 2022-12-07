@@ -28,7 +28,7 @@ const TextTitleInput = styled.input`
     ${textStyles(TextVaiant.TITLE)}
     margin:3px;
     border-radius: 6px;
-    border:2px solid ${theme.medium}
+    border:2px solid ${theme.medium};
     
 `
 
@@ -45,6 +45,7 @@ align-items: center;
 align-self: center;
 margin: 0 auto;
 `
+
 const ColorPreviewBox = styled.div`
   display:flex;
   border: 20px solid white;
@@ -173,9 +174,6 @@ export default function BeatCreatePresenter(){
             
             <TitleStyle>Title</TitleStyle>
             <TextTitleInput value={beatCreationState.title} onChange={e=>handleSetTitle(e.currentTarget.value)}/>
-            <Center><ColorPreviewBox>                   
-             <img src="https://ichef.bbci.co.uk/news/976/cpsprodpb/16620/production/_91408619_55df76d5-2245-41c1-8031-07a4da3f313f.jpg.webp"></img>
-             </ColorPreviewBox></Center>
             <Center>
             <BeatVisualisationView
                 onPlay={()=>play()}
