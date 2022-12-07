@@ -21,5 +21,8 @@ export default function NavBar(){
         <li>
             <Link to="/test/color">color test</Link>
         </li>
+        <li>
+            <Link to="/test/sign-in">Sign in test</Link>
+        </li>
     </div>
 }

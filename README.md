@@ -1,35 +1,39 @@
-# THIS IS not done
-## Description - BeatRoot
-Short and sweet, BeatRoot is a place where you can 
-browse, create and share beats with an accompanying mood.
+# Description - BeatRoot
+short and sweet, BeatRoot (working title) is a place where you can 
+browse, create and share small beats with an accompanying mood. </br>
+when browsing, filter beats based on what you are looking for.
 
 ### Guide
-(link to image)
 <ul>
-<li> 1. press "create"  </li>
-<li> 2. press "initialize" </li>
+<li> 1. press "initialize" </li>
+<li> 2. press "create"  </li>
 <li> 3. add a new track  </li>
-<li> 3.1 create a rhythm using the "glyphs" and choose a sample for it.  </li>
+<li> 3.1 create a rhythm using the "glyphs" and choose a sample for it  </li>
 <li> 3.2 add more tracks in a similar fashion  </li>
-<li> 4. choose your theme  </li>
+<li> 4. choose your theme (not working atm)  </li>
 <li> 5. add a description and name your beat  </li>
-<li> 6. share </li>
+<li> 6. share (not working atm) </li>
 </ul>
 
 ## What's done so far
 * structure & routing of entire project
 * audio model using tone.js 
-* firebase backend functionality
+* web api functionaltiy
+* firebase backend functionality (users, posts)
 * post feed
 * creation + playing of beats
-* burger menu
 
 ## What's left to do
 * detail view for playback of a beat
-* a lot of styling
-* user profiles
+* burger menu
+* filters on tracks
+* a lot of styling on every view
+* user profiles page
+* filtering feed
+* about page
+* copy-as-midi functionality
 
-## file structure with some explanations (the layout got rekt in github)
+## file structure with some explanations 
 ├── App.tsx | laying out the structure of each component \
 ├── common \
 │   └── index.tsx | basic types for the rest of the project \
@@ -74,3 +78,5 @@ browse, create and share beats with an accompanying mood.
 │   ├── ManualFirebaseTest.tsx | tests for firebase functions \
 │   └── RootPage.tsx | root div \
 └── setupTests.ts | auto generated for tests \
+## A possible final version
+![a possible final version](public/sample_pictures/design%404x.png)
