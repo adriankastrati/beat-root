@@ -4,13 +4,16 @@ import edit from "../../../icons/edit.svg"
 import add from "../../../icons/add.svg"
 import styled from "styled-components";
 import save from "../../../icons/save.svg"
+import { isPropertySignature } from "typescript";
 
 interface ButtonInterface{
     width: number
+    scale: number
 }
 
 const ButtonStyle = styled.button<ButtonInterface>`  display:inline-flex;
-width: ${props => props.width}px;
+width: ${props => props.width *props.scale}px;
+height: ${props => props.scale}%;
 text-align: center;
 align-items: center;
 background-color: rgb(255, 255, 255); 
@@ -18,10 +21,10 @@ border: 1px solid rgb(155, 155, 155);
 height: fit-content;
 border-radius: 5px;
 color: rgb(0, 0, 0); 
-padding: 12px; 
-font-size: 22px; 
+padding: ${props => 10*props.scale}px; 
+font-size: ${props => 22*props.scale}px; 
 cursor: pointer; /* Mouse pointer on hover */ 
-margin: 20px;
+margin: ${props => 10*props.scale}px;
 
 `
 
@@ -43,6 +46,8 @@ interface Props{
     type: MainButtonType
     text: string
     onClick: any
+    scale: number
+    width?: number
 }
 
 function MainButton(props: Props){
@@ -57,7 +62,7 @@ function MainButton(props: Props){
             break;
         case MainButtonType.ChooseColorTheme:
             icon = colorpalette
-            btnWidth = 200;
+            btnWidth = 220;
             break;
         case MainButtonType.Create:
             icon = add
@@ -68,17 +73,23 @@ function MainButton(props: Props){
             btnWidth = 180;
             break;
         case MainButtonType.Plain:
-            btnWidth = props.text.length*17;
+            btnWidth = props.text.length*16;
             break;
     }
     if(props.type != MainButtonType.Plain){
-        return (<ButtonStyle width = {btnWidth} onClick={props.onClick}><ButtonImg src={icon}></ButtonImg>
-            {props.text}
-            </ButtonStyle>)
+        return (
+                    <ButtonStyle scale = {props.scale} width = {props.width ? props.width : btnWidth} onClick={props.onClick}>
+                        <ButtonImg src={icon}></ButtonImg>
+                        {props.text}
+                    </ButtonStyle>
+                )
     }else{
-        return (<ButtonStyle width = {btnWidth} onClick={props.onClick}>
-            {props.text}
-            </ButtonStyle>)
+        return (
+                    <ButtonStyle scale = {props.scale} width = {props.width ? props.width : btnWidth} onClick={props.onClick}>
+                    {props.text}
+                    </ButtonStyle>
+                )
+            
     }
 }
 export default MainButton;
