@@ -1,8 +1,6 @@
 
 import styled from "styled-components";
 import { theme, Track } from "../../common";
-import BeatVisualisationView from "./BeatVisualisationView";
-import MainButton, { MainButtonType } from "../../common/MainButton";
 import TrackView from "./TrackView";
 
 interface BeatTracksViewProps {
