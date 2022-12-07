@@ -61,7 +61,6 @@ async function loginEmailPasswordAccount(email: string, password: string){
 
 async function createEmailPasswordAccount(email: string, username:string, password: string){
    //TODO unique username:
-   debugger;
     createUserWithEmailAndPassword(auth, email,password).then((authUser)=>{
         setDoc(doc(fs,`users/${authUser.user.uid}`),{
             username: username,
