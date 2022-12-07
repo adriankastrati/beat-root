@@ -5,7 +5,7 @@ import React from 'react';
 import { Beat, Rhythm, Sample, Track } from '../common';
 import {createEmailPasswordAccount,loginEmailPasswordAccount, getCurrentUserID, logOutAccount} from '../model/firebase/firebaseAuthenticationModel'
 
-import {getBeatByID, createBeat, getUserById, isBeatLikedByCurrentUser, getQueryBeats} from "../model/firebase/firebaseBeat"
+import {getBeatByID, createBeat, getAllSamples, isBeatLikedByCurrentUser, getQueryBeats} from "../model/firebase/firebaseBeat"
 
 export default function ManualFirebaseTest(){
 
@@ -31,7 +31,9 @@ export default function ManualFirebaseTest(){
     logOutAccount()
     setUser(null)
   }
-
+  function logSamples(){
+    console.log(getAllSamples())
+  }
   
   function addTestData(){
     let r1 = new Rhythm([7,2])
@@ -92,6 +94,7 @@ export default function ManualFirebaseTest(){
     <div className="App">
       <button onClick={createDummy}> create</button>
       <button onClick={loginDummy}> login</button>
+      <button onClick={logSamples}> log samples</button>
       <button onClick={logOut}>LogOut</button>
       <button onClick={getUser}>getuser</button>
       <button onClick={addTestData}>Test data</button> 
