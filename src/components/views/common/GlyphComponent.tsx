@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { theme } from "../../../common";
+import DeleteCrossButton from "./DeleteCrossButton";
 
 interface GlyphComponentProps{
     number: number,
@@ -15,14 +16,10 @@ const GlyphContainer = styled.div`
     padding:5px;
 `
 
-const DeleteButton = styled.button`
-    background-color: ${theme.dark};
-`
-
 export default function GlyphComponent(props: GlyphComponentProps){
     return <GlyphContainer>
         {
-            props.onDelete ? <DeleteButton onClick={props.onDelete}>x</DeleteButton> : null
+            props.onDelete ? <DeleteCrossButton onClick={props.onDelete}/> : null
         }
         
         {props.number}
