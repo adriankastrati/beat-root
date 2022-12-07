@@ -70,7 +70,7 @@ export const NavMenu = styled.ul<NavBarProps>`
         width: 100vh;
         height: 100vh;
         position: absolute;
-        left: ${({active}) => (!active ? "180%":"100%")};
+        left: ${({active}) => (!active ? "200%":"100%")};
         opacity: 1;
         transition: all 0.2s ease;
         //background: #CCD6A6;

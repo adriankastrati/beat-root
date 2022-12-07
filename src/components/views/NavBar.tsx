@@ -1,8 +1,5 @@
 import { useState } from "react"
-import { Link } from "react-router-dom";
 import { NavContainer, TopNav, NavBurgerIcon, NavIcon, NavLogo, NavMenu, NavItem, NavLink } from "./common/NavBarElements"
-
-
 
 export default function NavBar(){
 
