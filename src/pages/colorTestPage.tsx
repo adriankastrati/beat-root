@@ -1,11 +1,10 @@
 import React from "react"
-import { Beat, Rhythm, Sample } from "../common"
-import { getColorRandomScheme, getColorSchemeByTracks } from "../common/colorSource"
+import { getColorRandomScheme } from "../common/colorSource"
 export default function ColorTestPage(){
     const [colors,setColors] = React.useState<string[]>()
 
     async function getColorScheme(){
-        getColorRandomScheme(4).then(color=>{
+        getColorRandomScheme(5).then(color=>{
             setColors(color)
         })
         renderColor()
@@ -22,7 +21,7 @@ export default function ColorTestPage(){
     return (
     <div>
         <button onClick={getColorScheme}>getcolor</button>
-        {renderColor()}
+        {renderColor()}{renderColor()}{renderColor()}{renderColor()}{renderColor()}
     </div>
   )
     
