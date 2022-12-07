@@ -71,7 +71,25 @@ export default function BeatCreatePresenter(){
     const [editTrackModal, setEditTrackModal] = useState<number|null>(null)
     const [editThemeModal, setEditThemeModal] = useState(false)
 
-    const {audioModel} = useContext(ModelContext);
+    const [playing, setPlaying] = useState(false)
+
+    const {audioModel} = useContext(ModelContext)
+
+    function play(){
+        setPlaying(true)
+        playTracks(beatCreationState.tracks, beatCreationState.cpm, audioModel)
+    }
+
+    function pause(){
+        setPlaying(false)
+        audioModel.stop()
+    }
+
+    function updateSound(){ //TODO useEffect for needing update instead
+        if (playing){
+            play()
+        }
+    }
 
     function handleSetTitle(title:string){
         setBeatCreationState(
@@ -83,10 +101,21 @@ export default function BeatCreatePresenter(){
         setBeatCreationState(
             {...beatCreationState, tracks:[...beatCreationState.tracks, newTrack]} 
         )
+        updateSound() 
+    }
+
+    function handleRemoveTrack(index:number){
+        let newTracks = beatCreationState.tracks
+        newTracks.splice(index,1)
+        setBeatCreationState(
+            {...beatCreationState, tracks:newTracks} 
+        )
+        updateSound()
     }
 
     function handleEditTrack(index:number){
         setEditTrackModal(index)
+        updateSound()
     }
 
     function handleEditTheme(){
@@ -98,6 +127,7 @@ export default function BeatCreatePresenter(){
             {...beatCreationState, description}
         )
     }
+
     function handleSetCpm(cpm:number){
         setBeatCreationState(
             {...beatCreationState, cpm}
@@ -108,6 +138,7 @@ export default function BeatCreatePresenter(){
         let newState = {...beatCreationState}
         newState.tracks[index] = track;
         setBeatCreationState(newState)
+        updateSound()
     }
 
     if (editTrackModal != null){
@@ -117,19 +148,16 @@ export default function BeatCreatePresenter(){
                 let newTrack = cloneDeep(beatCreationState.tracks[editTrackModal])
                 newTrack.rhythm.addGlyph(glyph)
                 updateTrack(newTrack, editTrackModal)
-                playTracks(beatCreationState.tracks, beatCreationState.cpm, audioModel) //TODO: fix this
             }}
             onRemoveGlyph={(glyph:number)=>{
                 let newTrack = cloneDeep(beatCreationState.tracks[editTrackModal])
                 newTrack.rhythm.removeGlyph(glyph)
                 updateTrack(newTrack, editTrackModal)
-                playTracks(beatCreationState.tracks, beatCreationState.cpm, audioModel) //TODO: fix this
             }}
             onSampleSelect={(sample:Sample)=>{
                 let newTrack = cloneDeep(beatCreationState.tracks[editTrackModal])
                 newTrack.sample = sample
                 updateTrack(newTrack, editTrackModal)
-                playTracks(beatCreationState.tracks, beatCreationState.cpm, audioModel) //TODO: fix this
             }}
             onExit={()=>{setEditTrackModal(null)}}
             samples={provisionalSamples}
@@ -150,8 +178,8 @@ export default function BeatCreatePresenter(){
              </ColorPreviewBox></Center>
             <Center>
             <BeatVisualisationView
-                onPlay={()=>playTracks(beatCreationState.tracks, beatCreationState.cpm, audioModel)}
-                onPause={()=>audioModel.stop()}
+                onPlay={()=>play()}
+                onPause={()=>pause()}
                 rhythms={beatCreationState.tracks.map(({rhythm})=>rhythm)}
                 currentProgress={0}//TODO
                 amplitude={0}//TODO
@@ -165,6 +193,7 @@ export default function BeatCreatePresenter(){
                 onAddTrack={handleAddTrack}
                 onEditTrack={handleEditTrack}
                 tracks={beatCreationState.tracks}
+                onRemoveTrack={handleRemoveTrack}
             />
             <TitleStyle>Description</TitleStyle>
             <TextBodyTextArea value={beatCreationState.description} onChange={e=>handleSetDescription(e.currentTarget.value)}/>
