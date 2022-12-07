@@ -1,8 +1,6 @@
 
 import styled from "styled-components";
 import { theme, Track } from "../../common";
-import BeatVisualisationView from "./BeatVisualisationView";
-import MainButton, { MainButtonType } from "./common/MainButton";
 import TrackView from "./TrackView";
 
 interface BeatTracksViewProps {
@@ -11,7 +9,19 @@ interface BeatTracksViewProps {
     tracks: Track[],
 }
 
-const AddTrackButton = styled.button``
+const AddTrackButton = styled.button`
+text-align: center;
+align-items: center;
+background-color: rgb(255, 255, 255); 
+border: 1px solid rgb(155, 155, 155); 
+height: fit-content;
+border-radius: 5px;
+color: rgb(0, 0, 0); 
+padding: 12px; 
+font-size: 22px; 
+cursor: pointer; /* Mouse pointer on hover */ 
+width: 50px;
+`
 
 const TracksContainer = styled.div`
     border-radius:10px;
