@@ -1,4 +1,4 @@
-import {addDoc, collection, connectFirestoreEmulator, doc, DocumentData, getDoc, getDocs, getFirestore, limit, orderBy, query, QueryDocumentSnapshot, serverTimestamp, SnapshotOptions, startAfter, Timestamp, where, WithFieldValue} from "firebase/firestore"
+import {addDoc, collection, doc, DocumentData, getDoc, getDocs, getFirestore, limit, orderBy, query, QueryDocumentSnapshot, serverTimestamp, SnapshotOptions, startAfter, Timestamp, where, WithFieldValue} from "firebase/firestore"
 import { Beat, Rhythm, Sample, Track } from "../../common"
 import { getCurrentUserID } from "./firebaseAuthenticationModel"
 
@@ -136,5 +136,15 @@ async function isBeatLikedByUserID(beatID: string, userID:string): Promise<boole
     })
 }
 
+async function getAllSamples(): Promise<Sample[]>{
+    let samplesCollection = collection(firestore, "samples/");
 
-export {getBeatByID,createBeat, getUserById, isBeatLikedByCurrentUser, isBeatLikedByUserID, getQueryBeats}
+    return await getDocs(query(samplesCollection)).then(sampleSnapshot=>{
+       return sampleSnapshot.docs.map(sample =>{
+            const { url, name }: { url: string; name: string } = sample.data() as any
+            return {url: url, name:name, firestoreSampleID: sample.id} as Sample
+        })
+    })   
+} 
+
+export {getAllSamples,getBeatByID,createBeat, getUserById, isBeatLikedByCurrentUser, isBeatLikedByUserID, getQueryBeats}
