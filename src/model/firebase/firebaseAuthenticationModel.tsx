@@ -33,7 +33,6 @@ async function getCurrentUserID(): Promise<string|null>{
  */
 async function loginEmailPasswordAccount(email: string, password: string){
         signInWithEmailAndPassword(auth, email,password).catch((error)=>{
-        console.log(error)
         let errorMsg = "unknown-issue"
         switch (error.code){
             case "auth/wrong-password":
@@ -61,33 +60,35 @@ async function loginEmailPasswordAccount(email: string, password: string){
  */
 
 async function createEmailPasswordAccount(email: string, username:string, password: string){
-   //TODO unique username
-    createUserWithEmailAndPassword(auth, email,password).then((authUser)=>
-        
-        setDoc(doc(fs,`users/${auth.currentUser?.uid}`),{
+   //TODO unique username:
+   debugger;
+    createUserWithEmailAndPassword(auth, email,password).then((authUser)=>{
+        setDoc(doc(fs,`users/${authUser.user.uid}`),{
             username: username,
             email: email,
             description:"",
             authID: authUser.user.uid
-        })).catch((error)=>{
-       let errorMsg = "unknown-issue";
-        console.log(error)
+        })
+    }).catch((error)=>{
+        let errorMsg = "unknown-issue";
         switch (error.code){
-            case "auth/email-already-in-use":
-                errorMsg = "email-already-in-use";
-                break;
+        case "auth/email-already-in-use":
+            errorMsg = "email-already-in-use";
+            break;
 
-            case "auth/invalid-email":
-                errorMsg = "invalid-email";
-                break;
+        case "auth/invalid-email":
+            errorMsg = "invalid-email";
+            break;
 
-            case "auth/weak-password":
-                errorMsg = "weak-password";
-                break;
+        case "auth/weak-password":
+            errorMsg = "weak-password";
+            break;
         }
         throw new Error(errorMsg)
     })
 }
+    
+
 
 
 async function isUserLoggedIn(){

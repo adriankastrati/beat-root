@@ -1,46 +1,76 @@
-# Getting Started with Create React App
+# THIS IS not done
+## Description - BeatRoot
+Short and sweet, BeatRoot is a place where you can 
+browse, create and share beats with an accompanying mood.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### Guide
+(link to image)
+<ul>
+<li> 1. press "create"  </li>
+<li> 2. press "initialize" </li>
+<li> 3. add a new track  </li>
+<li> 3.1 create a rhythm using the "glyphs" and choose a sample for it.  </li>
+<li> 3.2 add more tracks in a similar fashion  </li>
+<li> 4. choose your theme  </li>
+<li> 5. add a description and name your beat  </li>
+<li> 6. share </li>
+</ul>
 
-## Available Scripts
+## What's done so far
+* structure & routing of entire project
+* audio model using tone.js 
+* firebase backend functionality
+* post feed
+* creation + playing of beats
+* burger menu
 
-In the project directory, you can run:
+## What's left to do
+* detail view for playback of a beat
+* a lot of styling
+* user profiles
 
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+## file structure with some explanations (the layout got rekt in github)
+├── App.tsx | laying out the structure of each component \
+├── common \
+│   └── index.tsx | basic types for the rest of the project \
+├── components \
+│   ├── presenters \
+│   │   ├── AudioInitializer.tsx | initialzing the audioModel using context \
+│   │   ├── BeatCreatePresenter.tsx | presenter for the BeatCreateView \
+│   │   ├── BeatDetailPresenter.tsx | presenter for the BeatDetailView \
+│   │   ├── FeedPresenter.tsx | Presenter for the FeedView \
+│   │   └── NavBarPresenter.tsx | Presenter for the navbar/burger menu \
+│   └── views \
+│       ├── BeatCreateView.tsx | view for creating the beats \
+│       ├── BeatDetailView.tsx | the details needed for visualizing a beat \
+│       ├── BeatVisualisationView.tsx | the visuals related to a beat   \
+│       ├── common \
+│       │   ├── GlyphComponent.tsx | for the small atomic values that make a beat \
+│       │   ├── MainButton.tsx | returning different buttons based on the prop \
+│       │   └── Modal.tsx | the focused window common class \
+│       ├── EditThemeModalView.tsx | the focused window for selecting theme \
+│       ├── EditTrackModalView.tsx | the focused window for editing a track \
+│       ├── NavBar.tsx | navbar & hamburger class \
+│       ├── RhythmView.tsx | the view for a rhythm \
+│       └── TrackView.tsx | the view for a track \
+├── contexts \
+│   └── ModelContext.tsx | for creating a fresh model context \
+├── icons \
+│   ├── add.svg \
+│   ├── colorpalette.svg \
+│   └── edit.svg \
+├── index.css | body and code tags styles \
+├── index.tsx | providing context for the app component \
+├── logo.svg \
+├── model \
+│   ├── AudioModel.tsx | providing methods for the audio engine using the tone.js package \
+│   ├── firebase \
+│   │   ├── firebaseAuthenticationModel.tsx | firebase methods centered around users  \
+│   │   ├── firebaseBeat.tsx | providing "database" methods centered around the created beats \
+│   │   └── firebaseConfig.tsx | firebase authentication \
+│   └── index.tsx | index file for the AudioModel \
+├── pages \
+│   ├── BeatPage.tsx | detail view for a single created beat \
+│   ├── ManualFirebaseTest.tsx | tests for firebase functions \
+│   └── RootPage.tsx | root div \
+└── setupTests.ts | auto generated for tests \

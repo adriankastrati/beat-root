@@ -1,6 +1,7 @@
 import { Rhythm } from "../../common";
 import BeatVisualisationView from "./BeatVisualisationView";
 import RhythmView from "./RhythmView";
+import GlyphComponent from "./common/GlyphComponent";
 
 interface BeatDetailViewProps{
     onPlay:()=>void,
@@ -17,12 +18,13 @@ interface BeatDetailViewProps{
 export default function BeatDetailView(props:BeatDetailViewProps) {
     return <div>
         <div>{props.title}</div>
-        <button onClick={props.onPlay}>play</button>
-        <button onClick={props.onStop}>stop</button>
         <BeatVisualisationView 
             rhythms={props.rhythmsAndSampleNames.map(({rhythm})=>rhythm)} 
             currentProgress={props.currentProgress} 
-            amplitude={props.amplitude}/>
+            amplitude={props.amplitude}
+            onPause={props.onStop}
+            onPlay={props.onPlay}
+            />
 
         <div>
             tracks:
