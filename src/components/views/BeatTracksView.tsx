@@ -5,7 +5,8 @@ import TrackView from "./TrackView";
 import MainButton, { MainButtonType } from "../views/common/MainButton";
 
 interface BeatTracksViewProps {
-    onAddTrack:()=>void,
+    onAddTrack?:()=>void,
+    onRemoveTrack?:(index:number)=>void,
     onEditTrack?:(index:number)=>void,
     tracks: Track[],
 }
@@ -28,7 +29,9 @@ export default function BeatTracksView(props:BeatTracksViewProps){
         <TracksContainer>
             {
                 props.tracks.map((track, i)=><TrackView key={i} track={track} 
-                onEdit={props.onEditTrack ? ()=>{props.onEditTrack!(i)} : undefined}/>)
+                onEdit={props.onEditTrack ? ()=>{props.onEditTrack!(i)} : undefined}
+                onDelete={props.onRemoveTrack ? ()=>props.onRemoveTrack!(i) : undefined}
+                />)
             }
             <Center>
                 <MainButton text = "add sample" type = {MainButtonType.Create} scale = {0.75} onClick={props.onAddTrack}></MainButton>

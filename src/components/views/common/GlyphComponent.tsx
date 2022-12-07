@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { theme } from "../../../common";
-import MainButton, { MainButtonType } from "./MainButton"
+import DeleteCrossButton from "./DeleteCrossButton";
 
 interface GlyphComponentProps{
     number: number,
@@ -16,9 +16,6 @@ const GlyphContainer = styled.div`
     padding:5px;
 `
 
-const DeleteButton = styled.button`
-    background-color: ${theme.dark};
-`
 const Center = styled.div`
 align-items: center;
 text-align: center;
@@ -35,7 +32,7 @@ export default function GlyphComponent(props: GlyphComponentProps){
                     {props.number}
                 </Center>
                 {
-                    props.onDelete ? <DeleteButton onClick={props.onDelete}>x</DeleteButton> : null
+                    props.onDelete ? <DeleteCrossButton onClick={props.onDelete}>x</DeleteCrossButton> : null
                 }
             </GlyphContainer>
             )
