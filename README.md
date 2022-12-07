@@ -4,7 +4,6 @@ browse, create and share small beats with an accompanying mood. </br>
 when browsing, filter beats based on what you are looking for.
 
 ### Guide
-![a possible final version](public/sample_pictures/design%404x.png)
 <ul>
 <li> 1. press "initialize" </li>
 <li> 2. press "create"  </li>
@@ -79,3 +78,5 @@ when browsing, filter beats based on what you are looking for.
 │   ├── ManualFirebaseTest.tsx | tests for firebase functions \
 │   └── RootPage.tsx | root div \
 └── setupTests.ts | auto generated for tests \
+## A possible final version
+![a possible final version](public/sample_pictures/design%404x.png)
