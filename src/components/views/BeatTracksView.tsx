@@ -2,26 +2,13 @@
 import styled from "styled-components";
 import { theme, Track } from "../../common";
 import TrackView from "./TrackView";
+import MainButton, { MainButtonType } from "../views/common/MainButton";
 
 interface BeatTracksViewProps {
     onAddTrack:()=>void,
     onEditTrack?:(index:number)=>void,
     tracks: Track[],
 }
-
-const AddTrackButton = styled.button`
-text-align: center;
-align-items: center;
-background-color: rgb(255, 255, 255); 
-border: 1px solid rgb(155, 155, 155); 
-height: fit-content;
-border-radius: 5px;
-color: rgb(0, 0, 0); 
-padding: 12px; 
-font-size: 22px; 
-cursor: pointer; /* Mouse pointer on hover */ 
-width: 50px;
-`
 
 const TracksContainer = styled.div`
     border-radius:10px;
@@ -36,7 +23,7 @@ export default function BeatTracksView(props:BeatTracksViewProps){
                 props.tracks.map((track, i)=><TrackView key={i} track={track} 
                 onEdit={props.onEditTrack ? ()=>{props.onEditTrack!(i)} : undefined}/>)
             }
-            <AddTrackButton onClick={props.onAddTrack}>+</AddTrackButton>
+            <MainButton text = "+" type = {MainButtonType.Plain} scale = {1} onClick={props.onAddTrack} width = {35}></MainButton>
         </TracksContainer>
     </div>
 }

@@ -34,6 +34,7 @@ const TextTitleInput = styled.input`
 
 const TextBodyTextArea = styled.textarea`
     ${textStyles(TextVaiant.BODY)}
+    margin:3px;
 `
 const TitleStyle = styled.div`
     font-size:18px;
@@ -156,17 +157,17 @@ export default function BeatCreatePresenter(){
                 amplitude={0}//TODO
             />
             
-            <MainButton type={MainButtonType.ChooseColorTheme} text = "pick color theme" onClick={console.log("clicked")}></MainButton>
+            <MainButton type={MainButtonType.ChooseColorTheme} scale = {1} text = "pick color theme" onClick={console.log("clicked")}></MainButton>
             </Center>
             
-            <div>tracks</div>
+            <TitleStyle>Tracks</TitleStyle>
             <BeatTracksView
                 onAddTrack={handleAddTrack}
                 onEditTrack={handleEditTrack}
                 tracks={beatCreationState.tracks}
             />
             <TextBodyTextArea value={beatCreationState.description} onChange={e=>handleSetDescription(e.currentTarget.value)}/>
-            <Center><MainButton type={MainButtonType.Save} text = "save and publish" onClick={console.log("save!")}></MainButton></Center>
+            <Center><MainButton type={MainButtonType.Save}  scale = {1} text = "save and publish" onClick={console.log("save!")}></MainButton></Center>
         </OuterBox>
     }
 }
