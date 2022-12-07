@@ -193,6 +193,7 @@ export default function BeatCreatePresenter(){
                 tracks={beatCreationState.tracks}
                 onRemoveTrack={handleRemoveTrack}
             />
+            <TitleStyle>Description</TitleStyle>
             <TextBodyTextArea value={beatCreationState.description} onChange={e=>handleSetDescription(e.currentTarget.value)}/>
             <Center><MainButton type={MainButtonType.Save}  scale = {1} text = "save and publish" onClick={console.log("save!")}></MainButton></Center>
         </OuterBox>
