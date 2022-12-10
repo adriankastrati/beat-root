@@ -8,66 +8,65 @@ interface NavBarProps {
 // topnav wrapper
 export const TopNav = styled.div<NavBarProps>`
     display:flex;
-    background-color: blue;
-    width: 50vw;
+    background-color: #b3b3b1;
+    width: 100vw;
     position: sticky;
     opacity: 1;
     top: 0;
-    @media screen {
-        flex-direction: column;
-        transition: 0.5s all ease;
-    };
-    z-index: 999;
+    z-index: 9;
 `;
 
-export const NavContainer = styled.div`
+// topnav higher z-index
+export const NavContainer = styled.div<NavBarProps>`
     display: flex;
     justify-content: space-between;
     width: 200%; // why 
     height: 2rem;
-    background-color: #FEFCF3;
+    background-color: #DFDFDE;
+    margin-bottom: 2px;
+    z-index: 10;
 `;
 
+// logo
 export const NavLogo = styled(Link)`
     display: flex
     text-align: center;
     justify-self: flex-start;
-    color: #fff;
     cursor: pointer; 
     text-decoration: none;
     font-weight: 300;
-    background-color: #023020;
 `;
 
 // text of current page in navbar
 export const NavCurrentPage = styled.div`
-    text-align: center;
+    margin-top: 1vw;
     justify-self: flex-start;
     cursor: pointer; 
     text-decoration: none;
     font-weight: 300;
     color: black;
+    z-index: 10;
 `;
 
 // the burger button
 export const NavBurgerIcon = styled.button`
     text-align: left;
-    display: flex;
+    z-index:12;
 `;
 
 // the sliding menu
 export const NavMenu = styled.ul<NavBarProps>`
-    display: flex;
     list-style: none;
     text-align: center;
-    transform: translateY(1rem);
     justify-content: flex-start;
+    z-index: 10;
     @media screen {
+        transform: translateY(1rem);
         flex-direction: column;
         width: 100vh;
         height: 100vh;
         position: absolute;
-        left: ${({active}) => (!active ? "200%":"140%")};
+        left: ${({active}) => (!active ? "100%":"42%")};
         opacity: 0.95;
         transition: all 0.2s ease;
         background: #434242;
@@ -81,6 +80,7 @@ export const NavIcon = styled.button`
 // wrapper for links
 export const NavItem = styled.li`
     height: 3rem;
+    transform: translateY(3rem);
     @media screen {
         width: 100%;
     }

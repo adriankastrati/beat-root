@@ -19,6 +19,7 @@ export default function NavBar(){
         setBurgerOpen(!burgerState)
     }
 
+    // "/" = home, which isn't undefined.
     const locationHandler = () => {
         splitPathname ? 
             setCurrentPageName(splitPathname[2]):setCurrentPageName("home")
@@ -33,7 +34,7 @@ export default function NavBar(){
 
     return (
         <TopNav active={burgerState}> 
-            <NavContainer>
+            <NavContainer active={burgerState}>
                 <NavLogo to="/" onClick={()=>{}}> 
                    logo 
                 </NavLogo>
