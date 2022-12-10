@@ -5,42 +5,10 @@ interface NavBarProps {
     active: boolean
 }
 
-export const NavBurgerIcon = styled.button`
-    display: none;
-    transform: translateX(-200%);
-    @media screen {
-        display: block;
-        position: absolute;
-        top: 0;
-        font-size: 1rem;
-        cursor: pointer;
-    }
-    
-`;
-export const NavContainer = styled.div`
-    display: flex;
-    justify-content: space-between;
-    z-index: 1;
-    width: 100%;
-    height: 100%;
-`;
-
-export const NavLogo = styled(Link)`
-    display: flex
-    text-align: center;
-    align-items: center;
-    justify-self: flex-start;
-    color: #fff;
-    cursor: pointer; 
-    text-decoration: none;
-    font-weight: 300;
-
-`;
-
+// topnav wrapper
 export const TopNav = styled.div<NavBarProps>`
-    display: flex;
+    display:flex;
     background-color: blue;
-    font-size: 2rem;
     width: 50vw;
     position: sticky;
     opacity: 1;
@@ -49,35 +17,68 @@ export const TopNav = styled.div<NavBarProps>`
         flex-direction: column;
         transition: 0.5s all ease;
     };
-    z-index: 199;
+    z-index: 999;
 `;
 
-export const NavIcon = styled.button`
-    margin: 0 0.5rem;
-    font-size: 1.6rem;
-    align-items: left;
+export const NavContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+    width: 200%; // why 
+    height: 2rem;
+    background-color: #FEFCF3;
+`;
+
+export const NavLogo = styled(Link)`
+    display: flex
+    text-align: center;
+    justify-self: flex-start;
+    color: #fff;
+    cursor: pointer; 
+    text-decoration: none;
+    font-weight: 300;
+    background-color: #023020;
+`;
+
+// text of current page in navbar
+export const NavCurrentPage = styled.div`
+    text-align: center;
+    justify-self: flex-start;
+    cursor: pointer; 
+    text-decoration: none;
+    font-weight: 300;
+    color: black;
+`;
+
+// the burger button
+export const NavBurgerIcon = styled.button`
     text-align: left;
+    display: flex;
 `;
 
+// the sliding menu
 export const NavMenu = styled.ul<NavBarProps>`
     display: flex;
-    z-index: 200;
-    align-items: center;
     list-style: none;
     text-align: center;
+    transform: translateY(1rem);
+    justify-content: flex-start;
     @media screen {
         flex-direction: column;
         width: 100vh;
         height: 100vh;
         position: absolute;
-        left: ${({active}) => (!active ? "200%":"100%")};
-        opacity: 1;
+        left: ${({active}) => (!active ? "200%":"140%")};
+        opacity: 0.95;
         transition: all 0.2s ease;
-        //background: #CCD6A6;
-        //background: #393E46;
-        background: orange;
+        background: #434242;
     }
 `;
+
+
+export const NavIcon = styled.button`
+`;
+
+// wrapper for links
 export const NavItem = styled.li`
     height: 3rem;
     @media screen {
@@ -85,10 +86,10 @@ export const NavItem = styled.li`
     }
 `;
 
+// the links
 export const NavLink = styled(Link)`
     color: #ffffff;
     display: flex;
-    align-items: center;
     text-decoration: none;
     height: 80%;
     @media screen {

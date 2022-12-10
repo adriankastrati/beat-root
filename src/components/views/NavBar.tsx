@@ -1,49 +1,64 @@
-import { useState } from "react"
-import { NavContainer, TopNav, NavBurgerIcon, NavIcon, NavLogo, NavMenu, NavItem, NavLink } from "./common/NavBarElements"
+import { useEffect, useState } from "react"
+import { useLocation } from "react-use"
+import { NavContainer, TopNav, NavCurrentPage, NavBurgerIcon, NavIcon, NavLogo, NavMenu, NavItem, NavLink } from "./common/NavBarElements"
+
+// TODO: navbar permanently fixed at top when scrolling
+// TODO: current site to display at top
+// TODO: burger button as actual burger -> cross
+// TODO: make it stable
+// TODO: separate into presenter/view
 
 export default function NavBar(){
-
     const [burgerState, setBurgerOpen] = useState<boolean>(false)
-    {console.log(burgerState)}
+    const [currentPageName, setCurrentPageName] = useState<string>()
+    const absPath = window.location.pathname
+    const { pathname } = useLocation()
+    const splitPathname = pathname?.split("/")
 
-    const [currentPageName, setCurrentPageName] = useState<string>("current page")
-
-    
     const clickHandler = () => {
         setBurgerOpen(!burgerState)
     }
 
+    const locationHandler = () => {
+        splitPathname ? 
+            setCurrentPageName(splitPathname[2]):setCurrentPageName("home")
+    }
+
+    //const headerNameFix = (e:any) => {
+    //    e === "/" ? setCurrentPageName("home") : setCurrentPageName(e)
+    //}
+
+    useEffect(locationHandler,[absPath])
+    
+
     return (
-        <>
         <TopNav active={burgerState}> 
             <NavContainer>
                 <NavLogo to="/" onClick={()=>{}}> 
-                    {currentPageName}
+                   logo 
                 </NavLogo>
+                <NavCurrentPage>
+                {currentPageName}
+                </NavCurrentPage>
+                <NavBurgerIcon onClick={()=>{clickHandler()}}>
+                    {burgerState? "cross":"burger"}
+                </NavBurgerIcon>
 
                 <NavMenu active={burgerState}>
-
                     <NavItem>
-                    <NavBurgerIcon onClick={()=>{clickHandler()}}>
-                        {burgerState? "cross":"burger"}
-                    </NavBurgerIcon>
-                    </NavItem>
-
-                    <NavItem>
-                        <NavLink to="/play/create">create</NavLink>
+                        <NavLink to="/play/create" onClick={()=>{clickHandler()}}>create</NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink to="/play/explore">explore</NavLink>
+                        <NavLink to="/play/explore"onClick={()=>{clickHandler()}}>explore</NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink to="/">home</NavLink>
+                        <NavLink to="/"onClick={()=>{clickHandler()}}>home</NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink to="/test/firebase">firebase test</NavLink>
+                        <NavLink to="/test/firebase"onClick={()=>{clickHandler()}}>firebase test</NavLink>
                     </NavItem>
                 </NavMenu>
             </NavContainer>
         </TopNav>
-        </>
     )
 }
