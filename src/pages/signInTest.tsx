@@ -1,7 +1,7 @@
-import SignInPresenter from "../components/presenters/signInPresenter"
+import AccountPresenter from "../components/presenters/AccountPresenter"
 
 export default function SignInTest(){
 
-    return <SignInPresenter/>
+    return <AccountPresenter/>
 
 }
