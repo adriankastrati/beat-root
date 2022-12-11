@@ -1,14 +1,19 @@
 import { 
-    getAuth,onAuthStateChanged, createUserWithEmailAndPassword, 
-    signInWithEmailAndPassword, updateProfile,
-    signOut,
-    connectAuthEmulator,
-    User,
-    Auth
+    getAuth, createUserWithEmailAndPassword, 
+    signInWithEmailAndPassword,signOut
 } from "firebase/auth";
 import {initializeApp} from "firebase/app"
 import { firebaseConfig } from "./firebaseConfig";
-import { addDoc, collection, doc, getDocs, getFirestore, query, setDoc, where } from "firebase/firestore";
+import {doc, getFirestore, setDoc } from "firebase/firestore";
+
+
+class firebaseError{
+    errorMessage: string
+    
+    constructor(errMsg: string){
+        this.errorMessage = errMsg
+    }
+}
 
 const firebaseApp = initializeApp(firebaseConfig)
 const auth = getAuth(firebaseApp)
@@ -28,23 +33,20 @@ async function getCurrentUserID(): Promise<string|null>{
  * @param email - email for account
  * @param password - password for account
  * 
- * if succesfull login use @getCurrentUserID to get user details
- * Error is thrown with message "wrong-password" or "invalid-email", if unknown issue is thrown message is "unknown-issue";
+ * if succesfull login use @getCurrentUserID to get uuid
+ * An error is returned with message "wrong-password-mail" if there is issue with the mail or password, 
+ * if the issue is unknown a error with the message is "unknown-issue";
  */
-async function loginEmailPasswordAccount(email: string, password: string){
-        signInWithEmailAndPassword(auth, email,password).catch((error)=>{
-        let errorMsg = "unknown-issue"
-        switch (error.code){
-            case "auth/wrong-password":
-                errorMsg = "wrong-password";
-                break;
- 
-            case "auth/user-not-found":
-                errorMsg = "invalid-email";
-                break;
-        }
-        throw new Error(errorMsg)
-     })
+async function loginEmailPasswordAccount(email: string, password: string): Promise<null|firebaseError>{
+    return signInWithEmailAndPassword(auth, email,password).then(()=>{
+        return null;
+    }).catch((error)=>{
+    if("auth/wrong-password" && "auth/user-not-found"){
+       return new firebaseError("wrong-password-mail");
+    }else{
+        return new firebaseError(error.code)
+    }    
+    })
 }
 
 
@@ -59,15 +61,16 @@ async function loginEmailPasswordAccount(email: string, password: string){
  * @param password - must be atleast 6 characthers
  */
 
-async function createEmailPasswordAccount(email: string, username:string, password: string){
+async function createEmailPasswordAccount(email: string, username:string, password: string): Promise<firebaseError|null>{
    //TODO unique username:
-    createUserWithEmailAndPassword(auth, email,password).then((authUser)=>{
+    return createUserWithEmailAndPassword(auth, email,password).then((authUser)=>{
         setDoc(doc(fs,`users/${authUser.user.uid}`),{
             username: username,
             email: email,
             description:"",
             authID: authUser.user.uid
         })
+        return null
     }).catch((error)=>{
         let errorMsg = "unknown-issue";
         switch (error.code){
@@ -83,22 +86,16 @@ async function createEmailPasswordAccount(email: string, username:string, passwo
             errorMsg = "weak-password";
             break;
         }
-        throw new Error(errorMsg)
+        return new firebaseError(errorMsg)
     })
 }
     
-
-
-
-async function isUserLoggedIn(){
-   return onAuthStateChanged(auth, user=>{
-        if(user)
-            return true
-        else if(!user){
-            return false
-        }
-    })
+async function isUserLoggedIn():Promise<boolean>{
+    if (auth.currentUser)
+        return true
+    return false
 }
+
 
 async function logOutAccount(){
     await signOut(auth)
