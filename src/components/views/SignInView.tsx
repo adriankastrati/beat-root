@@ -9,15 +9,25 @@ const OuterBox = styled.div`
   margin:40px;
   border: 1px solid ${theme.medium}
 `
+const Input = styled.input`
+  width:100%;
+  @media (min-width: 475px) {
+    width: 350px;
+  }
+  @media (max-width: 290px) {
+    width: 120px;
+  }
+`
 const InnerBox = styled.div`
   display:flex;
   flex-direction:column;
-  margin:20px;
-  padding: 20px;
+  margin:2px;
+  padding: 5px;
 `
+
 const TitleStyle = styled.div`
   font-size:18px;
-  margin:0px;
+  margin:10px;
   text-align: center;
 `
 const Center = styled.div`
@@ -57,16 +67,23 @@ export default function SignInView(props:SignInViewProp){
             <form onSubmit={props.onLogInAttempt}>
               <InnerBox>
                 <label>E-mail</label>
-                <input type="text" name="email" onChange={e=>{props.onEmailChange(e.target.value)}} required/>
+                <Input type="text" name="email" onChange={e=>{props.onEmailChange(e.target.value)}} required/>
                 
               
                 <label>Password</label>
-                <input type="password" name="password" onChange={e=>{props.onPasswordChange(e.target.value)}} required/>
-              
+                <Input type="password" name="password" onChange={e=>{props.onPasswordChange(e.target.value)}} required/>
               </InnerBox>
-              <MainButton type={MainButtonType.Plain} text="login" onClick={handleLogin} scale = {0.75} width = {67}></MainButton>
-              <span>New here? Join beat root</span>
-              <MainButton type={MainButtonType.Plain} text="create a new account" onClick={handleCreate} scale = {0.75} width = {234} ></MainButton>
+              <InnerBox>
+                <Center>
+                  <MainButton type={MainButtonType.Plain} text="login" onClick={handleLogin} scale = {0.75} width = {67}></MainButton>
+                </Center> 
+                <Center> 
+                  <span>New here? Join Beat Root!</span>
+                </Center>
+                <Center>
+                  <MainButton type={MainButtonType.Plain} text="create a new account" onClick={handleCreate} scale = {0.75} width = {234} ></MainButton>
+                </Center>
+             </InnerBox>
             </form>
        
           <div>{props.welcomeMessage? "heloo":props.errorMessage}</div>
