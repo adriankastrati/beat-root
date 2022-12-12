@@ -49,7 +49,7 @@ function ColorBoxView(props:RouteComponentProps) {
       <OuterBox>
         <TitleStyle>Color Theme</TitleStyle>
         <InnerBox>
-          <ColorSchemeBox colorArray={colorArray}></ColorSchemeBox>
+            <ColorSchemeBox colorArray={colorArray}></ColorSchemeBox>
             <Center>
                 <MainButton type ={MainButtonType.Plain} text="continue" scale = {1} width={100} onClick={redirect}></MainButton>
             </Center>
