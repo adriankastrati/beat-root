@@ -52,7 +52,7 @@ export default function BeatDetailPresenter(props:BeatDetailPresenterProps) {
             onLike={handleLike}
             title={beat.title}
             decription={beat.description}
-            rhythmsAndSampleNames={beat.tracks.map(({rhythm, sample})=>{return{rhythm, sampleName:sample.name}})}
+            rhythmsAndSampleNames={beat.tracks.map(({rhythm, sample})=>{return{rhythm, sampleName:sample}})}
             currentProgress={progress}
             amplitude={amplitude}
             /> : "loading..."

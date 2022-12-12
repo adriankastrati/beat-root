@@ -1,26 +1,25 @@
 
 import * as Tone from "tone";
 import { Sampler } from "tone";
-import {Rhythm} from "../common";
+import {Rhythm, Sample} from "../common";
 
 export default class AudioModel {
     initialized: boolean = false
     samplers: Tone.Sampler[] = []
 
-    play(samplesAndRythms:{sampleURL:string, rhythm:Rhythm}[], loopTime:number){
+    play(samplesAndRythms:{sample:Sample, rhythm:Rhythm}[], loopTime:number){ //TODO: Sample lookup table in initialized model. Sample is only a string
         if (!this.initialized){}
         this.clear()
         //create all samplers
         this.samplers = samplesAndRythms.map(
-            ({sampleURL, rhythm}) => {
+            ({sample, rhythm}) => {
 
                 //create sampler
                 let sampler = new Sampler({
                     urls: {
                         A1: "",
                     },
-                    baseUrl: sampleURL, 
-                    //load samples once in model if it gets slow?
+                    baseUrl: "https://tonejs.github.io/audio/drum-samples/Techno/hihat.mp3",//TODO 
 
                     onload:()=>{
                         //schedule
@@ -61,7 +60,7 @@ export default class AudioModel {
     init(){
         //should be called once, at fist user generated event
         return Tone.start().then(()=>{
-            this.initialized = true
+            this.initialized = true //TODO then load all blobs into state
         })
     }
 }

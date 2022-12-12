@@ -1,12 +1,11 @@
 import { cloneDeep } from "lodash";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { Beat, defaultSample, playTracks, Rhythm, Sample, textStyles, TextVaiant, Track, theme } from "../../common";
 import ModelContext from "../../contexts/ModelContext";
 import BeatTracksView from "../views/BeatTracksView";
 import BeatVisualisationView from "../views/BeatVisualisationView";
 import EditThemeModalView from "../views/EditThemeModalView";
-import EditTrackModalView from "../views/EditTrackModalView";
 import MainButton, { MainButtonType } from "../views/common/MainButton";
 
 
@@ -20,7 +19,7 @@ interface BeatCreationState{
 }
 
 const newTrack:Track = {
-    rhythm: new Rhythm([1]),
+    rhythm: new Rhythm(16),
     sample: defaultSample
 }
 
@@ -59,26 +58,21 @@ const OuterBox = styled.div`
 `
 
 export default function BeatCreatePresenter(){
-    const [beatCreationState, setBeatCreationState] = useState<BeatCreationState>(
-        {
-            title:"my beat",
-            description:"",
-            theme:[],
-            tracks:[],
-            cpm:20
-        }
-    )
+    
+    const [title, setTitle] = useState("my beat")
+    const [description, setDescription] = useState("")
+    const [theme, setTheme] = useState<string[]>([])
+    const [cpm, setCpm] = useState(20)
+    const [tracks, setTracks] = useState<Track[]>([])
 
-    const [editTrackModal, setEditTrackModal] = useState<number|null>(null)
     const [editThemeModal, setEditThemeModal] = useState(false)
-
     const [playing, setPlaying] = useState(false)
-
+    const [soundNeedsUpdate, setSoundNeedsUpdate] = useState(false)
     const {audioModel} = useContext(ModelContext)
 
     function play(){
         setPlaying(true)
-        playTracks(beatCreationState.tracks, beatCreationState.cpm, audioModel)
+        playTracks(tracks, cpm, audioModel)
     }
 
     function pause(){
@@ -87,35 +81,27 @@ export default function BeatCreatePresenter(){
     }
 
     function updateSound(){ //TODO useEffect for needing update instead
-        if (playing){
-            play()
-        }
+        setSoundNeedsUpdate(true)
     }
 
-    function handleSetTitle(title:string){
-        setBeatCreationState(
-            {...beatCreationState, title}
-        )
-    }
+    useEffect(()=>{
+        if(soundNeedsUpdate){
+            if (playing){
+                play()
+            }
+            setSoundNeedsUpdate(false)
+        }
+    },[soundNeedsUpdate])
 
     function handleAddTrack(){
-        setBeatCreationState(
-            {...beatCreationState, tracks:[...beatCreationState.tracks, newTrack]} 
-        )
-        updateSound() 
-    }
-
-    function handleRemoveTrack(index:number){
-        let newTracks = beatCreationState.tracks
-        newTracks.splice(index,1)
-        setBeatCreationState(
-            {...beatCreationState, tracks:newTracks} 
-        )
+        setTracks([...tracks, newTrack])
         updateSound()
     }
 
-    function handleEditTrack(index:number){
-        setEditTrackModal(index)
+    function handleRemoveTrack(index:number){
+        let newTracks = cloneDeep(tracks)
+        newTracks.splice(index,1)
+        setTracks(newTracks)
         updateSound()
     }
 
@@ -123,90 +109,53 @@ export default function BeatCreatePresenter(){
         setEditThemeModal(true)
     }
 
-    function handleSetDescription(description:string){
-        setBeatCreationState(
-            {...beatCreationState, description}
-        )
-    }
-
-    function handleSetCpm(cpm:number){
-        setBeatCreationState(
-            {...beatCreationState, cpm}
-        )
-    }
-
-    function updateTrack(track:Track, index:number){
-        let newState = {...beatCreationState}
-        newState.tracks[index] = track;
-        setBeatCreationState(newState)
+    function updateTrack(index:number, newTrack:Track){
+        let newTracks = cloneDeep(tracks)
+        newTracks[index] = newTrack
+        setTracks(newTracks)
         updateSound()
     }
 
-    if (editTrackModal != null){
-        return <EditTrackModalView 
-            track={beatCreationState.tracks[editTrackModal]} 
-            onAddGlyph={(glyph:number)=>{
-                let newTrack = cloneDeep(beatCreationState.tracks[editTrackModal])
-                newTrack.rhythm.addGlyph(glyph)
-                updateTrack(newTrack, editTrackModal)
-            }}
-            onRemoveGlyph={(glyph:number)=>{
-                let newTrack = cloneDeep(beatCreationState.tracks[editTrackModal])
-                newTrack.rhythm.removeGlyph(glyph)
-                updateTrack(newTrack, editTrackModal)
-            }}
-            onSampleSelect={(sample:Sample)=>{
-                let newTrack = cloneDeep(beatCreationState.tracks[editTrackModal])
-                newTrack.sample = sample
-                updateTrack(newTrack, editTrackModal)
-            }}
-            onExit={()=>{setEditTrackModal(null)}}
-            samples={provisionalSamples}
-        />
-    } else if (editThemeModal){ 
+    if (editThemeModal){
         return <EditThemeModalView 
-            theme={beatCreationState.theme} 
-            onUpdate={(theme) => setBeatCreationState({...beatCreationState, theme})}
+            theme={theme} 
+            onUpdate={setTheme}
             onExit={()=>{setEditThemeModal(false)}}
         />
     } else {
         return <OuterBox>
-            
             <TitleStyle>Title</TitleStyle>
-            <TextTitleInput value={beatCreationState.title} onChange={e=>handleSetTitle(e.currentTarget.value)}/>
+            <TextTitleInput value={title} onChange={e=>setTitle(e.currentTarget.value)}/>
             <Center>
             <BeatVisualisationView
                 onPlay={()=>play()}
                 onPause={()=>pause()}
-                rhythms={beatCreationState.tracks.map(({rhythm})=>rhythm)}
+                rhythms={tracks.map(({rhythm})=>rhythm)}
                 currentProgress={0}//TODO
                 amplitude={0}//TODO
             />
+            <button onClick={()=>updateSound()}>update</button>
             
             <MainButton type={MainButtonType.ChooseColorTheme} scale = {1} text = "pick color theme" onClick={console.log("clicked")}></MainButton>
             </Center>
-            
             <TitleStyle>Tracks</TitleStyle>
             <BeatTracksView
                 onAddTrack={handleAddTrack}
-                onEditTrack={handleEditTrack}
-                tracks={beatCreationState.tracks}
+                tracks={tracks}
                 onRemoveTrack={handleRemoveTrack}
+                onSetTrack={updateTrack}
             />
             <TitleStyle>Description</TitleStyle>
-            <TextBodyTextArea value={beatCreationState.description} onChange={e=>handleSetDescription(e.currentTarget.value)}/>
+            <TextBodyTextArea value={description} onChange={e=>setDescription(e.currentTarget.value)}/>
             <Center><MainButton type={MainButtonType.Save}  scale = {1} text = "save and publish" onClick={console.log("save!")}></MainButton></Center>
         </OuterBox>
     }
 }
 
-//TODO: Remove for real database samples
+//TODO: Remove for and handle in AudioModel
 const provisionalSamples = [
     defaultSample,
-    {name:"techno-hihat", url:"https://tonejs.github.io/audio/drum-samples/Techno/hihat.mp3"} as Sample,
-    {name:"techno-kick", url:"https://tonejs.github.io/audio/drum-samples/Techno/kick.mp3"} as Sample,
-    {name:"techno-tom2", url:"https://tonejs.github.io/audio/drum-samples/Techno/tom2.mp3"} as Sample,
-    {name:"bongo", url:"https://tonejs.github.io/audio/drum-samples/Bongos/tom1.mp3"} as Sample,
-    {name:"tom", url:"https://tonejs.github.io/audio/drum-samples/LINN/tom1.mp3"} as Sample
-
+    "techno-hihat",
+    "techno-kick",
+    "techno-tom2",
 ]

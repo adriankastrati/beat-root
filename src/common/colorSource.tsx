@@ -28,9 +28,7 @@ async function getColorSchemeByTracks(colorCount: number, tracks: Track[]){
     let glyphSum = 0;
     
     tracks.forEach(track =>{
-        glyphSum += track.rhythm.getGlyphs().reduce((sum,glyph)=>{
-            return sum+= glyph*3141592653;
-        })
+        glyphSum *= track.rhythm.pulses * track.rhythm.steps
     })
     
     glyphSum %= 16777215;
