@@ -17,6 +17,7 @@ const TracksContainer = styled.div`
     border-radius:10px;
     border: solid ${theme.dark};
     padding:10px;
+    width: 100%;
 `
 const Center = styled.div`
 align-items: center;
@@ -25,7 +26,7 @@ margin: 0 auto;
 `
 
 export default function BeatTracksView(props:BeatTracksViewProps){
-    return <div>
+    return (        
         <TracksContainer>
             {
                 props.tracks.map((track, i)=><TrackView key={i} track={track} 
@@ -38,5 +39,5 @@ export default function BeatTracksView(props:BeatTracksViewProps){
 
             </Center>
         </TracksContainer>
-    </div>
+    )
 }
