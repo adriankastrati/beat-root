@@ -41,11 +41,19 @@ async function loginEmailPasswordAccount(email: string, password: string): Promi
     return signInWithEmailAndPassword(auth, email,password).then(()=>{
         return null;
     }).catch((error)=>{
-    if("auth/wrong-password" && "auth/user-not-found"){
-       return new firebaseError("wrong-password-mail");
-    }else{
-        return new firebaseError(error.code)
-    }    
+        let errorMsg = "unknown-issue";
+        switch (error.code){
+            case "auth/wrong-password":
+                errorMsg = "wrong-password"
+                break;
+            case "auth/user-not-found":
+                errorMsg = "user-not-found"
+                break;
+            case "auth/invalid-email":
+                errorMsg = "invalid-email"
+                break;
+        }
+        return new firebaseError(errorMsg);
     })
 }
 
@@ -90,13 +98,19 @@ async function createEmailPasswordAccount(email: string, username:string, passwo
     })
 }
     
+/**
+ * 
+ * @returns the boolean value if a value is logged in
+ */
 async function isUserLoggedIn():Promise<boolean>{
     if (auth.currentUser)
         return true
     return false
 }
 
-
+/**
+ * If an account is logged in it is signed out
+ */
 async function logOutAccount(){
     await signOut(auth)
 }
