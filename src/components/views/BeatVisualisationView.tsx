@@ -11,17 +11,22 @@ interface BeatVisualisationViewProps{
     amplitude:number,
 }
 const Center = styled.div`
-align-items: center;
 align-self: center;
-margin: 0 auto;
+align-items: center;
+`
+const OuterBox = styled.div`
+  display:flex;
+  flex-direction:column;
 `
 
 export default function BeatVisualisationView(props:BeatVisualisationViewProps){
-    return <div>
+    return <OuterBox>
         <Center>
             <img src={image} style={{width:"200px", margin:"0px"}}></img>
         </Center>
-        <MainButton type={MainButtonType.Plain} text="play" scale = {1} onClick={props.onPlay}></MainButton>
-        <MainButton type={MainButtonType.Plain} text="pause" scale = {1} onClick={props.onPause}></MainButton>
-    </div>
+        <Center>
+            <MainButton type={MainButtonType.Plain} text="play" scale = {1} onClick={props.onPlay}></MainButton>
+            <MainButton type={MainButtonType.Plain} text="pause" scale = {1} onClick={props.onPause}></MainButton>
+        </Center>
+    </OuterBox>
 }

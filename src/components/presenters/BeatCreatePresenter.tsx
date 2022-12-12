@@ -1,13 +1,14 @@
 import { cloneDeep } from "lodash";
 import { useContext, useState } from "react";
 import styled from "styled-components";
-import { Beat, defaultSample, playTracks, Rhythm, Sample, textStyles, TextVaiant, Track, theme } from "../../common";
+import { Beat, defaultSample, playTracks, Rhythm, Sample, textStyles, TextVariant, Track, theme } from "../../common";
 import ModelContext from "../../contexts/ModelContext";
 import BeatTracksView from "../views/BeatTracksView";
 import BeatVisualisationView from "../views/BeatVisualisationView";
 import EditThemeModalView from "../views/EditThemeModalView";
 import EditTrackModalView from "../views/EditTrackModalView";
 import MainButton, { MainButtonType } from "../views/common/MainButton";
+import { withRouter, RouteComponentProps, Route } from "react-router-dom";
 
 
 
@@ -25,7 +26,7 @@ const newTrack:Track = {
 }
 
 const TextTitleInput = styled.input`
-    ${textStyles(TextVaiant.TITLE)}
+    ${textStyles(TextVariant.TITLE)}
     margin:3px;
     border-radius: 6px;
     border:2px solid ${theme.medium};
@@ -33,7 +34,7 @@ const TextTitleInput = styled.input`
 `
 
 const TextBodyTextArea = styled.textarea`
-    ${textStyles(TextVaiant.BODY)}
+    ${textStyles(TextVariant.BODY)}
     margin:3px;
 `
 const TitleStyle = styled.div`
@@ -58,7 +59,7 @@ const OuterBox = styled.div`
   margin:40px;
 `
 
-export default function BeatCreatePresenter(){
+function BeatCreatePresenter(props:RouteComponentProps){
     const [beatCreationState, setBeatCreationState] = useState<BeatCreationState>(
         {
             title:"my beat",
@@ -141,6 +142,10 @@ export default function BeatCreatePresenter(){
         setBeatCreationState(newState)
         updateSound()
     }
+    function redirectColorBox(){
+        props.history.push('/play/create/colorbox');
+    }
+    
 
     if (editTrackModal != null){
         return <EditTrackModalView 
@@ -183,7 +188,7 @@ export default function BeatCreatePresenter(){
                 amplitude={0}//TODO
             />
             
-            <MainButton type={MainButtonType.ChooseColorTheme} scale = {1} text = "pick color theme" onClick={console.log("clicked")}></MainButton>
+            <MainButton type={MainButtonType.ChooseColorTheme} scale = {1} text = "pick color theme" onClick={redirectColorBox}></MainButton>
             </Center>
             
             <TitleStyle>Tracks</TitleStyle>
@@ -210,3 +215,4 @@ const provisionalSamples = [
     {name:"tom", url:"https://tonejs.github.io/audio/drum-samples/LINN/tom1.mp3"} as Sample
 
 ]
+export default withRouter(BeatCreatePresenter);
