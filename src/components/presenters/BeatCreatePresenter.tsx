@@ -8,6 +8,7 @@ import BeatVisualisationView from "../views/BeatVisualisationView";
 import EditThemeModalView from "../views/EditThemeModalView";
 import EditTrackModalView from "../views/EditTrackModalView";
 import MainButton, { MainButtonType } from "../views/common/MainButton";
+import { withRouter, RouteComponentProps, Route } from "react-router-dom";
 
 
 
@@ -58,7 +59,7 @@ const OuterBox = styled.div`
   margin:40px;
 `
 
-export default function BeatCreatePresenter(){
+function BeatCreatePresenter(props:RouteComponentProps){
     const [beatCreationState, setBeatCreationState] = useState<BeatCreationState>(
         {
             title:"my beat",
@@ -141,6 +142,10 @@ export default function BeatCreatePresenter(){
         setBeatCreationState(newState)
         updateSound()
     }
+    function redirectColorBox(){
+        props.history.push('/play/create/colorbox');
+    }
+    
 
     if (editTrackModal != null){
         return <EditTrackModalView 
@@ -183,7 +188,7 @@ export default function BeatCreatePresenter(){
                 amplitude={0}//TODO
             />
             
-            <MainButton type={MainButtonType.ChooseColorTheme} scale = {1} text = "pick color theme" onClick={console.log("clicked")}></MainButton>
+            <MainButton type={MainButtonType.ChooseColorTheme} scale = {1} text = "pick color theme" onClick={redirectColorBox}></MainButton>
             </Center>
             
             <TitleStyle>Tracks</TitleStyle>
@@ -210,3 +215,4 @@ const provisionalSamples = [
     {name:"tom", url:"https://tonejs.github.io/audio/drum-samples/LINN/tom1.mp3"} as Sample
 
 ]
+export default withRouter(BeatCreatePresenter);
