@@ -57,9 +57,12 @@ const OuterBox = styled.div`
   flex-direction:column;
   margin:40px;
 `
-const ScaledComponent = styled.div`
-    width: 60%;
+const ScaledComponent = styled.div<ScaledProp>`
+    width: ${props => props.amount*100}%;
 `
+interface ScaledProp{
+    amount: number
+}
 const Block = styled.div`
     display: block;
     
@@ -182,10 +185,12 @@ function BeatCreatePresenter(props:RouteComponentProps){
         />
     } else {
         return <OuterBox>
-
-            <TitleStyle>Title</TitleStyle>
+            
             <Justify>
+                <ScaledComponent amount={0.8}>
+                <TitleStyle>Title</TitleStyle>
                 <TextTitleInput value={beatCreationState.title} onChange={e=>handleSetTitle(e.currentTarget.value)}/>
+                </ScaledComponent>
             </Justify>     
             
             <Center>
@@ -200,7 +205,7 @@ function BeatCreatePresenter(props:RouteComponentProps){
             <MainButton type={MainButtonType.ChooseColorTheme} scale = {1} text = "pick color theme" onClick={redirectColorBox}></MainButton>
             </Center>
             <Justify>
-                <ScaledComponent>                
+                <ScaledComponent amount={0.7}>                
                     <TitleStyle>Tracks</TitleStyle>
                     <Justify>
                         <BeatTracksView
@@ -212,7 +217,7 @@ function BeatCreatePresenter(props:RouteComponentProps){
                 </ScaledComponent>
             </Justify>
             <Justify>
-                <ScaledComponent>
+                <ScaledComponent amount={0.7}>
                     <TitleStyle>Description</TitleStyle>
                     <Justify>
                         <TextBodyTextArea value={beatCreationState.description} onChange={e=>handleSetDescription(e.currentTarget.value)}/>
