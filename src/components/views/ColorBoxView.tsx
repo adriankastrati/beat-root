@@ -14,9 +14,9 @@ const OuterBox = styled.div`
 const InnerBox = styled.div`
   display:flex;
   flex-direction:column;
-  margin:00px;
+  margin:10px;
   padding: 10px;
-  border: 1px solid ${theme.medium}
+  border: 1px solid ${theme.medium};
   width: 300px;
 `
 const TitleStyle = styled.div`
@@ -28,6 +28,10 @@ const Center = styled.div`
 align-items: center;
 align-self: center;
 margin: 0 auto;
+`
+const Justify = styled.div`
+  display: flex;
+  justify-content: center;
 `
 function ColorBoxView(props:RouteComponentProps) {
     const [colorArray, setColorArray] = React.useState<string[]>([]);
@@ -48,13 +52,15 @@ function ColorBoxView(props:RouteComponentProps) {
   
     return (
       <OuterBox>
-        <TitleStyle>Color Theme</TitleStyle>
-        <InnerBox>
-            <ColorSchemeBox colorArray={colorArray}></ColorSchemeBox>
-            <Center>
-                <MainButton type ={MainButtonType.Plain} text="continue" scale = {1} width={100} onClick={redirect}></MainButton>
-            </Center>
-        </InnerBox>
+        <Center>
+          <TitleStyle>Color Theme</TitleStyle>
+          <InnerBox>
+            <ColorSchemeBox colorArray={colorArray}></ColorSchemeBox>  
+          </InnerBox>
+          <Justify>
+            <MainButton type ={MainButtonType.Plain} text="continue" scale = {1} width={100} onClick={redirect}></MainButton>
+          </Justify>
+        </Center>
       </OuterBox>
     );
   }
