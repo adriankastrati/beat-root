@@ -17,6 +17,7 @@ const InnerBox = styled.div`
   margin:00px;
   padding: 10px;
   border: 1px solid ${theme.medium}
+  width: 300px;
 `
 const TitleStyle = styled.div`
     font-size:18px;
