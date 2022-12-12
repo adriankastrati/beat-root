@@ -22,10 +22,10 @@ const fs = getFirestore()
  * 
  * @returns returns a promise with the current users ID
  */
-async function getCurrentUserID(): Promise<string|null>{    
+async function getCurrentUserID(): Promise<string>{    
     if (auth.currentUser){
         return auth.currentUser.uid}
-    return null
+    return ""
 }
 
 /**s
