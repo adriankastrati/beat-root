@@ -1,6 +1,6 @@
-import {addDoc, collection, doc, DocumentData, getDoc, getDocs, getFirestore, limit, orderBy, query, QueryDocumentSnapshot, serverTimestamp, SnapshotOptions, startAfter, Timestamp, where, WithFieldValue} from "firebase/firestore"
+import {addDoc, arrayRemove, arrayUnion, collection, doc, DocumentData, getDoc, getDocs, getFirestore, limit, orderBy, query, QueryDocumentSnapshot, serverTimestamp, SnapshotOptions, startAfter, Timestamp, updateDoc, where, WithFieldValue} from "firebase/firestore"
 import { Beat, Rhythm, Sample, Track } from "../../common"
-import { getCurrentUserID } from "./firebaseAuthenticationModel"
+import { getCurrentUserID, isUserLoggedIn } from "./firebaseAuthenticationModel"
 
 const firestore = getFirestore()
 
@@ -35,10 +35,9 @@ const beatConverter ={
 }
 
 async function getSampleByID(sampleID: string){
-
     let sampleRef = doc(firestore, "samples/", sampleID);
-    return getDoc(sampleRef).then(sampleSnapshot=>{
     
+    return getDoc(sampleRef).then(sampleSnapshot=>{
     if (sampleSnapshot.exists())
         return {...sampleSnapshot.data(), firestoreSampleID:sampleID} as Sample 
     
@@ -54,11 +53,10 @@ async function getBeatByID(beatID: string): Promise<Beat|null>{
                 ID:beatID, tracks: await Promise.all(beatSnapshot.data().tracks.map(async (track : any)=> {
                     return {rhythm: new Rhythm(track.track), sample: await getSampleByID(track.sampleID)}
                 }))
-            
+
             } as Beat}
         else return null
-    });
-    
+    });  
 }
 
 
@@ -69,16 +67,12 @@ async function createBeat(beat:Beat){
     }).then(async ()=>{
         await addDoc(collection(firestore,"beats").withConverter(beatConverter), beat)
     })
-    // .catch(()=>{
-    //     throw new Error("not-signed-in")
-    // })
 }
 
 
 async function getQueryBeats(howMany:number, skip:number, startTimeStamp: Timestamp):Promise<null | Beat[]>{  
     const beatRef = collection(firestore, "beats");
     let q = query(beatRef, where("creationDate","<",startTimeStamp.valueOf()), orderBy("creationDate", "asc"), limit(howMany),startAfter(skip),);
-    
     
     return getDocs(q.withConverter(beatConverter)).then(async docs=>{
         return Promise.all(docs.docs.map(async beatSnapshot=>{           
@@ -111,6 +105,7 @@ async function getUserById(userID: string): Promise<user|null>{
         return null
     })
 }
+
 async function isBeatLikedByCurrentUser(beatID: string): Promise<boolean>{
 
     let beatRef = doc(firestore, "beats/", beatID);
@@ -147,4 +142,30 @@ async function getAllSamples(): Promise<Sample[]>{
     })   
 } 
 
-export {getAllSamples,getBeatByID,createBeat, getUserById, isBeatLikedByCurrentUser, isBeatLikedByUserID, getQueryBeats}
+async function likeBeatAsUser(beatID: string):Promise<boolean>{
+    return getCurrentUserID().then(async (userID)=>{
+        let beatREF = doc(firestore,`beats/${beatID}`,)
+        
+        await updateDoc(beatREF, {
+        likedBy: arrayUnion(userID)
+        });
+        return true
+    }).catch(()=>{
+        return false
+    })
+}
+
+async function unlikeBeatAsUser(beatID: string):Promise<boolean>{
+    return getCurrentUserID().then(async (userID)=>{
+        
+        let beatREF = doc(firestore,`beats/${beatID}`,)
+        await updateDoc(beatREF, {
+        likedBy: arrayRemove(userID)
+        });
+        return true
+    }).catch(()=>{
+        return false
+    })
+}
+
+export {unlikeBeatAsUser, likeBeatAsUser, getAllSamples,getBeatByID,createBeat, getUserById, isBeatLikedByCurrentUser, isBeatLikedByUserID, getQueryBeats}
