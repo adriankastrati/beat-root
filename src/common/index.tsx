@@ -111,28 +111,28 @@ export function playTracks(tracks:Track[], cpm:number, audioModel:AudioModel){
         tracks.map(({sample, rhythm})=>({sampleURL:sample.url, rhythm})), 60/cpm)
 }
 
-export enum TextVaiant{
+export enum TextVariant{
     BODY,
     TITLE,
     SUBTITLE
 }
 
-export function textStyles(variant:TextVaiant){
+export function textStyles(variant:TextVariant){
     switch (variant) {
-        case TextVaiant.BODY:
+        case TextVariant.BODY:
             return`
                 font-family: 'Helvetica', 'Arial', sans-serif;
                 font-size:15px;
             `
 
-        case TextVaiant.TITLE:
+        case TextVariant.TITLE:
             return`
                 font-weight: bold;
                 font-family: 'Helvetica', 'Arial', sans-serif;
                 font-size:30px;
             `
 
-        case TextVaiant.SUBTITLE:
+        case TextVariant.SUBTITLE:
             return`
                 font-weight: bold;
                 font-family: 'Helvetica', 'Arial', sans-serif;
