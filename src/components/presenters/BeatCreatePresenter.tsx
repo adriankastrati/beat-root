@@ -30,33 +30,39 @@ const TextTitleInput = styled.input`
     margin:3px;
     border-radius: 6px;
     border:2px solid ${theme.medium};
+    width: 100%;
     
 `
 
 const TextBodyTextArea = styled.textarea`
     ${textStyles(TextVariant.BODY)}
     margin:3px;
+    height: 100px;
+    width: 100%;
 `
 const TitleStyle = styled.div`
     font-size:18px;
     margin:0px;
 `
-const Center = styled.div`
-align-items: center;
-align-self: center;
-margin: 0 auto;
+const Justify = styled.div`
+    display: flex;
+    justify-content: center;
 `
-
-const ColorPreviewBox = styled.div`
-  display:flex;
-  border: 20px solid white;
-  width: 256px;
-  height: 256px;
+const Center = styled.div`
+    align-items: center;
+    align-self: center;
 `
 const OuterBox = styled.div`
   display:flex;
   flex-direction:column;
   margin:40px;
+`
+const ScaledComponent = styled.div`
+    width: 60%;
+`
+const Block = styled.div`
+    display: block;
+    
 `
 
 function BeatCreatePresenter(props:RouteComponentProps){
@@ -176,9 +182,12 @@ function BeatCreatePresenter(props:RouteComponentProps){
         />
     } else {
         return <OuterBox>
-            
+
             <TitleStyle>Title</TitleStyle>
-            <TextTitleInput value={beatCreationState.title} onChange={e=>handleSetTitle(e.currentTarget.value)}/>
+            <Justify>
+                <TextTitleInput value={beatCreationState.title} onChange={e=>handleSetTitle(e.currentTarget.value)}/>
+            </Justify>     
+            
             <Center>
             <BeatVisualisationView
                 onPlay={()=>play()}
@@ -190,17 +199,30 @@ function BeatCreatePresenter(props:RouteComponentProps){
             
             <MainButton type={MainButtonType.ChooseColorTheme} scale = {1} text = "pick color theme" onClick={redirectColorBox}></MainButton>
             </Center>
+            <Justify>
+                <ScaledComponent>                
+                    <TitleStyle>Tracks</TitleStyle>
+                    <Justify>
+                        <BeatTracksView
+                        onAddTrack={handleAddTrack}
+                        onEditTrack={handleEditTrack}
+                        tracks={beatCreationState.tracks}
+                        onRemoveTrack={handleRemoveTrack}/>  
+                    </Justify>        
+                </ScaledComponent>
+            </Justify>
+            <Justify>
+                <ScaledComponent>
+                    <TitleStyle>Description</TitleStyle>
+                    <Justify>
+                        <TextBodyTextArea value={beatCreationState.description} onChange={e=>handleSetDescription(e.currentTarget.value)}/>
+                    </Justify>
+                </ScaledComponent>
+            </Justify>
             
-            <TitleStyle>Tracks</TitleStyle>
-            <BeatTracksView
-                onAddTrack={handleAddTrack}
-                onEditTrack={handleEditTrack}
-                tracks={beatCreationState.tracks}
-                onRemoveTrack={handleRemoveTrack}
-            />
-            <TitleStyle>Description</TitleStyle>
-            <TextBodyTextArea value={beatCreationState.description} onChange={e=>handleSetDescription(e.currentTarget.value)}/>
-            <Center><MainButton type={MainButtonType.Save}  scale = {1} text = "save and publish" onClick={console.log("save!")}></MainButton></Center>
+            <Center>
+                <MainButton type={MainButtonType.Save}  scale = {1} text = "save and publish" onClick={console.log("save!")}></MainButton>
+            </Center>
         </OuterBox>
     }
 }
