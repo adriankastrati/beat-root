@@ -2,6 +2,8 @@ import {FormEvent} from "react";
 import styled from "styled-components";
 import MainButton, { MainButtonType } from "./common/MainButton";
 import { textStyles, theme } from "../../common";
+import { withRouter, RouteComponentProps } from "react-router-dom";
+
 
 const OuterBox = styled.div`
   display:flex;
@@ -30,12 +32,27 @@ const TitleStyle = styled.div`
   margin:10px;
   text-align: center;
 `
+const ErrorStyle = styled.div`
+  font-size:16px;
+  margin:10px;
+  text-align: center;
+  color: red;
+`
+const ResultStyle = styled.div<LoginProps>`
+  font-size:16px;
+  margin:10px;
+  text-align: center;
+  color: ${props => props.success ? "green": "red"};
+`
 const Center = styled.div`
 align-items: center;
 align-self: center;
 margin: 0 auto;
 `
 
+interface LoginProps{
+  success: boolean
+}
 
 interface SignInViewProp{
   onEmailChange:(emailEvent: string)=>void,
@@ -47,8 +64,9 @@ interface SignInViewProp{
   errorMessage: string|undefined
   welcomeMessage: boolean
 }
+type SignInViewProps = SignInViewProp & RouteComponentProps;
 
-export default function SignInView(props:SignInViewProp){
+function SignInView(props:SignInViewProps){
   function handleLogin(event: FormEvent){
     event.preventDefault();
     props.onLogInAttempt()
@@ -58,6 +76,7 @@ export default function SignInView(props:SignInViewProp){
     event.preventDefault();
     props.onCreateAccountAttempt()
   }
+
 
   return (
     <OuterBox>
@@ -86,7 +105,9 @@ export default function SignInView(props:SignInViewProp){
              </InnerBox>
             </form>
        
-          <div>{props.welcomeMessage? "heloo":props.errorMessage}</div>
+          <ResultStyle success = {props.welcomeMessage}>{props.welcomeMessage? "Login success!":props.errorMessage}</ResultStyle>
+          
           </Center>
         </OuterBox> );
 }
+export default withRouter(SignInView)

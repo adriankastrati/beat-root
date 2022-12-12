@@ -44,13 +44,13 @@ async function loginEmailPasswordAccount(email: string, password: string): Promi
         let errorMsg = "unknown-issue";
         switch (error.code){
             case "auth/wrong-password":
-                errorMsg = "wrong-password"
+                errorMsg = "Incorrect password"
                 break;
             case "auth/user-not-found":
-                errorMsg = "user-not-found"
+                errorMsg = "No such user found"
                 break;
             case "auth/invalid-email":
-                errorMsg = "invalid-email"
+                errorMsg = "Invalid e-mail address"
                 break;
         }
         return new firebaseError(errorMsg);
