@@ -85,7 +85,7 @@ function MainButton(props: Props){
             break;
         case MainButtonType.Copy:
             btnWidth = 50;
-            icon = edit;
+            icon = copy;
             break;
     }
     if(props.type != MainButtonType.Plain){
