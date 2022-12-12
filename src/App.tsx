@@ -19,7 +19,7 @@ export default function App(){
                 </Route>
 
                 <Route exact path="/test/firebase">
-                    <ManualFirebaseTest/>
+                    {/* <ManualFirebaseTest/> */}
                 </Route>
 
                 <Route exact path="/test/color">
@@ -38,7 +38,7 @@ export default function App(){
                             </Route>
 
                             <Route exact path="/play/explore">
-                                <FeedPresenter/>
+                                {/* <FeedPresenter/> */}
                             </Route>
 
                             <Route exact path="/play/create">

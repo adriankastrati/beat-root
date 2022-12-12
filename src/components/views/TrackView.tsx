@@ -1,13 +1,17 @@
+import { useState } from "react";
 import styled from "styled-components";
-import { theme, Track } from "../../common";
+import { Sample, textStyles, TextVaiant, theme, Track } from "../../common";
 import DeleteCrossButton from "./common/DeleteCrossButton";
-import GlyphComponent from "./common/GlyphComponent";
-import MainButton, { MainButtonType }  from "./common/MainButton"
+import RhythmView from "./RhythmView";
 
 interface TrackViewProps{
-    onEdit?:()=>void,
+    onChangePulses?: (pulses:number)=>void,
+    onChangeSteps?: (steps:number)=>void,
+    onChangeShift?: (steps:number)=>void,
+    onChangeSample?: (sample:Sample)=>void,
     onDelete?:()=>void,
-    track: Track
+    track: Track,
+    selectableSamples?: Sample[]
 }
 
 const OuterContainer = styled.div`
@@ -16,18 +20,36 @@ const OuterContainer = styled.div`
     margin-top:10px;
     padding:10px;
 `
-const SampleName = styled.div`
-    
-`
-const EditButton = styled.button`
 
+const SampleSelect = styled.select`
+    ${textStyles(TextVaiant.SUBTITLE)}
+`
+
+const SampleDiv = styled.div`
+    ${textStyles(TextVaiant.SUBTITLE)}
 `
 
 export default function TrackView(props:TrackViewProps){
     return <OuterContainer>
-        <SampleName>{props.track.sample.name}</SampleName>
-        {props.onDelete ? <DeleteCrossButton onClick={props.onDelete}/> : null}
-        {props.onEdit ? <MainButton text = "edit" onClick={props.onEdit} scale = {0.8} type = {MainButtonType.Plain}></MainButton> : null}
-        {props.track.rhythm.getGlyphs().map((glyph, i) => <GlyphComponent key={i} number={glyph}/>)}
+        {   //sample
+            props.onChangeSample && props.selectableSamples ? 
+            <SampleSelect onChange={e=>props.onChangeSample!(e.currentTarget.value)}>
+                {
+                    props.selectableSamples.map((sample, i) => <option key={i} value={sample}>{sample}</option>)
+                }
+            </SampleSelect> : 
+            <SampleDiv>{props.track.sample}</SampleDiv>
+        }
+
+        {   //delete
+            props.onDelete ? <DeleteCrossButton onClick={props.onDelete}/> : null
+        }
+
+        <RhythmView
+            rhythm={props.track.rhythm} 
+            onChangePulses={props.onChangePulses}
+            onChangeShift={props.onChangeShift}
+            onChangeSteps={props.onChangeSteps}
+        />
     </OuterContainer>
 }

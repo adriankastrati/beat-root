@@ -1,32 +1,15 @@
-import {Auth} from "firebase/auth"
 import AudioModel from "../model/AudioModel";
-export const MAX_GLYPH = 32;
 
 export interface User{
     firestoreUserID: string,
     username: string,
 }
 
-export interface Sample{
-    firestoreSampleID:string,
-    name: string,
-    url: string,
-}
-
-enum EffectVariant{
-    BIN = "bin",
-    OFFSET = "offset"
-}
-
-export interface Effect{
-    variant:EffectVariant,
-    arguments: number[]
-}
+export type Sample = string
 
 export interface Track{
     rhythm:Rhythm,
     sample:Sample,
-    effects?:Effect[]
 }
 
 export interface Beat{
@@ -46,49 +29,58 @@ function gcd(a:number, b:number):number {
       return a;
     }
   
-    return gcd(b, a % b);
+    return gcd(b, a % b)
+}
+
+export const MAX_STEPS = 32
+
+function euclideanRhythm(pulses:number, steps:number){ //TODO: test that this implementation is correct
+    let a: any[] = new Array(pulses).fill(true)
+    let b: any[] = new Array(steps-pulses).fill(false)
+    let c: any[] = []
+    function moveIteration(){
+        while(true){
+            c.push([a.pop(), b.pop()])
+
+            if(a.length === 0){
+                a = c
+                c = []
+                break
+            }
+
+            if(b.length === 0){
+                b = c
+                c = []
+                break
+            }
+        }
+    }
+
+    while(true){
+        if (b.length === 0) return a.flat(100) //TODO: what is maximum??
+        if (a.length === 0) return b.flat(100)
+        moveIteration()
+    }
 }
 
 export class Rhythm {
-    glyphs: Set<number>
+    steps: number
+    pulses: number
+    shift: number //TODO: add functionality
 
-    constructor(glyphs:number[]){
-        if(glyphs){
-            this.glyphs = new Set(glyphs)
-        } else {
-            this.glyphs = new Set([])
-        }
+    constructor(steps: number){
+        this.steps = steps
+        this.pulses = 1
+        this.shift = 0
     }
 
-    getPossibleCombinations():number[]{
-        let product = Array.from(this.glyphs).reduce((pre,curr)=>pre*curr,1)
-
-        return Array(MAX_GLYPH).fill(0).map((_,i)=>i+1)
-        .filter(n => gcd(product,n)===1)
+    getPossibleEventNumbers():number[]{
+        return Array(this.steps).fill(0).map((_,i)=>i+1)
+            .filter(n => gcd(this.steps,n)===1)
     }
 
-    getNormalizedLoopSchedule(){
-
-        return this.getGlyphs().map(n=>{ //for every rythm n
-            return Array(n).fill(0).map((_,i)=>i*(1/n)) //schedule each hit
-            }).flat()
-            .filter((value, index, self)=>self.indexOf(value)===index) //unique only
-    }
-
-    getGlyphs(){
-        return Array.from(this.glyphs)
-    }
-
-    addGlyph(glyph:number){
-        if (!this.glyphs.has(glyph)){
-            this.glyphs.add(glyph)
-        }
-    }
-
-    removeGlyph(glyph:number){
-        if (this.glyphs.has(glyph)){
-            this.glyphs.delete(glyph)
-        }
+    getNormalizedLoopSchedule():number[]{
+        return euclideanRhythm(this.pulses, this.steps).map((s,i) => s ? i/this.steps : null).filter(e => e !== null) as number[]
     }
 }
 
@@ -100,15 +92,11 @@ export const theme = {
     black: "#000000",
 }
 
-export const defaultSample: Sample = { //TODO: give only default firebase id instead
-    name: "default sample",
-    url: "https://tonejs.github.io/audio/drum-samples/Techno/hihat.mp3", //TODO
-    firestoreSampleID: "" //TODO
-}
+export const defaultSample: Sample = "techno-kick"
 
 export function playTracks(tracks:Track[], cpm:number, audioModel:AudioModel){
     audioModel.play(
-        tracks.map(({sample, rhythm})=>({sampleURL:sample.url, rhythm})), 60/cpm)
+        tracks.map(({sample, rhythm})=>({sample, rhythm})), 60/cpm)
 }
 
 export enum TextVaiant{
