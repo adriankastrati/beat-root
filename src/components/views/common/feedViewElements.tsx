@@ -1,33 +1,23 @@
 import styled from "styled-components";
+import { textStyles, theme } from "../../../common";
 
 export const BeatParent = styled.div`
-width:400px;
-height:400px;
-border-radius: 5%;
-position:relative;
-display: flex;
-background-color: rgb(236, 228, 178);
-justify-content: center;
-align-content: center;
-margin: 5%;
+display:flex;
+flex-direction:column;
+margin:00px;
+padding: 0px;
+width: 300px;
+border: 1px solid ${theme.medium}
 `;
 export const ThemedCard = styled.div`
-width: 400px;
-height: 350px;
-border-radius: 5%;
-position: relative;
-display: flex;
-//background-color: --;
-background-color: rgb(176, 115, 255);
-justify-content: center;
-align-content: center;
-margin: 5%;
+display:flex;
+flex-direction:column;
+margin:00px;
+padding: 00px;
+border: 1px solid ${theme.medium}
 `;
 export const ButtonsContainer = styled.div`
-position: absolute; 
-top: 90%;
-right: 78%;
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
 `;
-export const CardButton = styled.button`
-`;
-

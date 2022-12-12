@@ -35,7 +35,7 @@ const FeedPresenter = () => {
     
     //setTimestamp_now(timestamp_now)
 
-    const itemsOnFetch = 7
+    const itemsOnFetch = 10
     const MAX_FETCHES = 4
 
     function fetchData() {
