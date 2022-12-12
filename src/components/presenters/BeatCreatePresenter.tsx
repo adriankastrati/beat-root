@@ -1,7 +1,7 @@
 import { cloneDeep } from "lodash";
 import { useContext, useState } from "react";
 import styled from "styled-components";
-import { Beat, defaultSample, playTracks, Rhythm, Sample, textStyles, TextVaiant, Track, theme } from "../../common";
+import { Beat, defaultSample, playTracks, Rhythm, Sample, textStyles, TextVariant, Track, theme } from "../../common";
 import ModelContext from "../../contexts/ModelContext";
 import BeatTracksView from "../views/BeatTracksView";
 import BeatVisualisationView from "../views/BeatVisualisationView";
@@ -25,7 +25,7 @@ const newTrack:Track = {
 }
 
 const TextTitleInput = styled.input`
-    ${textStyles(TextVaiant.TITLE)}
+    ${textStyles(TextVariant.TITLE)}
     margin:3px;
     border-radius: 6px;
     border:2px solid ${theme.medium};
@@ -33,7 +33,7 @@ const TextTitleInput = styled.input`
 `
 
 const TextBodyTextArea = styled.textarea`
-    ${textStyles(TextVaiant.BODY)}
+    ${textStyles(TextVariant.BODY)}
     margin:3px;
 `
 const TitleStyle = styled.div`
