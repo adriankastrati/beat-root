@@ -1,0 +1,7 @@
+[
+    {
+      "origin": ["beat-root-a8d72.appspot.com"],
+      "method": ["GET"],
+      "maxAgeSeconds": 3600
+    }
+  ]
