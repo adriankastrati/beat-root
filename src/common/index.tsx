@@ -92,7 +92,7 @@ export const theme = {
     black: "#000000",
 }
 
-export const defaultSample: Sample = "techno-kick"
+export const defaultSample: Sample = "hihat.mp3" //TODO: change to real name
 
 export function playTracks(tracks:Track[], cpm:number, audioModel:AudioModel){
     audioModel.play(

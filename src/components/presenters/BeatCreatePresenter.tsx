@@ -8,16 +8,6 @@ import BeatVisualisationView from "../views/BeatVisualisationView";
 import EditThemeModalView from "../views/EditThemeModalView";
 import MainButton, { MainButtonType } from "../views/common/MainButton";
 
-
-
-interface BeatCreationState{
-    title: string,
-    description: string,
-    theme: string[],
-    tracks: Track[],
-    cpm:number
-}
-
 const newTrack:Track = {
     rhythm: new Rhythm(16),
     sample: defaultSample
@@ -144,6 +134,7 @@ export default function BeatCreatePresenter(){
                 tracks={tracks}
                 onRemoveTrack={handleRemoveTrack}
                 onSetTrack={updateTrack}
+                selectableSamples={audioModel.getSamples()}
             />
             <TitleStyle>Description</TitleStyle>
             <TextBodyTextArea value={description} onChange={e=>setDescription(e.currentTarget.value)}/>
@@ -151,11 +142,3 @@ export default function BeatCreatePresenter(){
         </OuterBox>
     }
 }
-
-//TODO: Remove for and handle in AudioModel
-const provisionalSamples = [
-    defaultSample,
-    "techno-hihat",
-    "techno-kick",
-    "techno-tom2",
-]

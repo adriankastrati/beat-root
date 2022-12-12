@@ -10,6 +10,7 @@ interface BeatTracksViewProps {
     onRemoveTrack?:(index:number)=>void,
     onSetTrack?:(index:number, newTrack:Track)=>void,
     tracks: Track[],
+    selectableSamples?: Sample[]
 }
 
 const TracksContainer = styled.div`
@@ -62,7 +63,7 @@ export default function BeatTracksView(props:BeatTracksViewProps){
                     onChangeSample={ props.onSetTrack ? (sample:Sample) => handleChangeSample(i,sample) : undefined}
                     onChangeSteps={ props.onSetTrack ? (steps:number) => handleChangeSteps(i,steps) : undefined}
                     onChangeShift={ props.onSetTrack ? (shift:number) => handleChangeShift(i,shift) : undefined}
-
+                    selectableSamples={props.selectableSamples}
                 />)
             }
             <Center>

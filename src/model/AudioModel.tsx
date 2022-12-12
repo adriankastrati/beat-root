@@ -6,6 +6,7 @@ import {Rhythm, Sample} from "../common";
 export default class AudioModel {
     initialized: boolean = false
     samplers: Tone.Sampler[] = []
+    samples = new Map<string,string>()
 
     play(samplesAndRythms:{sample:Sample, rhythm:Rhythm}[], loopTime:number){ //TODO: Sample lookup table in initialized model. Sample is only a string
         if (!this.initialized){}
@@ -19,7 +20,7 @@ export default class AudioModel {
                     urls: {
                         A1: "",
                     },
-                    baseUrl: "https://tonejs.github.io/audio/drum-samples/Techno/hihat.mp3",//TODO 
+                    baseUrl: this.samples.get(sample),
 
                     onload:()=>{
                         //schedule
@@ -37,6 +38,10 @@ export default class AudioModel {
         
         //start transport
         Tone.Transport.start(Tone.now())
+    }
+
+    getSamples(){
+        return Array.from(this.samples.keys())
     }
 
     clear(){
@@ -58,9 +63,29 @@ export default class AudioModel {
     }
 
     init(){
-        //should be called once, at fist user generated event
-        return Tone.start().then(()=>{
-            this.initialized = true //TODO then load all blobs into state
+        //should be successfully called once, at fist user generated event
+        return Tone.start().then(async ()=>{
+            return await mockGetSamples()
+                .then(sample => sample.forEach(({name, url})=>this.samples.set(name, url))).then(()=>{
+                    this.initialized = true
+                })
         })
     }
+}
+
+
+
+function mockGetSamples():Promise<{name:string, url:string}[]>{
+    return new Promise(resolve => setTimeout(resolve, 1000)).then(()=>{
+        return [
+            {
+                name:"hihat.mp3",
+                url:"https://tonejs.github.io/audio/drum-samples/Techno/hihat.mp3" //will be local urls
+            },
+            {
+                name:"kick.mp3",
+                url:"https://tonejs.github.io/audio/drum-samples/Techno/kick.mp3" //will be local urls
+            }
+        ] 
+    })
 }
