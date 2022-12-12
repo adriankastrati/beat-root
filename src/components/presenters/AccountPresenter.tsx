@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { createEmailPasswordAccount, loginEmailPasswordAccount } from "../../model/firebase/firebaseAuthenticationModel";
 import SignInView from "../views/SignInView";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 
-export default function AccountPresenter(){
+function AccountPresenter(props:RouteComponentProps){
 
   const [password, setPassword] = useState();
   const [email, setEmail] = useState<string>();
@@ -16,7 +17,11 @@ export default function AccountPresenter(){
   function handleEmailChange(email:string){
       setEmail(email)
   }
-
+  function redirect(){
+    setTimeout(() => {
+      props.history.push('/play/explore');
+    }, 1000);
+  }
   async function logInAttempt(){
     if (email && password){
       try{
@@ -26,6 +31,7 @@ export default function AccountPresenter(){
           setWelcomeMessage(false)
         }else{
           setWelcomeMessage(true)
+          redirect();
         }
 
       }catch(e){
@@ -68,3 +74,4 @@ export default function AccountPresenter(){
   </div>
   );
 }
+export default withRouter(AccountPresenter);
