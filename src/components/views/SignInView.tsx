@@ -2,8 +2,6 @@ import {FormEvent} from "react";
 import styled from "styled-components";
 import MainButton, { MainButtonType } from "./common/MainButton";
 import { textStyles, theme } from "../../common";
-import { withRouter, RouteComponentProps } from "react-router-dom";
-
 
 const OuterBox = styled.div`
   display:flex;
@@ -64,9 +62,8 @@ interface SignInViewProp{
   errorMessage: string|undefined
   welcomeMessage: boolean
 }
-type SignInViewProps = SignInViewProp & RouteComponentProps;
 
-function SignInView(props:SignInViewProps){
+function SignInView(props:SignInViewProp){
   function handleLogin(event: FormEvent){
     event.preventDefault();
     props.onLogInAttempt()
@@ -110,4 +107,4 @@ function SignInView(props:SignInViewProps){
           </Center>
         </OuterBox> );
 }
-export default withRouter(SignInView)
+export default SignInView;
