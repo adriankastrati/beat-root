@@ -41,7 +41,7 @@ const FeedPresenter = () => {
     function fetchData() {
             setLoading(true)
             //setTimestamp_now(Timestamp.fromDate(new Date()))
-            getQueryBeats(itemsOnFetch, timestamp_now, SortBy.recent).then((newBeats) => {if(newBeats){
+            getQueryBeats(itemsOnFetch, timestamp_now, SortBy.likes).then((newBeats) => {if(newBeats){
                 //setBeats(Array.from([...beats,...newBeats]))
                 // newBeats.reverse()
                 setBeats(beats.concat(newBeats))

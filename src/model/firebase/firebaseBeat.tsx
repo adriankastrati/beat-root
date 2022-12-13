@@ -90,15 +90,17 @@ async function getBeats(query: Query<DocumentData>){
 }
 
 function getQueryWithSort(sort: SortBy, howMany: number, startTimeStamp: Timestamp, beatRef: CollectionReference<DocumentData>, startAfterSnapshot?:DocumentSnapshot<DocumentData>): Query<DocumentData>{
-    if (sort === SortBy.likes && startAfterSnapshot){
+    console.log(sort, howMany, startTimeStamp, beatRef, startAfterSnapshot)
+    
+    if (sort === SortBy.likes && startAfterSnapshot){       
         return query(beatRef,
             orderBy(sort, "desc"), 
             limit(howMany),
             startAfter(startAfterSnapshot)
         );
     }
-    
     else if(sort === SortBy.recent && startAfterSnapshot){
+        
         return query(beatRef,
             where("creationDate","<",startTimeStamp.valueOf()), 
             orderBy("creationDate", "desc"), 
@@ -106,12 +108,17 @@ function getQueryWithSort(sort: SortBy, howMany: number, startTimeStamp: Timesta
             startAfter(startAfterSnapshot)
         );
     }
-    
-    else{
+    else if(sort === SortBy.likes) {
         return query(beatRef,
-        where("creationDate","<",startTimeStamp.valueOf()), 
-        orderBy("creationDate", "desc"), 
-        limit(howMany)
+            orderBy(sort, "desc"),
+            orderBy("creationDate", "desc"),
+            limit(howMany)
+        );
+    }else{
+        return query(beatRef,
+            where("creationDate","<",startTimeStamp.valueOf()), 
+            orderBy("creationDate", "desc"), 
+            limit(howMany)
         );
     }
 }
