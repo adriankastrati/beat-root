@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { textStyles, theme } from "../../../common";
 
 interface NavBarProps {
     active: boolean
@@ -8,7 +9,7 @@ interface NavBarProps {
 // topnav wrapper
 export const TopNav = styled.div<NavBarProps>`
     display:flex;
-    background-color: #b3b3b1;
+    background-color: ${theme.light};
     width: 100vw;
     position: sticky;
     opacity: 1;
@@ -22,7 +23,7 @@ export const NavContainer = styled.div<NavBarProps>`
     justify-content: space-between;
     width: 200%; // why 
     height: 2rem;
-    background-color: #DFDFDE;
+    background-color: ${theme.medium};
     margin-bottom: 2px;
     z-index: 10;
 `;
