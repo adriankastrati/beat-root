@@ -3,7 +3,7 @@ import { User } from 'firebase/auth';
 import {Timestamp } from 'firebase/firestore';
 import React from 'react';
 import { Beat, Rhythm, Sample, Track } from '../common';
-import {createEmailPasswordAccount,loginEmailPasswordAccount, getCurrentUserID, logOutAccount} from '../model/firebase/firebaseAuthenticationModel'
+import {createEmailPasswordAccount,loginEmailPasswordAccount, getCurrentUserID, logOutAccount, getUserInformation} from '../model/firebase/firebaseAuthenticationModel'
 
 import {getBeatByID, createBeat, isBeatLikedByCurrentUser, getQueryBeats, getSamples, queryBeatsByUser} from "../model/firebase/firebaseBeat"
 import { SortBy } from '../model/firebase/firebaseBeat';
@@ -66,6 +66,10 @@ export default function ManualFirebaseTest(){
     createBeat(b)
   }
 
+  async function getUserInfo(){
+    console.log(getUserInformation("AjOtxWR7GTYJafSDw91R9pGYoX32"))
+  }
+
   async function getUserTest(){
     console.log(await queryBeatsByUser(2,"aFSQRyxBjxgyY0knbHdhg3Ck2d83"))
   }
@@ -93,6 +97,7 @@ export default function ManualFirebaseTest(){
     <div className="App">
       <br />
       <br />
+      <button onClick={getUserInfo}>log userinfomration</button>
       <button onClick={getUserTest}>get Userbeats</button>
       <button onClick={createDummy}> create</button>
       <button onClick={loginDummy}> login</button>
