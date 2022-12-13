@@ -8,15 +8,10 @@ import { getCurrentUserID } from "../../model/firebase/firebaseAuthenticationMod
 //import { contextFree, StyledComponent } from "styled-components"
 
 
-// TODO: firebase like beat functionality
+// TODO: fix first fetch of beats
+// TODO: time-out function when intersection can't change
 // TODO: filters
 // TODO: midi copy
-// TODO: fix first fetch of beats
-
-    // these cards should be in common when implementing
-   
-
-    
 
 const FeedPresenter = () => {
 
@@ -40,12 +35,11 @@ const FeedPresenter = () => {
     const itemsOnFetch = 10
     const MAX_FETCHES = 4
 
+
     function fetchData() {
             setLoading(true)
             //setTimestamp_now(Timestamp.fromDate(new Date()))
-            //                 root fetch timestamp ----v
             getQueryBeats(itemsOnFetch, timestamp_now,lastBeatID).then((newBeats) => {if(newBeats){
-                // console.log(offset, itemsOnFetch, timestamp_now)
                 //setBeats(Array.from([...beats,...newBeats]))
                 // newBeats.reverse()
                 setBeats(beats.concat(newBeats))
@@ -54,17 +48,19 @@ const FeedPresenter = () => {
     }
 
     useEffect(() => {
-        if (intersection?.isIntersecting && !loading ) {
-            //console.log(intersection?.isIntersecting)
-            setLastBeatID(beats[beats.length - 1].firestoreBeatID)
-
-            setOffset(offset + itemsOnFetch)
+        if (intersection?.isIntersecting) {
+            console.log("aaaah, I'm intersecting!!!!",intersection?.isIntersecting)
             fetchData()
+            if (beats.length > 0) {
+                setLastBeatID(beats[beats.length - 1].firestoreBeatID)
+                setOffset(offset + itemsOnFetch)
+            }
             if(beats == null) {
-                console.log("beats == null")
+                console.log("beats == null", beats)
                 fetchData()
             } else {
                 console.log("beats != null")
+
                 return
             }
         }

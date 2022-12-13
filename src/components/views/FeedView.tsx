@@ -47,11 +47,11 @@ export default function FeedView(props:FeedViewProps){
         return (<OuterBox key={key}>
             <BeatParent> 
 
-                <ThemedCard color={beat.theme[0][0]}>
+                <ThemedCard color={beat.theme}>
                 <div>{beat.firestoreBeatID}</div>
 
                     <p> fetch index={key}<br/>
-                    <strong></strong> {beat.title} by: <strong>{beat.composerID}user</strong><br />
+                    {beat.title} by: <strong>{beat.composerID}user</strong><br />
                     <strong>Theme:</strong> {beat.theme.join(',')}<br />
                     </p>
 
