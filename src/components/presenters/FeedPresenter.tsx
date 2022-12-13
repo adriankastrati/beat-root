@@ -37,11 +37,7 @@ const FeedPresenter = () => {
     
     //setTimestamp_now(timestamp_now)
 
-<<<<<<< HEAD
-    const itemsOnFetch = 3
-=======
     const itemsOnFetch = 10
->>>>>>> 880f22bf27382a530d2e35d1ecd96c0afb13fc60
     const MAX_FETCHES = 4
 
     function fetchData() {
