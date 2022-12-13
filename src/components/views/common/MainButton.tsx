@@ -6,6 +6,8 @@ import styled from "styled-components";
 import save from "../../../icons/save.svg"
 import like from "../../../icons/heart.svg"
 import copy from "../../../icons/copy.svg"
+import burger from "../../../icons/burger.svg"
+import cross from "../../../icons/cross.svg"
 import { isPropertySignature } from "typescript";
 
 interface ButtonInterface{
@@ -43,6 +45,8 @@ export enum MainButtonType{
     Add,
     Like,
     Copy,
+    Burger,
+    Cross,
     Plain
 }
 
@@ -86,6 +90,14 @@ function MainButton(props: Props){
         case MainButtonType.Copy:
             btnWidth = 50;
             icon = copy;
+            break;
+        case MainButtonType.Burger:
+            btnWidth = 50;
+            icon = burger;
+            break;
+        case MainButtonType.Cross:
+            btnWidth = 50;
+            icon = cross;
             break;
     }
     if(props.type != MainButtonType.Plain){

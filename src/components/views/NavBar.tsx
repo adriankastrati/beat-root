@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { useLocation } from "react-use"
+import MainButton, { MainButtonType } from "./common/MainButton"
 import { NavContainer, TopNav, NavCurrentPage, NavBurgerIcon, NavIcon, NavLogo, NavMenu, NavItem, NavLink } from "./common/NavBarElements"
 
 // TODO: navbar permanently fixed at top when scrolling
@@ -31,7 +32,6 @@ export default function NavBar(){
 
     useEffect(locationHandler,[absPath])
     
-
     return (
         <TopNav active={burgerState}> 
             <NavContainer active={burgerState}>
@@ -41,9 +41,11 @@ export default function NavBar(){
                 <NavCurrentPage>
                 {currentPageName}
                 </NavCurrentPage>
-                <NavBurgerIcon onClick={()=>{clickHandler()}}>
-                    {burgerState? "cross":"burger"}
-                </NavBurgerIcon>
+                
+                {burgerState? 
+                <MainButton type = {MainButtonType.Cross} scale = {0.5} text = "" onClick={clickHandler}></MainButton>:
+                <MainButton type = {MainButtonType.Burger} scale = {0.5} text = "" onClick={clickHandler}></MainButton>}
+                
 
                 <NavMenu active={burgerState}>
                     <NavItem>
