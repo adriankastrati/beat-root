@@ -59,7 +59,7 @@ export default function NavBar(){
                         <NavLink to="/test/firebase"onClick={()=>{clickHandler()}}>firebase test</NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink to="/test/signin"onClick={()=>{clickHandler()}}>test sign-in</NavLink>
+                        <NavLink to="/test/sign-in"onClick={()=>{clickHandler()}}>test sign-in</NavLink>
                     </NavItem>
                 </NavMenu>
             </NavContainer>
