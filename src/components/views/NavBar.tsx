@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { useLocation } from "react-use"
 import MainButton, { MainButtonType } from "./common/MainButton"
 import { NavContainer, TopNav, NavCurrentPage, NavBurgerIcon, NavIcon, NavLogo, NavMenu, NavItem, NavLink } from "./common/NavBarElements"
-
+import { textStyles, theme } from "../../common";
 // TODO: navbar permanently fixed at top when scrolling
 // TODO: current site to display at top
 // TODO: burger button as actual burger -> cross
@@ -43,8 +43,8 @@ export default function NavBar(){
                 </NavCurrentPage>
                 
                 {burgerState? 
-                <MainButton type = {MainButtonType.Cross} scale = {0.5} text = "" onClick={clickHandler}></MainButton>:
-                <MainButton type = {MainButtonType.Burger} scale = {0.5} text = "" onClick={clickHandler}></MainButton>}
+                <MainButton type = {MainButtonType.Cross} scale = {0.5} text = "" onClick={clickHandler} frameOff={true} backgroundColor={theme.medium}></MainButton>:
+                <MainButton type = {MainButtonType.Burger} scale = {0.5} text = "" onClick={clickHandler} frameOff={true} backgroundColor={theme.medium}></MainButton>}
                 
 
                 <NavMenu active={burgerState}>
