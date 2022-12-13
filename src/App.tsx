@@ -13,6 +13,7 @@ import SignInTest from "./pages/signInTest";
 export default function App(){
     return <BrowserRouter>
         <div>
+        
             <NavBar/>
             <Switch>
                 <Route exact path="/">
