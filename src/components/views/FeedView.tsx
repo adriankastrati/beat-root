@@ -1,7 +1,29 @@
 import { MutableRefObject } from "react"
 import { Beat } from "../../common"
 import { likeBeatAsUser, isBeatLikedByCurrentUser } from "../../model/firebase/firebaseBeat"
-import {BeatParent, ThemedCard,ButtonsContainer, CardButton} from "../../components/views/common/feedViewElements"
+import {BeatParent, ThemedCard,ButtonsContainer} from "./common/FeedViewElements"
+import styled from "styled-components";
+import { textStyles, theme } from "../../common";
+import React from "react";
+import MainButton, { MainButtonType } from "./common/MainButton";
+
+const OuterBox = styled.div`
+  display:flex;
+  flex-direction:column;
+  margin:20px;
+`
+const Feed = styled.div`
+    display: flex;
+    flex-direction: row;   
+    flex-wrap: wrap; 
+    justify-content: center;
+`
+const Center = styled.div`
+align-items: center;
+align-self: center;
+margin: 0 auto;
+`
+
 interface FeedViewProps{
     beats: Beat[]
     offset: number
@@ -13,8 +35,6 @@ interface FeedViewProps{
 
 export default function FeedView(props:FeedViewProps){
 
-   
-
     // need firebase functions for this
     function likeHandler(beatID: string):void {
         props.onLikeBeat(beatID)
@@ -23,41 +43,35 @@ export default function FeedView(props:FeedViewProps){
     function midiCopyHandler():void {
         console.log("copied midi")
     }
+    function feedElementCB(beat: any, key: any){
+        return (<OuterBox key={key}>
+            <BeatParent> 
 
-    
+                <ThemedCard color={beat.theme[0][0]}>
+                <div>{beat.firestoreBeatID}</div>
 
-    // this should be in the view instead, but I can't seem to figure out how
-    //  to send the props in a way that allows for intersection observing with refs
-    //  like below
-    // 
+                    <p> fetch index={key}<br/>
+                    <strong></strong> {beat.title} by: <strong>{beat.composerID}user</strong><br />
+                    <strong>Theme:</strong> {beat.theme.join(',')}<br />
+                    </p>
+
+                </ThemedCard>
+                <ButtonsContainer>                                   
+                    <MainButton type = {MainButtonType.Like}  onClick={()=>{likeHandler(beat.firestoreBeatID)}} text = {""+beat.likes} scale = {1}></MainButton>
+                    <MainButton type = {MainButtonType.Copy} onClick={midiCopyHandler} text = "" scale = {1.03}></MainButton>
+                </ButtonsContainer>
+            </BeatParent>
+        </OuterBox>)
+    }
+
+
     return (
-            <div>
-                <div> 
-                    {props.beats ? 
-                        props.beats && props.beats.slice(0, props.offset + props.itemsOnFetch).map((beat, key) => {
-                        //console.log("loadin:" + loading)
-                        return (
-                                <BeatParent key={key}> 
-
-                                    <ThemedCard color={beat.theme[0][0]}>
-                                    <div>{beat.firestoreBeatID}</div>
-
-                                        <p> fetch index={key}<br/>
-                                        <strong></strong> {beat.title} by: <strong>{beat.composerID}user</strong><br />
-                                        <strong>Theme:</strong> {beat.theme.join(',')}<br />
-                                        </p>
-
-                                    </ThemedCard>
-                                    <ButtonsContainer>                                        
-                                    <CardButton onClick={()=>{likeHandler(beat.firestoreBeatID)}
-                                            }>{beat.likes}</CardButton>
-                                        <CardButton onClick={midiCopyHandler}>midi</CardButton>
-                                    </ButtonsContainer>
-                                </BeatParent>
-                        )
-                    }):<img src="https://media.tenor.com/tga0EoNOH-8AAAAC/loading-load.gif"></img>}  
-                    <div ref={ props.targetRef}></div>
-                </div>
-            </div>
+            <Feed>
+                {
+                    props.beats ? props.beats && props.beats.slice(0, props.offset + props.itemsOnFetch).map(feedElementCB)
+                    : <img src="https://media.tenor.com/tga0EoNOH-8AAAAC/loading-load.gif"></img>
+                }  
+                <div ref={ props.targetRef}></div>                
+            </Feed>
     )
 }

@@ -4,6 +4,8 @@ import edit from "../../../icons/edit.svg"
 import add from "../../../icons/add.svg"
 import styled from "styled-components";
 import save from "../../../icons/save.svg"
+import like from "../../../icons/heart.svg"
+import copy from "../../../icons/copy.svg"
 import { isPropertySignature } from "typescript";
 
 interface ButtonInterface{
@@ -39,6 +41,8 @@ export enum MainButtonType{
     ChooseColorTheme,
     Save,
     Add,
+    Like,
+    Copy,
     Plain
 }
 
@@ -57,23 +61,31 @@ function MainButton(props: Props){
     
     switch(props.type){
         case MainButtonType.Edit:
-            icon = edit
+            icon = edit;
             btnWidth = 100;
             break;
         case MainButtonType.ChooseColorTheme:
-            icon = colorpalette
+            icon = colorpalette;
             btnWidth = 220;
             break;
         case MainButtonType.Create:
-            icon = add
+            icon = add;
             btnWidth = 180;
             break;
         case MainButtonType.Save:
-            icon = save
+            icon = save;
             btnWidth = 220;
             break;
         case MainButtonType.Plain:
             btnWidth = props.text.length*16;
+            break;
+        case MainButtonType.Like:
+            icon = like;
+            btnWidth = 50 + props.text.length*16;
+            break;
+        case MainButtonType.Copy:
+            btnWidth = 50;
+            icon = copy;
             break;
     }
     if(props.type != MainButtonType.Plain){
