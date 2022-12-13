@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { textStyles, theme } from "../../common";
 import React from "react";
 import MainButton, { MainButtonType } from "./common/MainButton";
-import { BeatParent, ButtonsContainer, ThemedCard } from "./common/feedViewElements";
+import { BeatParent, ButtonsContainer, ThemedCard } from "./common/FeedViewElements";
 
 const OuterBox = styled.div`
   display:flex;
