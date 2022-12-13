@@ -11,7 +11,8 @@ export const TopNav = styled.div<NavBarProps>`
     display:flex;
     background-color: ${theme.light};
     width: 100vw;
-    position: fixed;
+    
+    overflow-x:hidden;
     opacity: 1;
     top: 0;
     z-index: 9;
