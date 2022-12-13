@@ -1,4 +1,5 @@
 
+import { cloneDeep } from "lodash";
 import * as Tone from "tone";
 import { Sampler } from "tone";
 import {Rhythm, Sample, Track} from "../common";
@@ -25,6 +26,7 @@ export default class AudioModel {
                     onload:()=>{
                         //schedule
                         Tone.Transport.scheduleRepeat((time:number)=>{
+                            console.log(rhythm.getNormalizedLoopSchedule())
                             rhythm.getNormalizedLoopSchedule().forEach(hitTime => {
                                 sampler.triggerAttackRelease("A1", "2", time + hitTime*loopTime);
                                     })

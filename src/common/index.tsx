@@ -63,6 +63,10 @@ function euclideanRhythm(pulses:number, steps:number){ //TODO: test that this im
     }
 }
 
+function shift(arr:any[], shift:number){
+    return [...arr.slice(arr.length-shift), ...arr.slice(0, arr.length-shift)]
+}
+
 export class Rhythm {
     steps: number
     pulses: number
@@ -80,7 +84,9 @@ export class Rhythm {
     }
 
     getNormalizedLoopSchedule():number[]{
-        return euclideanRhythm(this.pulses, this.steps).map((s,i) => s ? i/this.steps : null).filter(e => e !== null) as number[]
+        return shift(euclideanRhythm(this.pulses, this.steps), this.shift)
+                .map((s,i) => s ? i/this.steps : null)
+                .filter(e => e !== null) as number[]
     }
 }
 
