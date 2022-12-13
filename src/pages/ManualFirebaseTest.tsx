@@ -71,7 +71,7 @@ export default function ManualFirebaseTest(){
   }
 
   function getTestData(){
-    getBeatByID("2AvtSLJxulacApUXRHHA").then(data=>console.log(data))
+    getBeatByID("qbkuwuGUYvCufsWtW4jO").then(data=>console.log(data))
   }
 
   function getQueryBeat(){
@@ -91,6 +91,8 @@ export default function ManualFirebaseTest(){
   
   return (
     <div className="App">
+      <br />
+      <br />
       <button onClick={getUserTest}>get Userbeats</button>
       <button onClick={createDummy}> create</button>
       <button onClick={loginDummy}> login</button>
