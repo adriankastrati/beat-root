@@ -11,6 +11,7 @@ import { getCurrentUserID } from "../../model/firebase/firebaseAuthenticationMod
 // TODO: firebase like beat functionality
 // TODO: filters
 // TODO: midi copy
+// TODO: fix first fetch of beats
 
     // these cards should be in common when implementing
    
@@ -24,6 +25,7 @@ const FeedPresenter = () => {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false)
     const [timestamp_now, setTimestamp_now] = useState(Timestamp.fromDate(new Date()))
+    const [lastBeatID, setLastBeatID] = useState<undefined|string>(undefined)
 
     //const fetchCount = useRef(0) // for limiting fetches
     const targetRef = useRef<HTMLDivElement | null>(null)
@@ -35,16 +37,17 @@ const FeedPresenter = () => {
     
     //setTimestamp_now(timestamp_now)
 
-    const itemsOnFetch = 7
+    const itemsOnFetch = 3
     const MAX_FETCHES = 4
 
     function fetchData() {
             setLoading(true)
             //setTimestamp_now(Timestamp.fromDate(new Date()))
             //                 root fetch timestamp ----v
-            getQueryBeats(itemsOnFetch, offset, timestamp_now).then((newBeats) => {if(newBeats){
-                console.log(offset, itemsOnFetch, timestamp_now)
+            getQueryBeats(itemsOnFetch, timestamp_now,lastBeatID).then((newBeats) => {if(newBeats){
+                // console.log(offset, itemsOnFetch, timestamp_now)
                 //setBeats(Array.from([...beats,...newBeats]))
+                // newBeats.reverse()
                 setBeats(beats.concat(newBeats))
                 setLoading(false)
             }})
@@ -53,6 +56,8 @@ const FeedPresenter = () => {
     useEffect(() => {
         if (intersection?.isIntersecting && !loading ) {
             //console.log(intersection?.isIntersecting)
+            setLastBeatID(beats[beats.length - 1].firestoreBeatID)
+
             setOffset(offset + itemsOnFetch)
             fetchData()
             if(beats == null) {
