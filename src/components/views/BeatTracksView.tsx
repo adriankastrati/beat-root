@@ -1,14 +1,16 @@
 
 import styled from "styled-components";
-import { theme, Track } from "../../common";
+import { Rhythm, Sample, theme, Track } from "../../common";
 import TrackView from "./TrackView";
 import MainButton, { MainButtonType } from "../views/common/MainButton";
+import { cloneDeep, sample } from "lodash";
 
 interface BeatTracksViewProps {
     onAddTrack?:()=>void,
     onRemoveTrack?:(index:number)=>void,
-    onEditTrack?:(index:number)=>void,
+    onSetTrack?:(index:number, newTrack:Track)=>void,
     tracks: Track[],
+    selectableSamples?: Sample[]
 }
 
 const TracksContainer = styled.div`
@@ -26,12 +28,43 @@ margin: 0 auto;
 `
 
 export default function BeatTracksView(props:BeatTracksViewProps){
-    return (        
+    function handleChangePulses(index:number, pulses:number){
+        let newTrack = cloneDeep(props.tracks[index])
+        newTrack.rhythm.pulses = pulses
+        props.onSetTrack!(index, newTrack)
+    }
+
+    function handleChangeSteps(index:number, steps:number){
+        let newTrack = cloneDeep(props.tracks[index])
+        newTrack.rhythm = new Rhythm(steps)
+        props.onSetTrack!(index, newTrack)
+    }
+
+    function handleChangeShift(index:number, shift:number){
+        let newTrack = cloneDeep(props.tracks[index])
+        newTrack.rhythm.shift = shift
+        props.onSetTrack!(index, newTrack)
+    }
+
+    function handleChangeSample(index:number, sample:Sample){
+        let newTrack = cloneDeep(props.tracks[index])
+        newTrack.sample = sample
+        props.onSetTrack!(index, newTrack)
+    }
+
+    return <div>
         <TracksContainer>
             {
-                props.tracks.map((track, i)=><TrackView key={i} track={track} 
-                onEdit={props.onEditTrack ? ()=>{props.onEditTrack!(i)} : undefined}
-                onDelete={props.onRemoveTrack ? ()=>props.onRemoveTrack!(i) : undefined}
+                props.tracks.map((track, i)=>
+                    <TrackView 
+                    key={i} 
+                    track={track} 
+                    onDelete={props.onRemoveTrack ? ()=>props.onRemoveTrack!(i) : undefined}
+                    onChangePulses={ props.onSetTrack ? (pulses:number) => handleChangePulses(i,pulses) : undefined}
+                    onChangeSample={ props.onSetTrack ? (sample:Sample) => handleChangeSample(i,sample) : undefined}
+                    onChangeSteps={ props.onSetTrack ? (steps:number) => handleChangeSteps(i,steps) : undefined}
+                    onChangeShift={ props.onSetTrack ? (shift:number) => handleChangeShift(i,shift) : undefined}
+                    selectableSamples={props.selectableSamples}
                 />)
             }
             <Center>
@@ -39,5 +72,6 @@ export default function BeatTracksView(props:BeatTracksViewProps){
 
             </Center>
         </TracksContainer>
-    )
+    ) 
+    </div>
 }

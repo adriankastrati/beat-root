@@ -1,11 +1,11 @@
 import { MutableRefObject } from "react"
 import { Beat } from "../../common"
 import { likeBeatAsUser, isBeatLikedByCurrentUser } from "../../model/firebase/firebaseBeat"
-import {BeatParent, ThemedCard,ButtonsContainer} from "./common/FeedViewElements"
 import styled from "styled-components";
 import { textStyles, theme } from "../../common";
 import React from "react";
 import MainButton, { MainButtonType } from "./common/MainButton";
+import { BeatParent, ButtonsContainer, ThemedCard } from "./common/feedViewElements";
 
 const OuterBox = styled.div`
   display:flex;

@@ -5,7 +5,7 @@ import React from 'react';
 import { Beat, Rhythm, Sample, Track } from '../common';
 import {createEmailPasswordAccount,loginEmailPasswordAccount, getCurrentUserID, logOutAccount} from '../model/firebase/firebaseAuthenticationModel'
 
-import {getBeatByID, createBeat, getAllSamples, isBeatLikedByCurrentUser, getQueryBeats} from "../model/firebase/firebaseBeat"
+import {getBeatByID, createBeat, isBeatLikedByCurrentUser, getQueryBeats, getSamples} from "../model/firebase/firebaseBeat"
 
 export default function ManualFirebaseTest(){
 
@@ -32,19 +32,16 @@ export default function ManualFirebaseTest(){
     setUser(null)
   }
   function logSamples(){
-    console.log(getAllSamples())
+    console.log(getSamples())
   }
   
-  function addTestData(){
-    let r1 = new Rhythm([7,2])
-    let r2 = new Rhythm([3,5])
-    
+  async function addTestData(){
+    let r1 = new Rhythm(5)
+    let r2 = new Rhythm(3)
 
-    let s: Sample ={
-      url: "https://tonejs.github.io/audio/drum-samples/Techno/kick.mp3",
-      name: "techno-kick",
-      firestoreSampleID: "e1nLYau0MQmzEdiojCXX"
-    }
+    let samples = await getSamples()
+
+    let s: Sample = samples![0].name
 
     let t1: Track ={
       rhythm: r1,
@@ -62,8 +59,8 @@ export default function ManualFirebaseTest(){
       composerID: "", //user ID
       likes:0, //user IDs
       tracks: [t1,t2], //track IDs
-      theme: ["italian"],
-      cpm:    12
+      theme: ["#000000", "#f01000"],
+      bpm:    120
     } 
 
     createBeat(b)
@@ -73,10 +70,8 @@ export default function ManualFirebaseTest(){
     getBeatByID("2AvtSLJxulacApUXRHHA").then(data=>console.log(data))
   }
 
-  function addTestDatafirestore(){}
-
   function getQueryBeat(){
-    getQueryBeats(3, 0, Timestamp.fromDate(new Date())).then(beats=>{console.log(beats)})
+    getQueryBeats(3, Timestamp.fromDate(new Date())).then(beats=>{console.log(beats)})
   }
   
   function beatLikedByCurrentUser(){

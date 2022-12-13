@@ -1,30 +1,33 @@
 
+import { cloneDeep } from "lodash";
 import * as Tone from "tone";
 import { Sampler } from "tone";
-import {Rhythm} from "../common";
+import {Rhythm, Sample, Track} from "../common";
+import { getSamples } from "./firebase/firebaseBeat";
 
 export default class AudioModel {
     initialized: boolean = false
     samplers: Tone.Sampler[] = []
+    samples = new Map<string,string>()
 
-    play(samplesAndRythms:{sampleURL:string, rhythm:Rhythm}[], loopTime:number){
+    play(tracks:Track[], bpm:number){ //TODO: Sample lookup table in initialized model. Sample is only a string
         if (!this.initialized){}
         this.clear()
         //create all samplers
-        this.samplers = samplesAndRythms.map(
-            ({sampleURL, rhythm}) => {
-
+        this.samplers = tracks.map(
+            ({sample, rhythm}) => {
+                let loopTime = 60*rhythm.steps/bpm
                 //create sampler
                 let sampler = new Sampler({
                     urls: {
                         A1: "",
                     },
-                    baseUrl: sampleURL, 
-                    //load samples once in model if it gets slow?
+                    baseUrl: this.samples.get(sample),
 
                     onload:()=>{
                         //schedule
                         Tone.Transport.scheduleRepeat((time:number)=>{
+                            console.log(rhythm.getNormalizedLoopSchedule())
                             rhythm.getNormalizedLoopSchedule().forEach(hitTime => {
                                 sampler.triggerAttackRelease("A1", "2", time + hitTime*loopTime);
                                     })
@@ -38,6 +41,10 @@ export default class AudioModel {
         
         //start transport
         Tone.Transport.start(Tone.now())
+    }
+
+    getSamples(){
+        return Array.from(this.samples.keys())
     }
 
     clear(){
@@ -59,9 +66,29 @@ export default class AudioModel {
     }
 
     init(){
-        //should be called once, at fist user generated event
-        return Tone.start().then(()=>{
-            this.initialized = true
+        //should be successfully called once, at fist user generated event
+        return Tone.start().then(async ()=>{
+            return await getSamples() //TODO: remove !... Rertry if fail
+                .then(sample => sample!.forEach(({name, url})=>this.samples.set(name, url))).then(()=>{
+                    this.initialized = true
+                })
         })
     }
 }
+
+
+
+// function mockGetSamples():Promise<{name:string, url:string}[]>{
+//     return new Promise(resolve => setTimeout(resolve, 1000)).then(()=>{
+//         return [
+//             {
+//                 name:"hihat.mp3",
+//                 url:"https://tonejs.github.io/audio/drum-samples/Techno/hihat.mp3" //will be local urls
+//             },
+//             {
+//                 name:"kick.mp3",
+//                 url:"https://tonejs.github.io/audio/drum-samples/Techno/kick.mp3" //will be local urls
+//             }
+//         ] 
+//     })
+// }
