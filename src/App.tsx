@@ -9,23 +9,11 @@ import ColorTestPage from "./pages/colorTestPage";
 import ManualFirebaseTest from "./pages/ManualFirebaseTest";
 import RootPage from "./pages/RootPage";
 import SignInTest from "./pages/signInTest";
-import React from "react";
-import styled from "styled-components";
-
-const MainDiv = styled.div/*<MainProps>*/`
-    
-}
-`/*
-interface MainProps{
-    active:boolean
-}*/
 
 export default function App(){
-
     return <BrowserRouter>
-        
-        <MainDiv>
-        <NavBar></NavBar>
+        <div>
+            <NavBar/>
             <Switch>
                 <Route exact path="/">
                     <RootPage/>
@@ -65,6 +53,6 @@ export default function App(){
                 </Route>
 
             </Switch>
-        </MainDiv>
+        </div>
     </BrowserRouter>
 }
