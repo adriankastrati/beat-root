@@ -30,14 +30,14 @@ interface FeedViewProps{
     loading: boolean
     targetRef: MutableRefObject<HTMLDivElement | null>
     itemsOnFetch: number
-    onLikeBeat: (beatID: string) => void
+    onLikeBeat: (beatID: string, likes: number) => void
 }
 
 export default function FeedView(props:FeedViewProps){
 
     // need firebase functions for this
-    function likeHandler(beatID: string):void {
-        props.onLikeBeat(beatID)
+    function likeHandler(beatID: string, likes:number):void {
+        props.onLikeBeat(beatID,likes)
     }
 
     function midiCopyHandler():void {
@@ -57,7 +57,7 @@ export default function FeedView(props:FeedViewProps){
 
                 </ThemedCard>
                 <ButtonsContainer>                                   
-                    <MainButton type = {MainButtonType.Like}  onClick={()=>{likeHandler(beat.firestoreBeatID)}} text = {""+beat.likes} scale = {1}></MainButton>
+                    <MainButton type = {MainButtonType.Like}  onClick={()=>{likeHandler(beat.firestoreBeatID,beat.likes)}} text = {""+beat.likes} scale = {1}></MainButton>
                     <MainButton type = {MainButtonType.Copy} onClick={midiCopyHandler} text = "" scale = {1.03}></MainButton>
                 </ButtonsContainer>
             </BeatParent>
