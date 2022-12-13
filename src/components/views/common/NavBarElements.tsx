@@ -11,11 +11,10 @@ export const TopNav = styled.div<NavBarProps>`
     display:flex;
     background-color: ${theme.light};
     width: 100vw;
-    position: fixed;
+    position: sticky;
     opacity: 1;
     top: 0;
     z-index: 9;
-    
 `;
 
 // topnav higher z-index
