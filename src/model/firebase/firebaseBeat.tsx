@@ -15,9 +15,16 @@ const beatConverter ={
             theme: beat.theme,
             likedBy: [],
             tracks: (beat.tracks as Track[]).map((track)=> { 
-                return {sampleID: track.sample.firestoreSampleID, track: Array.from(track.rhythm.glyphs)}
+                return {
+                    sample: track.sample, 
+                    rhythm: {
+                        steps: track.rhythm.steps, 
+                        pulses: track.rhythm.pulses, 
+                        shift: track.rhythm.shift
+                    }
+                }
             }),
-            cpm: beat.cpm,
+            bpm: beat.bpm,
             creationDate: Timestamp.now().valueOf()
         };
     },
@@ -30,33 +37,24 @@ const beatConverter ={
             description: snapshot.data().description,
             theme: snapshot.data().theme,
             likes: snapshot.data().likedBy.length,
-            tracks: snapshot.data().tracks,
-            cpm: snapshot.data().cpm        
+            tracks: (snapshot.data().tracks as any[]).map(track=>{
+                let rhythm = new Rhythm(track.rhythm.steps)
+                rhythm.pulses = track.rhythm.pulses
+                rhythm.shift = track.rhythm.shift
+
+                return {rhythm, sample:track.sample} as Track
+            }) ,
+            bpm: snapshot.data().bpm,
+            firestoreBeatID: snapshot.id       
         } as unknown as Beat
     }
-}
-
-async function getSampleByID(sampleID: string){
-    let sampleRef = doc(firestore, "samples/", sampleID);
-    
-    return getDoc(sampleRef).then(sampleSnapshot=>{
-    if (sampleSnapshot.exists())
-        return {...sampleSnapshot.data(), firestoreSampleID:sampleID} as Sample 
-    
-    return null
-    })
 }
 
 async function getBeatByID(beatID: string): Promise<Beat|null>{
     let docRef = doc(firestore, "beats/", beatID).withConverter(beatConverter);
     return await getDoc(docRef).then(async beatSnapshot=>{
         if (beatSnapshot.exists()){
-            return {...beatSnapshot.data(),
-                firestoreBeatID:beatID, tracks: await Promise.all(beatSnapshot.data().tracks.map(async (track : any)=> {
-                    return {rhythm: new Rhythm(track.track), sample: await getSampleByID(track.sampleID)}
-                }))
-
-            } as Beat}
+            return beatSnapshot.data()}
         else return null
     });  
 }
@@ -77,13 +75,7 @@ async function getQueryBeats(howMany:number, startTimeStamp: Timestamp, startBea
     async function getBeats(query: Query<DocumentData>){
         return getDocs(query.withConverter(beatConverter)).then(async docs=>{
             return Promise.all(docs.docs.map(async beatSnapshot=>{   
-    
-                return {...beatSnapshot.data(), 
-                    firestoreBeatID:beatSnapshot.id,
-                    tracks: await Promise.all(beatSnapshot.data().tracks.map((async (track : any)=> {
-                        return {rhythm: new Rhythm(track.track), sample: await getSampleByID(track.sampleID)}
-                    })))
-                } as Beat
+                return beatSnapshot.data()
             }))
         })
     }
@@ -131,13 +123,7 @@ async function queryBeatsByUser(howMany:number, userID: string, startBeatID?:str
     async function getBeats(query: Query<DocumentData>){
         return getDocs(query.withConverter(beatConverter)).then(async docs=>{
             return Promise.all(docs.docs.map(async beatSnapshot=>{   
-    
-                return {...beatSnapshot.data(), 
-                    firestoreBeatID:beatSnapshot.id,
-                    tracks: await Promise.all(beatSnapshot.data().tracks.map((async (track : any)=> {
-                        return {rhythm: new Rhythm(track.track), sample: await getSampleByID(track.sampleID)}
-                    })))
-                } as Beat
+                return beatSnapshot.data()
             }))
         })
     }
@@ -224,17 +210,6 @@ async function isBeatLikedByUserID(beatID: string, userID:string): Promise<boole
     })
 }
 
-async function getAllSamples(): Promise<Sample[]>{
-    let samplesCollection = collection(firestore, "samples/");
-
-    return await getDocs(query(samplesCollection)).then(sampleSnapshot=>{
-       return sampleSnapshot.docs.map(sample =>{
-            const { url, name }: { url: string; name: string } = sample.data() as any
-            return {url: url, name:name, firestoreSampleID: sample.id} as Sample
-        })
-    })   
-} 
-
 async function likeBeatAsUser(beatID: string):Promise<boolean>{
 
     return getCurrentUserID().then(async (userID)=>{       
@@ -262,12 +237,14 @@ async function unlikeBeatAsUser(beatID: string):Promise<boolean>{
     })
 }
 
-async function getSamples(): Promise<void|string[]> {
+type nameAndUrl = {name:string, url:string}
+
+async function getSamples(): Promise<void|nameAndUrl[]> {
     let sampleRef = ref(storage, 'samples/')
     return listAll(sampleRef).then((res) => {
         return Promise.all(res.items.map((itemRef) => {
             return getBlob(itemRef).then(blob=>{
-                return URL.createObjectURL(blob)
+                return {name:itemRef.name, url:URL.createObjectURL(blob)}
             })
         }))
 
@@ -277,4 +254,4 @@ async function getSamples(): Promise<void|string[]> {
 }
 
 
-export {queryBeatsByUser,getSamples, unlikeBeatAsUser, likeBeatAsUser, getAllSamples,getBeatByID,createBeat, getUserById, isBeatLikedByCurrentUser, isBeatLikedByUserID, getQueryBeats}
+export {queryBeatsByUser,getSamples, unlikeBeatAsUser, likeBeatAsUser,getBeatByID,createBeat, getUserById, isBeatLikedByCurrentUser, isBeatLikedByUserID, getQueryBeats}
