@@ -27,7 +27,7 @@ export default function BeatDetailPresenter(props:BeatDetailPresenterProps) {
 
 
     function handlePlay(){
-        playTracks(beat.tracks, beat.cpm, audioModel)
+        playTracks(beat.tracks, beat.bpm, audioModel)
     }
 
     function handleStop(){

@@ -1,20 +1,20 @@
 
 import * as Tone from "tone";
 import { Sampler } from "tone";
-import {Rhythm, Sample} from "../common";
+import {Rhythm, Sample, Track} from "../common";
 
 export default class AudioModel {
     initialized: boolean = false
     samplers: Tone.Sampler[] = []
     samples = new Map<string,string>()
 
-    play(samplesAndRythms:{sample:Sample, rhythm:Rhythm}[], loopTime:number){ //TODO: Sample lookup table in initialized model. Sample is only a string
+    play(tracks:Track[], bpm:number){ //TODO: Sample lookup table in initialized model. Sample is only a string
         if (!this.initialized){}
         this.clear()
         //create all samplers
-        this.samplers = samplesAndRythms.map(
+        this.samplers = tracks.map(
             ({sample, rhythm}) => {
-
+                let loopTime = 60*rhythm.steps/bpm
                 //create sampler
                 let sampler = new Sampler({
                     urls: {

@@ -29,7 +29,7 @@ async function getDummyBeat(beatID:string):Promise<Beat>{
                 {rhythm:new Rhythm(8), sample: "techno-kick"},
             ],
             likes: 15,
-            cpm: 20
+            bpm: 120
         } as Beat
     })
 }

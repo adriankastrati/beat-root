@@ -20,7 +20,7 @@ export interface Beat{
     theme: string[],
     tracks: Track[],
     likes: number,
-    cpm: number
+    bpm: number
 }
 
 function gcd(a:number, b:number):number {
@@ -94,9 +94,9 @@ export const theme = {
 
 export const defaultSample: Sample = "hihat.mp3" //TODO: change to real name
 
-export function playTracks(tracks:Track[], cpm:number, audioModel:AudioModel){
+export function playTracks(tracks:Track[], bpm:number, audioModel:AudioModel){
     audioModel.play(
-        tracks.map(({sample, rhythm})=>({sample, rhythm})), 60/cpm)
+        tracks.map(({sample, rhythm})=>({sample, rhythm})), bpm)
 }
 
 export enum TextVaiant{

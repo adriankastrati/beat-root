@@ -52,7 +52,7 @@ export default function BeatCreatePresenter(){
     const [title, setTitle] = useState("my beat")
     const [description, setDescription] = useState("")
     const [theme, setTheme] = useState<string[]>([])
-    const [cpm, setCpm] = useState(20)
+    const [bpm, setBpm] = useState(120)
     const [tracks, setTracks] = useState<Track[]>([])
 
     const [editThemeModal, setEditThemeModal] = useState(false)
@@ -62,7 +62,7 @@ export default function BeatCreatePresenter(){
 
     function play(){
         setPlaying(true)
-        playTracks(tracks, cpm, audioModel)
+        playTracks(tracks, bpm, audioModel)
     }
 
     function pause(){
