@@ -5,8 +5,8 @@ import React from 'react';
 import { Beat, Rhythm, Sample, Track } from '../common';
 import {createEmailPasswordAccount,loginEmailPasswordAccount, getCurrentUserID, logOutAccount} from '../model/firebase/firebaseAuthenticationModel'
 
-import {getBeatByID, createBeat, isBeatLikedByCurrentUser, getQueryBeats, getSamples} from "../model/firebase/firebaseBeat"
-
+import {getBeatByID, createBeat, isBeatLikedByCurrentUser, getQueryBeats, getSamples, queryBeatsByUser} from "../model/firebase/firebaseBeat"
+import { SortBy } from '../model/firebase/firebaseBeat';
 export default function ManualFirebaseTest(){
 
   const [user, setUser] = React.useState<string|null>(null)
@@ -54,7 +54,7 @@ export default function ManualFirebaseTest(){
     
     let b: Beat = {
       firestoreBeatID: "",
-      title: "litty song",
+      title: "2",
       description:"description",
       composerID: "", //user ID
       likes:0, //user IDs
@@ -66,12 +66,16 @@ export default function ManualFirebaseTest(){
     createBeat(b)
   }
 
+  async function getUserTest(){
+    console.log(await queryBeatsByUser(2,"aFSQRyxBjxgyY0knbHdhg3Ck2d83"))
+  }
+
   function getTestData(){
     getBeatByID("2AvtSLJxulacApUXRHHA").then(data=>console.log(data))
   }
 
   function getQueryBeat(){
-    getQueryBeats(3, Timestamp.fromDate(new Date())).then(beats=>{console.log(beats)})
+    getQueryBeats(3, Timestamp.fromDate(new Date()),SortBy.likes).then(beats=>{console.log(beats)})
   }
   
   function beatLikedByCurrentUser(){
@@ -87,6 +91,7 @@ export default function ManualFirebaseTest(){
   
   return (
     <div className="App">
+      <button onClick={getUserTest}>get Userbeats</button>
       <button onClick={createDummy}> create</button>
       <button onClick={loginDummy}> login</button>
       <button onClick={logSamples}> log samples</button>
