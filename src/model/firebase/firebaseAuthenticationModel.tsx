@@ -4,7 +4,7 @@ import {
 } from "firebase/auth";
 import {initializeApp} from "firebase/app"
 import { firebaseConfig } from "./firebaseConfig";
-import {collection, doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
+import {collection, doc, getDoc, getFirestore, setDoc, updateDoc } from "firebase/firestore";
 
 
 class firebaseError{
@@ -13,6 +13,13 @@ class firebaseError{
     constructor(errMsg: string){
         this.errorMessage = errMsg
     }
+}
+
+export interface UserInformation{
+    username: string
+    email: string
+    authID: string
+    description: string
 }
 
 const firebaseApp = initializeApp(firebaseConfig)
@@ -28,12 +35,12 @@ async function getCurrentUserID(): Promise<string>{
     return ""
 }
 
-async function getUserInformation(userID:string){    
+async function getUserInformation(userID:string):Promise<UserInformation>{    
     let docRef = doc(firestore, "users/", userID); 
-    return getDoc(docRef).then(async userSnapshot=>{
-        return userSnapshot.data()
-    })
+    const userSnapshot = await getDoc(docRef);
+    return ({ ...userSnapshot.data() } as UserInformation);
 }
+
 
 /**s
  * 
@@ -83,7 +90,8 @@ async function createEmailPasswordAccount(email: string, username:string, passwo
             username: username,
             email: email,
             description:"",
-            authID: authUser.user.uid
+            authID: authUser.user.uid,
+            profilePictureURL: ""
         })
         return null
     }).catch((error)=>{
@@ -105,6 +113,32 @@ async function createEmailPasswordAccount(email: string, username:string, passwo
     })
 }
     
+async function setProfilePicture(newPicture:string): Promise<boolean>{
+    //TODO unique username:
+    return getCurrentUserID().then(async (userID)=>{       
+        let userREF = doc(firestore,"user/", userID)
+        await updateDoc(userREF, {
+            profilePictureURL: newPicture
+        });
+        return true
+    }).catch(()=>{
+        return false
+    })
+}
+
+async function setUsername(newUsername:string): Promise<boolean>{
+    //TODO unique username:
+    return getCurrentUserID().then(async (userID)=>{       
+        let userREF = doc(firestore,"user/", userID)
+        await updateDoc(userREF, {
+        username: newUsername
+        });
+        return true
+    }).catch(()=>{
+        return false
+    })
+}
+
 /**
  * 
  * @returns the boolean value if a value is logged in
@@ -123,4 +157,4 @@ async function logOutAccount(){
 }
 
 
-export{getUserInformation,getCurrentUserID,logOutAccount,isUserLoggedIn,createEmailPasswordAccount,loginEmailPasswordAccount}
+export{setProfilePicture,setUsername,getUserInformation,getCurrentUserID,logOutAccount,isUserLoggedIn,createEmailPasswordAccount,loginEmailPasswordAccount}
