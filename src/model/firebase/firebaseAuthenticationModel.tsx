@@ -143,6 +143,19 @@ async function setProfilePicture(newPicture:string): Promise<boolean>{
     })
 }
 
+async function setDescription(newDescription:string): Promise<boolean>{
+    return getCurrentUserID().then(async (userID)=>{       
+        let userREF = doc(firestore,"users/", userID)
+        await updateDoc(userREF, {
+        description: newDescription
+        });
+        return true
+    }).catch((e)=>{
+        console.log(e)
+        return false
+    })
+}
+
 async function setUsername(newUsername:string): Promise<boolean>{
     return getCurrentUserID().then(async (userID)=>{       
         let userREF = doc(firestore,"users/", userID)
@@ -173,4 +186,4 @@ async function logOutAccount(){
 }
 
 
-export{getProfilePictures,setProfilePicture,setUsername,getUserInformation,getCurrentUserID,logOutAccount,isUserLoggedIn,createEmailPasswordAccount,loginEmailPasswordAccount}
+export{setDescription, getProfilePictures,setProfilePicture,setUsername,getUserInformation,getCurrentUserID,logOutAccount,isUserLoggedIn,createEmailPasswordAccount,loginEmailPasswordAccount}
