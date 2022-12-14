@@ -80,7 +80,16 @@ export default function BeatVisualisationPresenter(props:BeatVisualisationPresen
     },[isPlaying])
 
     useEffect(()=>{
-        draw()
+        if (!audioModel.playing){
+            //stop due to external event
+            pause()
+        }
+    },[audioModel.playing])
+
+    useEffect(()=>{
+        if (drawContext) {
+            draw()
+        }
     },[step, props.tracks, props.colorTheme])
 
     function play(){
@@ -102,6 +111,9 @@ export default function BeatVisualisationPresenter(props:BeatVisualisationPresen
         let h = canvasRef.current!.height
 
         let maxTracks = 5
+
+        //clear
+        ctx.clearRect(0, 0, w, h);
         
         //draw the rings
         props.tracks.forEach((track,i)=>{
@@ -204,7 +216,7 @@ export default function BeatVisualisationPresenter(props:BeatVisualisationPresen
         /> 
         </CanvasWrapper>
 
-        <button onClick={draw}> draw! </button>
+        {/* <button onClick={draw}> draw! </button> */}
         <button onClick={()=>play()}> play </button>
         <button onClick={()=>pause()}> pause </button>        
        
