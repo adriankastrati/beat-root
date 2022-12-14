@@ -127,7 +127,6 @@ async function setProfilePicture(newPicture:string): Promise<boolean>{
 }
 
 async function setUsername(newUsername:string): Promise<boolean>{
-    //TODO unique username:
     return getCurrentUserID().then(async (userID)=>{       
         let userREF = doc(firestore,"user/", userID)
         await updateDoc(userREF, {
