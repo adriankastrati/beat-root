@@ -18,7 +18,7 @@ export interface Beat{
     title: string,
     description: string,
     theme: string[],
-    tracks: Track[],
+    tracks: Track[],    
     likes: number,
     bpm: number
 }
@@ -98,12 +98,8 @@ export const theme = {
     black: "#000000",
 }
 
-export const defaultSample: Sample = "hihat.mp3" //TODO: change to real name
+export const defaultSample: Sample = "clap-tape.wav" //TODO: change to real name
 
-export function playTracks(tracks:Track[], bpm:number, audioModel:AudioModel){
-    audioModel.play(
-        tracks.map(({sample, rhythm})=>({sample, rhythm})), bpm)
-}
 
 export enum TextVariant{
     BODY,

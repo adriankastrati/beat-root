@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useLocation } from "react-use"
 import MainButton, { MainButtonType } from "./common/MainButton"
-import { NavContainer, TopNav, NavCurrentPage, NavBurgerIcon, NavIcon, NavLogo, NavMenu, NavItem, NavLink } from "./common/NavBarElements"
+import { NavContainer, Frame, TopNav, NavCurrentPage, NavBurgerIcon, NavIcon, NavLogo, NavMenu, NavItem, NavLink } from "./common/NavBarElements"
 import { textStyles, theme } from "../../common";
 // TODO: navbar permanently fixed at top when scrolling
 // TODO: current site to display at top
@@ -32,42 +32,40 @@ export default function NavBar(){
 
     useEffect(locationHandler,[absPath])
     
-    return (
-        <TopNav active={burgerState}> 
-            <NavContainer active={burgerState}>
-                <NavLogo to="/" onClick={()=>{}}> 
-                   logo 
-                </NavLogo>
-                <NavCurrentPage>
-                {currentPageName}
-                </NavCurrentPage>
-                
-                {burgerState? 
-                <MainButton type = {MainButtonType.Cross} scale = {0.5} text = "" onClick={clickHandler} frameOff={true} backgroundColor={theme.medium}></MainButton>:
-                <MainButton type = {MainButtonType.Burger} scale = {0.5} text = "" onClick={clickHandler} frameOff={true} backgroundColor={theme.medium}></MainButton>}
-                
+    return (<Frame>
+                <TopNav active={burgerState}> 
+                    <NavContainer active={burgerState}>
+                        <NavLogo to="/" onClick={()=>{}}> 
+                        logo 
+                        </NavLogo>
+                        <NavCurrentPage>
+                        {currentPageName}
+                        </NavCurrentPage>
+                        
+                        {burgerState? 
+                        <MainButton type = {MainButtonType.Cross} scale = {0.5} text = "" onClick={clickHandler} frameOff={true} backgroundColor={theme.medium}></MainButton>:
+                        <MainButton type = {MainButtonType.Burger} scale = {0.5} text = "" onClick={clickHandler} frameOff={true} backgroundColor={theme.medium}></MainButton>}
+                        
 
-                <NavMenu active={burgerState}>
-                    <NavItem>
-                        <NavLink to="/play/create" onClick={()=>{clickHandler()}}>create</NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink to="/play/explore"onClick={()=>{clickHandler()}}>explore</NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink to="/"onClick={()=>{clickHandler()}}>home</NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink to="/test/firebase"onClick={()=>{clickHandler()}}>firebase test</NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink to="/test/sign-in"onClick={()=>{clickHandler()}}>test sign-in</NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink to="/test/user-page"onClick={()=>{clickHandler()}}>test user-page</NavLink>
-                    </NavItem>
-                </NavMenu>
-            </NavContainer>
-        </TopNav>
+                        <NavMenu active={burgerState}>
+                            <NavItem>
+                                <NavLink to="/play/create" onClick={()=>{clickHandler()}}>create</NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink to="/play/explore"onClick={()=>{clickHandler()}}>explore</NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink to="/"onClick={()=>{clickHandler()}}>home</NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink to="/test/firebase"onClick={()=>{clickHandler()}}>firebase test</NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink to="/test/sign-in"onClick={()=>{clickHandler()}}>test sign-in</NavLink>
+                            </NavItem>
+                        </NavMenu>
+                    </NavContainer>
+                </TopNav>
+        </Frame>
     )
 }
