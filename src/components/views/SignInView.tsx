@@ -30,12 +30,6 @@ const TitleStyle = styled.div`
   margin:10px;
   text-align: center;
 `
-const ErrorStyle = styled.div`
-  font-size:16px;
-  margin:10px;
-  text-align: center;
-  color: red;
-`
 const ResultStyle = styled.div<LoginProps>`
   font-size:16px;
   margin:10px;

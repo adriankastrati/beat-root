@@ -1,16 +1,18 @@
 import UserPageView from "../views/UserPageView";
-import { getCurrentUserID, getUserInformation, isUserLoggedIn, setUsername, UserInformation } from "../../model/firebase/firebaseAuthenticationModel";
+import { getCurrentUserID, getProfilePictures, getUserInformation, isUserLoggedIn, setProfilePicture, setUsername, UserInformation } from "../../model/firebase/firebaseAuthenticationModel";
 import { useEffect, useState } from "react";
 
 export default function UserPagePresenter(){
     const[userInformation, setUserInformation] = useState<UserInformation>()
     const[profileChange, setProfileChange] = useState<string>()
+    
 
     useEffect(()=>{
         isUserLoggedIn().then(log =>{
             if(log){
                 getCurrentUserID().then(async userID =>{
                 getUserInformation(userID).then(userInformation=>{
+                    
                     setUserInformation(userInformation)
                 }).catch(e=>{
                     console.log(e)
@@ -33,7 +35,9 @@ export default function UserPagePresenter(){
     }
 
     async function changePicture(pictureLink: string){
-        return setUsername(pictureLink).then(acheived=>{
+        console.log(pictureLink)
+
+        return setProfilePicture(pictureLink).then(acheived=>{
             if (acheived)
                 setProfileChange("Completed")
             else
@@ -45,10 +49,13 @@ export default function UserPagePresenter(){
        {
         <UserPageView
             onUpdateUserName = {changeUsername}
+            onUpdateProfilePicture={changePicture}
             username = {userInformation?userInformation.username:null}
             email={userInformation?userInformation.email:null}
             id={userInformation?userInformation.authID:null}
             description={userInformation?userInformation.description:null}
+            profilePicture={userInformation?userInformation.profilePictureURL:null}
+            
         />
     }
     </div>
