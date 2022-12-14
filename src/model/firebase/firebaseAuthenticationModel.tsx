@@ -4,7 +4,7 @@ import {
 } from "firebase/auth";
 import {initializeApp} from "firebase/app"
 import { firebaseConfig } from "./firebaseConfig";
-import {collection, doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
+import {collection, doc, getDoc, getFirestore, setDoc, updateDoc } from "firebase/firestore";
 
 
 class firebaseError{
@@ -40,6 +40,7 @@ async function getUserInformation(userID:string):Promise<UserInformation>{
     const userSnapshot = await getDoc(docRef);
     return ({ ...userSnapshot.data() } as UserInformation);
 }
+
 
 /**s
  * 
@@ -89,7 +90,8 @@ async function createEmailPasswordAccount(email: string, username:string, passwo
             username: username,
             email: email,
             description:"",
-            authID: authUser.user.uid
+            authID: authUser.user.uid,
+            profilePictureURL: ""
         })
         return null
     }).catch((error)=>{
@@ -111,6 +113,32 @@ async function createEmailPasswordAccount(email: string, username:string, passwo
     })
 }
     
+async function setProfilePicture(newPicture:string): Promise<boolean>{
+    //TODO unique username:
+    return getCurrentUserID().then(async (userID)=>{       
+        let userREF = doc(firestore,"user/", userID)
+        await updateDoc(userREF, {
+            profilePictureURL: newPicture
+        });
+        return true
+    }).catch(()=>{
+        return false
+    })
+}
+
+async function setUsername(newUsername:string): Promise<boolean>{
+    //TODO unique username:
+    return getCurrentUserID().then(async (userID)=>{       
+        let userREF = doc(firestore,"user/", userID)
+        await updateDoc(userREF, {
+        username: newUsername
+        });
+        return true
+    }).catch(()=>{
+        return false
+    })
+}
+
 /**
  * 
  * @returns the boolean value if a value is logged in
@@ -129,4 +157,4 @@ async function logOutAccount(){
 }
 
 
-export{getUserInformation,getCurrentUserID,logOutAccount,isUserLoggedIn,createEmailPasswordAccount,loginEmailPasswordAccount}
+export{setProfilePicture,setUsername,getUserInformation,getCurrentUserID,logOutAccount,isUserLoggedIn,createEmailPasswordAccount,loginEmailPasswordAccount}

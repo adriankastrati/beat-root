@@ -6,6 +6,7 @@ interface UserPageProps{
     id: string|null
     description: string|null
     profilePicture?: string|null
+    onUpdateUserName: (username: string)=> void
 }
 
 export default function UserPageView(props: UserPageProps){
