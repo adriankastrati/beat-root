@@ -9,6 +9,7 @@ export default class AudioModel {
     initialized: boolean = false
     samplers: Tone.Sampler[] = []
     samples = new Map<string,string>()
+    playing = false
 
     play(tracks:Track[], bpm:number){ //TODO: Sample lookup table in initialized model. Sample is only a string
         if (!this.initialized){}
@@ -41,6 +42,8 @@ export default class AudioModel {
         
         //start transport
         Tone.Transport.start(Tone.now())
+
+        this.playing = true
     }
 
     getSamples(){
@@ -63,6 +66,8 @@ export default class AudioModel {
         this.clear()
         //stop transport
         Tone.Transport.stop()
+
+        this.playing = false
     }
 
     init(){
