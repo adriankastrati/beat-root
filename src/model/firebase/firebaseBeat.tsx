@@ -15,7 +15,7 @@ export enum SortBy {
 }
 
 const firestore = getFirestore()
-const storage = getStorage()
+export const storage = getStorage()
 
 const beatConverter ={
     toFirestore:(beat: WithFieldValue<Beat>): DocumentData => {
