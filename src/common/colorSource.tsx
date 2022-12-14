@@ -8,12 +8,12 @@ async function getColorRandomScheme(colorCount: number): Promise<string[]>{
 
     let endpoint = `scheme?hex=${rand}&format=json&count=${colorCount}&mode=analogic-complement&hsl=21,50%,0%`;
     
-    return fetch(colorBaseURL+endpoint).then((colorPromise)=>{
-        if(colorPromise.status !== 200){
+    return fetch(colorBaseURL+endpoint).then((response)=>{
+        if(response.status !== 200){
             throw Error("non 200 response to api call")
         }
 
-        return colorPromise.json()
+        return response.json()
     }).then((colorScheme: any)=>{
 
         return colorScheme.colors.map((color: any)=>{
