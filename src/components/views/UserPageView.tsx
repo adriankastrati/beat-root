@@ -75,7 +75,6 @@ const TitleStyle = styled.div`
   margin:10px;
   text-align: center;
 `
-
 interface UserPageProps{
     username: string|null
     email: string|null
@@ -90,6 +89,7 @@ export default function UserPageView(props: UserPageProps){
     const [profilePicChangingState, setPictureMenuOpen] = React.useState<boolean>(false)
     const [loadedImages, setLoadedImages] =  React.useState<string[]>([]);
     const [selectedImage, setSelectedImage] = React.useState<string>(props.profilePicture?props.profilePicture:loadedImages[0]);
+    
     let k = 0; 
 
 
@@ -118,6 +118,7 @@ export default function UserPageView(props: UserPageProps){
     }
     function profileSelectBoxCB(){
         setPictureMenuOpen(!profilePicChangingState)
+        setSelectedImage(props.profilePicture?props.profilePicture:loadedImages[0]);
     }
     function updateProfilePicture(){
         let pic = selectedImage;
