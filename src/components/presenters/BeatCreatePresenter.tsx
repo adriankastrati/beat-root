@@ -61,7 +61,7 @@ export default function BeatCreatePresenter(){
     const [title, setTitle] = useState("my beat")
     const [description, setDescription] = useState("")
     const [theme, setTheme] = useState<string[]>([])
-    const [bpm, setBpm] = useState(120)
+    const [bpm, setBpm] = useState(120*4)
     const [tracks, setTracks] = useState<Track[]>([])
 
     const [editThemeModal, setEditThemeModal] = useState(false)

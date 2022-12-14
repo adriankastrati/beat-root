@@ -217,8 +217,7 @@ export default function BeatVisualisationPresenter(props:BeatVisualisationPresen
         </CanvasWrapper>
 
         {/* <button onClick={draw}> draw! </button> */}
-        <button onClick={()=>play()}> play </button>
-        <button onClick={()=>pause()}> pause </button>        
+        <button onClick={()=>isPlaying ? pause(): play()}> play/pause </button>       
        
     </OuterBox>
 }
