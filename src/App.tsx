@@ -22,11 +22,10 @@ interface MainProps{
 }*/
 
 export default function App(){
-
     return <BrowserRouter>
+        <div>
         
-        <MainDiv>
-        <NavBar></NavBar>
+            <NavBar/>
             <Switch>
                 <Route exact path="/">
                     <RootPage/>
@@ -70,6 +69,6 @@ export default function App(){
                 </Route>
 
             </Switch>
-        </MainDiv>
+        </div>
     </BrowserRouter>
 }

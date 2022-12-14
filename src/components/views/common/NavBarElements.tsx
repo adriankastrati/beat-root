@@ -5,17 +5,18 @@ import { textStyles, theme } from "../../../common";
 interface NavBarProps {
     active: boolean
 }
-
+export const Frame = styled.div`
+margin-top: 50px;
+`
 // topnav wrapper
 export const TopNav = styled.div<NavBarProps>`
     display:flex;
     background-color: ${theme.light};
     width: 100vw;
-    position: fixed;
     opacity: 1;
     top: 0;
     z-index: 9;
-    
+    position:fixed;
 `;
 
 // topnav higher z-index
@@ -68,7 +69,7 @@ export const NavMenu = styled.ul<NavBarProps>`
         width: 100vh;
         height: 100vh;
         position: absolute;
-        left: ${({active}) => (!active ? "100%":"42%")};
+        left: ${props => !props.active ? "100%":"42%"};
         opacity: 0.95;
         transition: all 0.2s ease;
         background: #434242;
