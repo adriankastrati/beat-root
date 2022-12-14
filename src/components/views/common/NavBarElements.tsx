@@ -1,19 +1,22 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { textStyles, theme } from "../../../common";
 
 interface NavBarProps {
     active: boolean
 }
-
+export const Frame = styled.div`
+margin-top: 50px;
+`
 // topnav wrapper
 export const TopNav = styled.div<NavBarProps>`
     display:flex;
-    background-color: #b3b3b1;
+    background-color: ${theme.light};
     width: 100vw;
-    position: sticky;
     opacity: 1;
     top: 0;
     z-index: 9;
+    position:fixed;
 `;
 
 // topnav higher z-index
@@ -22,7 +25,7 @@ export const NavContainer = styled.div<NavBarProps>`
     justify-content: space-between;
     width: 200%; // why 
     height: 2rem;
-    background-color: #DFDFDE;
+    background-color: ${theme.medium};
     margin-bottom: 2px;
     z-index: 10;
 `;
@@ -66,7 +69,7 @@ export const NavMenu = styled.ul<NavBarProps>`
         width: 100vh;
         height: 100vh;
         position: absolute;
-        left: ${({active}) => (!active ? "100%":"42%")};
+        left: ${props => !props.active ? "100%":"42%"};
         opacity: 0.95;
         transition: all 0.2s ease;
         background: #434242;

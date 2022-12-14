@@ -6,11 +6,15 @@ import styled from "styled-components";
 import save from "../../../icons/save.svg"
 import like from "../../../icons/heart.svg"
 import copy from "../../../icons/copy.svg"
+import burger from "../../../icons/burger.svg"
+import cross from "../../../icons/cross.svg"
 import { isPropertySignature } from "typescript";
 
 interface ButtonInterface{
     width: number
     scale: number
+    backgroundColor?:string
+    frameOff?:boolean
 }
 
 const ButtonStyle = styled.button<ButtonInterface>`  display:inline-flex;
@@ -18,8 +22,8 @@ width: ${props => props.width *props.scale}px;
 height: ${props => props.scale}%;
 text-align: center;
 align-items: center;
-background-color: rgb(255, 255, 255); 
-border: 1px solid rgb(155, 155, 155); 
+background-color: ${props=>props.backgroundColor? props.backgroundColor:"rgb(255, 255, 255)"}; 
+border: ${props => props.frameOff? 0 : 1}px solid rgb(155, 155, 155); 
 height: fit-content;
 border-radius: 5px;
 color: rgb(0, 0, 0); 
@@ -43,6 +47,8 @@ export enum MainButtonType{
     Add,
     Like,
     Copy,
+    Burger,
+    Cross,
     Plain
 }
 
@@ -52,6 +58,8 @@ interface Props{
     onClick: any
     scale: number
     width?: number
+    frameOff?:boolean
+    backgroundColor?:string
 }
 
 function MainButton(props: Props){
@@ -87,10 +95,18 @@ function MainButton(props: Props){
             btnWidth = 50;
             icon = copy;
             break;
+        case MainButtonType.Burger:
+            btnWidth = 50;
+            icon = burger;
+            break;
+        case MainButtonType.Cross:
+            btnWidth = 50;
+            icon = cross;
+            break;
     }
     if(props.type != MainButtonType.Plain){
         return (
-                    <ButtonStyle scale = {props.scale} width = {props.width ? props.width : btnWidth} onClick={props.onClick}>
+                    <ButtonStyle scale = {props.scale} width = {props.width ? props.width : btnWidth} onClick={props.onClick} frameOff={props.frameOff} backgroundColor = {props.backgroundColor}>
                         <ButtonImg src={icon}></ButtonImg>
                         {props.text}
                     </ButtonStyle>
