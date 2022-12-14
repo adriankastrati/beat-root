@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
 import { useLocation } from "react-use"
-import { NavContainer, TopNav, NavCurrentPage, NavBurgerIcon, NavIcon, NavLogo, NavMenu, NavItem, NavLink } from "./common/NavBarElements"
-
+import MainButton, { MainButtonType } from "./common/MainButton"
+import { NavContainer, Frame, TopNav, NavCurrentPage, NavBurgerIcon, NavIcon, NavLogo, NavMenu, NavItem, NavLink } from "./common/NavBarElements"
+import { textStyles, theme } from "../../common";
 // TODO: navbar permanently fixed at top when scrolling
 // TODO: current site to display at top
 // TODO: burger button as actual burger -> cross
@@ -31,38 +32,40 @@ export default function NavBar(){
 
     useEffect(locationHandler,[absPath])
     
+    return (<Frame>
+                <TopNav active={burgerState}> 
+                    <NavContainer active={burgerState}>
+                        <NavLogo to="/" onClick={()=>{}}> 
+                        logo 
+                        </NavLogo>
+                        <NavCurrentPage>
+                        {currentPageName}
+                        </NavCurrentPage>
+                        
+                        {burgerState? 
+                        <MainButton type = {MainButtonType.Cross} scale = {0.5} text = "" onClick={clickHandler} frameOff={true} backgroundColor={theme.medium}></MainButton>:
+                        <MainButton type = {MainButtonType.Burger} scale = {0.5} text = "" onClick={clickHandler} frameOff={true} backgroundColor={theme.medium}></MainButton>}
+                        
 
-    return (
-        <TopNav active={burgerState}> 
-            <NavContainer active={burgerState}>
-                <NavLogo to="/" onClick={()=>{}}> 
-                   logo 
-                </NavLogo>
-                <NavCurrentPage>
-                {currentPageName}
-                </NavCurrentPage>
-                <NavBurgerIcon onClick={()=>{clickHandler()}}>
-                    {burgerState? "cross":"burger"}
-                </NavBurgerIcon>
-
-                <NavMenu active={burgerState}>
-                    <NavItem>
-                        <NavLink to="/play/create" onClick={()=>{clickHandler()}}>create</NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink to="/play/explore"onClick={()=>{clickHandler()}}>explore</NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink to="/"onClick={()=>{clickHandler()}}>home</NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink to="/test/firebase"onClick={()=>{clickHandler()}}>firebase test</NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink to="/test/sign-in"onClick={()=>{clickHandler()}}>test sign-in</NavLink>
-                    </NavItem>
-                </NavMenu>
-            </NavContainer>
-        </TopNav>
+                        <NavMenu active={burgerState}>
+                            <NavItem>
+                                <NavLink to="/play/create" onClick={()=>{clickHandler()}}>create</NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink to="/play/explore"onClick={()=>{clickHandler()}}>explore</NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink to="/"onClick={()=>{clickHandler()}}>home</NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink to="/test/firebase"onClick={()=>{clickHandler()}}>firebase test</NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink to="/test/sign-in"onClick={()=>{clickHandler()}}>test sign-in</NavLink>
+                            </NavItem>
+                        </NavMenu>
+                    </NavContainer>
+                </TopNav>
+        </Frame>
     )
 }

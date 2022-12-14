@@ -4,7 +4,7 @@ import {
 } from "firebase/auth";
 import {initializeApp} from "firebase/app"
 import { firebaseConfig } from "./firebaseConfig";
-import {doc, getFirestore, setDoc } from "firebase/firestore";
+import {collection, doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
 
 
 class firebaseError{
@@ -17,7 +17,7 @@ class firebaseError{
 
 const firebaseApp = initializeApp(firebaseConfig)
 const auth = getAuth(firebaseApp)
-const fs = getFirestore()
+const firestore = getFirestore()
 /**
  * 
  * @returns returns a promise with the current users ID
@@ -26,6 +26,13 @@ async function getCurrentUserID(): Promise<string>{
     if (auth.currentUser){
         return auth.currentUser.uid}
     return ""
+}
+
+async function getUserInformation(userID:string){    
+    let docRef = doc(firestore, "users/", userID); 
+    return getDoc(docRef).then(async userSnapshot=>{
+        return userSnapshot.data()
+    })
 }
 
 /**s
@@ -72,7 +79,7 @@ async function loginEmailPasswordAccount(email: string, password: string): Promi
 async function createEmailPasswordAccount(email: string, username:string, password: string): Promise<firebaseError|null>{
    //TODO unique username:
     return createUserWithEmailAndPassword(auth, email,password).then((authUser)=>{
-        setDoc(doc(fs,`users/${authUser.user.uid}`),{
+        setDoc(doc(firestore,`users/${authUser.user.uid}`),{
             username: username,
             email: email,
             description:"",
@@ -116,4 +123,4 @@ async function logOutAccount(){
 }
 
 
-export{getCurrentUserID,logOutAccount,isUserLoggedIn,createEmailPasswordAccount,loginEmailPasswordAccount}
+export{getUserInformation,getCurrentUserID,logOutAccount,isUserLoggedIn,createEmailPasswordAccount,loginEmailPasswordAccount}

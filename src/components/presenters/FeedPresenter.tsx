@@ -2,9 +2,11 @@ import { Timestamp} from "@firebase/firestore";
 import { useEffect, useState, useRef } from "react"
 import {useIntersection } from 'react-use'
 import { Beat } from "../../common"
-import { getQueryBeats, isBeatLikedByCurrentUser, likeBeatAsUser} from "./../../model/firebase/firebaseBeat"
+import { getQueryBeats, isBeatLikedByCurrentUser, likeBeatAsUser, unlikeBeatAsUser} from "./../../model/firebase/firebaseBeat"
 import FeedView from "../views/FeedView";
 import { getCurrentUserID } from "../../model/firebase/firebaseAuthenticationModel";
+import { SortBy } from "./../../model/firebase/firebaseBeat";
+import { sortBy } from "lodash";
 //import { contextFree, StyledComponent } from "styled-components"
 
 
@@ -39,7 +41,7 @@ const FeedPresenter = () => {
     function fetchData() {
             setLoading(true)
             //setTimestamp_now(Timestamp.fromDate(new Date()))
-            getQueryBeats(itemsOnFetch, timestamp_now,lastBeatID).then((newBeats) => {if(newBeats){
+            getQueryBeats(itemsOnFetch, timestamp_now, SortBy.likes).then((newBeats) => {if(newBeats){
                 //setBeats(Array.from([...beats,...newBeats]))
                 // newBeats.reverse()
                 setBeats(beats.concat(newBeats))
@@ -67,8 +69,9 @@ const FeedPresenter = () => {
     }, [intersection]) 
 
 
-function likeBeat(beatID: string){
-    likeBeatAsUser(beatID)
+function likeBeat(beatID: string, likes:number){
+    console.log(beatID, likes)
+    likeBeatAsUser(beatID, likes)
 }
 
     return (
