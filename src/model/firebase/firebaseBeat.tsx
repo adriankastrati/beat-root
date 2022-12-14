@@ -142,7 +142,7 @@ async function getQueryBeats(howMany:number, startTimeStamp: Timestamp, sort: So
     })
 }
 
-async function queryBeatsByUser(howMany:number, userID: string, startBeatID?:string): Promise<null | Beat[]>{               
+async function queryBeatsByUser(userID: string,howMany:number, startBeatID?:string): Promise<Beat[]>{               
     const beatRef = collection(firestore, "beats");
     let queryBeats: Query<DocumentData>
 
