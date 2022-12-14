@@ -15,6 +15,13 @@ class firebaseError{
     }
 }
 
+export interface UserInformation{
+    username: string
+    email: string
+    authID: string
+    description: string
+}
+
 const firebaseApp = initializeApp(firebaseConfig)
 const auth = getAuth(firebaseApp)
 const firestore = getFirestore()
@@ -28,11 +35,10 @@ async function getCurrentUserID(): Promise<string>{
     return ""
 }
 
-async function getUserInformation(userID:string){    
+async function getUserInformation(userID:string):Promise<UserInformation>{    
     let docRef = doc(firestore, "users/", userID); 
-    return getDoc(docRef).then(async userSnapshot=>{
-        return userSnapshot.data()
-    })
+    const userSnapshot = await getDoc(docRef);
+    return ({ ...userSnapshot.data() } as UserInformation);
 }
 
 /**s

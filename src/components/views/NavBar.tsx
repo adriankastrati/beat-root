@@ -63,6 +63,9 @@ export default function NavBar(){
                     <NavItem>
                         <NavLink to="/test/sign-in"onClick={()=>{clickHandler()}}>test sign-in</NavLink>
                     </NavItem>
+                    <NavItem>
+                        <NavLink to="/test/user-page"onClick={()=>{clickHandler()}}>test user-page</NavLink>
+                    </NavItem>
                 </NavMenu>
             </NavContainer>
         </TopNav>

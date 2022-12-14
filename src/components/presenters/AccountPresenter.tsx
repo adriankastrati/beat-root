@@ -58,7 +58,6 @@ function AccountPresenter(props:RouteComponentProps){
     }
   }
 
-  //signinView currently in presenter since there is a issue with focus during rerendering
   return(
   <div>
     <SignInView

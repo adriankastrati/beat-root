@@ -71,7 +71,7 @@ export default function ManualFirebaseTest(){
   }
 
   async function getUserTest(){
-    console.log(await queryBeatsByUser(2,"aFSQRyxBjxgyY0knbHdhg3Ck2d83"))
+    console.log(await queryBeatsByUser("aFSQRyxBjxgyY0knbHdhg3Ck2d83",3))
   }
 
   function getTestData(){
