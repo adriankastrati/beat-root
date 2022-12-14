@@ -5,6 +5,8 @@ import {
 import {initializeApp} from "firebase/app"
 import { firebaseConfig } from "./firebaseConfig";
 import {collection, doc, getDoc, getFirestore, setDoc, updateDoc } from "firebase/firestore";
+import { ref, listAll, getBlob, getDownloadURL } from "firebase/storage";
+import { storage } from "./firebaseBeat";
 
 
 class firebaseError{
@@ -20,7 +22,10 @@ export interface UserInformation{
     email: string
     authID: string
     description: string
+    profilePictureURL: string
 }
+
+
 
 const firebaseApp = initializeApp(firebaseConfig)
 const auth = getAuth(firebaseApp)
@@ -41,6 +46,35 @@ async function getUserInformation(userID:string):Promise<UserInformation>{
     return ({ ...userSnapshot.data() } as UserInformation);
 }
 
+// async function getProfilePictures(): Promise<string[]> {
+//     let sampleRef = ref(storage, 'profilePictures/')
+//     return listAll(sampleRef).then((res) => {
+//         return Promise.all(res.items.map((itemRef) => {
+//             return getBlob(itemRef).then(blob=>{
+//                 console.log()
+//                 return URL.createObjectURL(blob)
+//             })
+//         }))
+
+//     }).catch((error) => {
+//         console.log(error)
+//         return []
+//     });
+    
+// }
+
+async function getProfilePictures(): Promise<string[]> {
+    let sampleRef = ref(storage, 'profilePictures/')
+    return listAll(sampleRef).then((res) => {
+        return Promise.all(res.items.map((itemRef) => {
+            return getDownloadURL(itemRef)
+        }))
+
+    }).catch((error) => {
+        console.log(error)
+        return []
+    })
+}
 
 /**s
  * 
@@ -116,7 +150,7 @@ async function createEmailPasswordAccount(email: string, username:string, passwo
 async function setProfilePicture(newPicture:string): Promise<boolean>{
     //TODO unique username:
     return getCurrentUserID().then(async (userID)=>{       
-        let userREF = doc(firestore,"user/", userID)
+        let userREF = doc(firestore,"users/", userID)
         await updateDoc(userREF, {
             profilePictureURL: newPicture
         });
@@ -128,7 +162,7 @@ async function setProfilePicture(newPicture:string): Promise<boolean>{
 
 async function setUsername(newUsername:string): Promise<boolean>{
     return getCurrentUserID().then(async (userID)=>{       
-        let userREF = doc(firestore,"user/", userID)
+        let userREF = doc(firestore,"users/", userID)
         await updateDoc(userREF, {
         username: newUsername
         });
@@ -156,4 +190,4 @@ async function logOutAccount(){
 }
 
 
-export{setProfilePicture,setUsername,getUserInformation,getCurrentUserID,logOutAccount,isUserLoggedIn,createEmailPasswordAccount,loginEmailPasswordAccount}
+export{getProfilePictures,setProfilePicture,setUsername,getUserInformation,getCurrentUserID,logOutAccount,isUserLoggedIn,createEmailPasswordAccount,loginEmailPasswordAccount}
