@@ -127,6 +127,7 @@ export default function BeatCreatePresenter(){
             <BeatVisualisationPresenter
                 tracks={tracks}
                 bpm={bpm}
+                colorTheme={["#453C67", "#6D67E4", "#46C2CB", "#F2F7A1"]} //TODO
             />
             <button onClick={()=>updateSound()}>update</button>
             
