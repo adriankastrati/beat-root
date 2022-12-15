@@ -6,7 +6,14 @@ import React from "react";
 import { useEffect } from "react";
 import { getProfilePictures } from "model/firebase/firebaseAuthenticationModel";
 
-
+interface BlankSpaceProps{
+    width:number
+    height:number
+}
+const BlankSpace = styled.div<BlankSpaceProps>`
+height:${props=>props.height}px;
+width:${props=>props.width}px;
+`
 const OuterBox = styled.div`
   display:flex;
   flex-direction:column;
@@ -191,7 +198,7 @@ export default function UserPageView(props: UserPageProps){
                                 )
                         }         
                     </ProfilePictureContainer>
-                    
+                    <BlankSpace width={45} height={50}></BlankSpace>
                 </InnerBox>
                 {
                         props.profilePicChangingState?(<InnerBox flexDir="column">
@@ -218,7 +225,7 @@ export default function UserPageView(props: UserPageProps){
                         <TitleStyle>
                             {props.username? "" + props.username: "-"}
                         </TitleStyle>
-                        
+                        <BlankSpace width={50} height={50}></BlankSpace>
                         </InnerBox>
                         {!props.usernameChangingState?
                         (<InnerBox flexDir="column">
@@ -242,7 +249,8 @@ export default function UserPageView(props: UserPageProps){
                             </InnerBox>
                             )
                         }    
-                        <p>Description:</p>                    
+                        <p>Description:</p>  
+                        <BlankSpace width={50} height={50}></BlankSpace>                  
                     </InnerBox>
                     {
                         props.descriptionChangingState?(<InnerBox flexDir="column">
