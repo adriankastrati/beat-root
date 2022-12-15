@@ -1,9 +1,6 @@
 import { MutableRefObject } from "react"
 import { Beat } from "../../common"
-import { likeBeatAsUser, isBeatLikedByCurrentUser } from "../../model/firebase/firebaseBeat"
 import styled from "styled-components";
-import { textStyles, theme } from "../../common";
-import React from "react";
 import MainButton, { MainButtonType } from "./common/MainButton";
 import { BeatParent, ButtonsContainer, ThemedCard } from "./common/FeedViewElements";
 import BeatVisualisationPresenter from "../presenters/BeatVisualizationPresenter";
@@ -14,6 +11,7 @@ const OuterBox = styled.div`
   margin:20px;
 `
 const Feed = styled.div`
+    height: 95%;
     display: flex;
     flex-direction: row;   
     flex-wrap: wrap; 
@@ -24,13 +22,22 @@ align-items: center;
 align-self: center;
 margin: 0 auto;
 `
+const FeedWrapper = styled.div`
+    height: 100%;
+`
+const SuspenseDiv = styled.div`
+    z-index: 2;
+`
+const FetchDiv = styled.div`
+    bottom: 0px;
+`
 
 interface FeedViewProps{
     beats: Beat[]
-    offset: number
-    loading: boolean
+    isLoading: boolean
     targetRef: MutableRefObject<HTMLDivElement | null>
     itemsOnFetch: number
+    lastItem: string | undefined
     onLikeBeat: (beatID: string, likes: number) => void
 }
 
@@ -42,7 +49,7 @@ export default function FeedView(props:FeedViewProps){
     }
 
     function midiCopyHandler():void {
-        console.log("copied midi")
+        console.log("copied midi(jk)")
     }
     function feedElementCB(beat: Beat, key: any){
         return (<OuterBox key={key}>
@@ -58,17 +65,23 @@ export default function FeedView(props:FeedViewProps){
                     <MainButton type = {MainButtonType.Copy} onClick={midiCopyHandler} text = "" scale = {1.03}></MainButton>
                 </ButtonsContainer>
             </BeatParent>
-        </OuterBox>)
+        </OuterBox>
+        )
     }
 
-
     return (
+        <Center>
             <Feed>
-                {
-                    props.beats ? props.beats && props.beats.slice(0, props.offset + props.itemsOnFetch).map(feedElementCB)
-                    : <img src="https://media.tenor.com/tga0EoNOH-8AAAAC/loading-load.gif"></img>
-                }  
-                <div ref={ props.targetRef}></div>                
+                {props.beats.map(feedElementCB)}
             </Feed>
+            <Feed>
+                {!props.targetRef? props.beats.slice(props.beats.length - props.itemsOnFetch, props.beats.length + props.itemsOnFetch).map(feedElementCB)
+                    : <SuspenseDiv>loading</SuspenseDiv>
+                }
+            </Feed>
+            <FetchDiv ref={ props.targetRef }>
+                ...that's all she wrote
+            </FetchDiv>
+        </Center>
     )
 }
