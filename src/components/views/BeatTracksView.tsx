@@ -52,7 +52,7 @@ export default function BeatTracksView(props:BeatTracksViewProps){
         props.onSetTrack!(index, newTrack)
     }
 
-    return <div>
+    return (
         <TracksContainer>
             {
                 props.tracks.map((track, i)=>
@@ -78,5 +78,5 @@ export default function BeatTracksView(props:BeatTracksViewProps){
             </Center>
         </TracksContainer>
     ) 
-    </div>
+    
 }
