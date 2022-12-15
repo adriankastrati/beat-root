@@ -144,7 +144,7 @@ async function getQueryBeats(howMany:number, startTimeStamp: Timestamp, sort: So
         }
 
     }else if(!startBeatID){
-        console.log("i should only be printed once, multiple fetches without lastBeatID")
+        //console.log("i should only be printed once, multiple fetches without lastBeatID")
         let queryBeats = getQueryWithSort(sort, howMany,startTimeStamp,beatRef)
         
         if (queryBeats){
