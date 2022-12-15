@@ -13,7 +13,7 @@ direction: ltr;
 border-radius: 5px;
 border:none;
 font-style:italic;
-width: 80px;
+width: 70px;
 font-size:20px;
 `
 
@@ -21,20 +21,21 @@ const NumberBox = styled.span`
     ${textStyles(TextVariant.BODY)}
     display: flex;
     flex-direction: column;
-    margin-left: 40px;
-    margin-right: 40px;
+    margin-left: calc(1vw + 1vh);
+    margin-right: calc(1vw + 1vh);
     font-size: 16px;
+    
 `
 const OuterBox = styled.div`
 display: flex;
 padding: 0px;
 flex-direction: rows;
+justify-content: space-betwenn;
 `
 
 export default function RhythmView(props:RhythmViewProps){
     return <OuterBox>
-        {
-            //Steps
+        
             <NumberBox>
                 <p>Steps</p>
             {props.onChangeSteps ? 
@@ -42,10 +43,7 @@ export default function RhythmView(props:RhythmViewProps){
                 {Array(MAX_STEPS).fill(0).map((_,i)=>i+1).map((n, i)=><option value={n} key={i} >{n}</option>)}
             </Select> : props.rhythm.steps}
             </NumberBox>
-        }
 
-        {
-            //Pulses
             <NumberBox>
                 <p>Pulses</p>
             {props.onChangePulses ? 
@@ -53,10 +51,7 @@ export default function RhythmView(props:RhythmViewProps){
                 {props.rhythm.getPossibleEventNumbers().map((n, i)=><option value={n} key={i} >{n}</option>)}
             </Select> : props.rhythm.pulses}
             </NumberBox>
-        }
 
-        {
-            //Shift
             <NumberBox>
                 <p>Shift</p>
             {props.onChangeShift ? 
@@ -64,7 +59,6 @@ export default function RhythmView(props:RhythmViewProps){
                 {Array(props.rhythm.steps).fill(0).map((_, i)=><option value={i} key={i} >{i}</option>)}
             </Select> : props.rhythm.shift}
             </NumberBox>
-        }
         
         </OuterBox>
 }
