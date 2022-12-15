@@ -15,6 +15,7 @@ interface ButtonInterface{
     scale: number
     backgroundColor?:string
     frameOff?:boolean
+    borderRad?:number
 }
 
 const ButtonStyle = styled.button<ButtonInterface>`  display:inline-flex;
@@ -25,7 +26,7 @@ align-items: center;
 background-color: ${props=>props.backgroundColor? props.backgroundColor:"rgb(255, 255, 255)"}; 
 border: ${props => props.frameOff? 0 : 1}px solid rgb(155, 155, 155); 
 height: fit-content;
-border-radius: 5px;
+border-radius: ${props=>props.borderRad?props.borderRad:5}px;
 color: rgb(0, 0, 0); 
 padding: ${props => 10*props.scale}px; 
 font-size: ${props => 22*props.scale}px; 
@@ -60,6 +61,7 @@ interface Props{
     width?: number
     frameOff?:boolean
     backgroundColor?:string
+    borderRad?:number
 }
 
 function MainButton(props: Props){
@@ -106,14 +108,14 @@ function MainButton(props: Props){
     }
     if(props.type != MainButtonType.Plain){
         return (
-                    <ButtonStyle scale = {props.scale} width = {props.width ? props.width : btnWidth} onClick={props.onClick} frameOff={props.frameOff} backgroundColor = {props.backgroundColor}>
+                    <ButtonStyle scale = {props.scale} width = {props.width ? props.width : btnWidth} onClick={props.onClick} frameOff={props.frameOff} backgroundColor = {props.backgroundColor} borderRad={props.borderRad}>
                         <ButtonImg src={icon}></ButtonImg>
                         {props.text}
                     </ButtonStyle>
                 )
     }else{
         return (
-                    <ButtonStyle scale = {props.scale} width = {props.width ? props.width : btnWidth} onClick={props.onClick}>
+                    <ButtonStyle scale = {props.scale} width = {props.width ? props.width : btnWidth} onClick={props.onClick} borderRad={props.borderRad}>
                     {props.text}
                     </ButtonStyle>
                 )
