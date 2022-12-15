@@ -86,12 +86,14 @@ interface UserPageProps{
     description: string|null
     profilePicture?: string|null
     profilePicChangingState:boolean
-    editingDescription:boolean
+    descriptionChangingState:boolean
+    usernameChangingState:boolean
     loadedImages: string[]
     onUpdateUserName: (username: string)=> void
     onUpdateDescription:(description:string)=>void
     setPictureMenuOpen:(state:boolean)=> void
     setDescriptionState:(state:boolean)=> void
+    setUsernameChangingState:(state:boolean)=>void
     onUpdateProfilePicture: (profilePicture: string)=> void
     refresh:()=>void
 }
@@ -117,7 +119,9 @@ export default function UserPageView(props: UserPageProps){
     }
     function updateProfilePictureCB(){
         let pic = selectedImage
-        props.onUpdateProfilePicture(pic)
+        if(pic != props.profilePicture){
+            props.onUpdateProfilePicture(pic)
+        }
         profileSelectBoxCB()
         props.refresh()
     }
@@ -136,7 +140,7 @@ export default function UserPageView(props: UserPageProps){
             displayErrorMsg('Too many characters!')
             error = true;
         }// set other naming rules
-
+        toggleUsernameCB()
         if (error){
             return
         }
@@ -156,11 +160,15 @@ export default function UserPageView(props: UserPageProps){
         }, 5000)//display error msg for 5 secs and revert to showing instructions
     }
     function toggleDescriptionCB(){
-        props.setDescriptionState(!props.editingDescription)
+        props.setDescriptionState(!props.descriptionChangingState)
     }
     function saveDescriptionCB(){
         toggleDescriptionCB()
         onUpdateDescription()
+    }
+    function toggleUsernameCB(){
+        setNameBoxContent(props.username?props.username:"")
+        props.setUsernameChangingState(!props.usernameChangingState)
     }
 
     return (<div>
@@ -192,19 +200,30 @@ export default function UserPageView(props: UserPageProps){
                 </InnerBox>
 
                     <InnerBox>
+                        <p>Username:</p>
                         <TitleStyle>
-                            {props.username? "Username: " + props.username: "Username has not been set!"}
+                            {props.username? "" + props.username: "-"}
                         </TitleStyle>
-                        <Input onChange={(e)=>setNameBoxContent(e.target.value)}width={"30%"} height ={"50px"}></Input>
-                        <MainButton type = {MainButtonType.Plain} text="Set Name" scale = {0.5} width={122} onClick={updateProfileNameCB}></MainButton>
-                        <p>{nameInfoText}</p>
+                        {
+                            props.usernameChangingState?(
+                                    <InnerBox>
+                                        <MainButton type = {MainButtonType.Edit} text="Edit" scale = {0.5} width={130} onClick={toggleUsernameCB}></MainButton>
+                                    </InnerBox>
+                                ):(
+                                    <InnerBox>
+                                        <Input defaultValue={nameBoxContent} onChange={(e)=>setNameBoxContent(e.target.value)}width={"65%"} height ={"50px"}></Input>
+                                        <MainButton type = {MainButtonType.Save} text="Save" scale = {0.5} width={130} onClick={updateProfileNameCB}></MainButton>
+                                        <p>{nameInfoText}</p>
+                                    </InnerBox>
+                                )
+                        }
                     </InnerBox>
                     <div>{}</div>
                     <InnerBox>
                         
                         <p>Description:</p>
                         {
-                            props.editingDescription?(<InnerBox>
+                            props.descriptionChangingState?(<InnerBox>
                                                     <DescriptionBox width="100%" height="100px"><p>{props.description?props.description:"Nothing here!"}</p></DescriptionBox>
                                                     <MainButton type={MainButtonType.Edit} text="Edit" scale = {0.5} width = {130} onClick={toggleDescriptionCB}></MainButton>
                                                 </InnerBox>
