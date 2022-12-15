@@ -100,7 +100,7 @@ export default function UserPageView(props: UserPageProps){
     const [selectedImage, setSelectedImage] = React.useState<string>(props.profilePicture?props.profilePicture:props.loadedImages[0]);
     const [nameBoxContent, setNameBoxContent] = React.useState<string>('')
     const [nameInfoText, setNameInfoText] = React.useState<string>(nameInstructions)
-    const [descriptionBoxText, setDescriptionBoxText] = React.useState<string>(nameInstructions)
+    const [descriptionBoxText, setDescriptionBoxText] = React.useState<string>(props.description?props.description:"Nothing here!")
     
 
     let k = 0; 
@@ -211,7 +211,7 @@ export default function UserPageView(props: UserPageProps){
                             )
                             :
                             (<InnerBox>
-                                <InputArea onChange={(e)=>setDescriptionBoxText(e.target.value)} width={"100%"} height = {"100px"}></InputArea>
+                                <InputArea onChange={(e)=>setDescriptionBoxText(e.target.value)} width={"100%"} height = {"100px"} defaultValue={props.description!}></InputArea>
                                 <MainButton type={MainButtonType.Save} text="Save" scale = {0.5} width = {130} onClick={saveDescriptionCB}></MainButton>  
                             </InnerBox>
                             )
