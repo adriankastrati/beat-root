@@ -59,6 +59,7 @@ export default function BeatVisualisationPresenter(props:BeatVisualisationPresen
             canvasRef.current.height = wrapperRef.current.clientWidth;
 
             setDrawContext(canvasRef.current.getContext("2d"))
+            
         }
     },[canvasRef.current, wrapperRef.current])
 
@@ -91,6 +92,12 @@ export default function BeatVisualisationPresenter(props:BeatVisualisationPresen
             draw()
         }
     },[step, props.tracks, props.colorTheme])
+
+    useEffect(()=>{ //initial draw
+        if (drawContext){
+            draw()
+        }
+    },[drawContext])
 
     function play(){
         audioModel.play(props.tracks, props.bpm)

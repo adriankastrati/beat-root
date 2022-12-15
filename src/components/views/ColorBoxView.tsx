@@ -29,32 +29,45 @@ const Center = styled.div`
   align-self: center;
   margin: 0 auto;
 `
+const BoxWrapper = styled.div`
+  align-items: center;
+  align-self: center;
+
+`;
 
 
 interface ColorBoxViewProps {
   themeArray: string[][]
   targetRef: MutableRefObject<HTMLDivElement | null>
   loading: boolean
+  chosen:number|null
+  onSetChosen:(index:number)=>void
+  onContinue:()=>void
 }
 
 function ColorBoxView(props: ColorBoxViewProps) {
 
   return (
-    <OuterBox>
-        <TitleStyle>Color Theme</TitleStyle>
-        {props.themeArray && 
-        !props.loading? props.themeArray.map((theme, key) => {
-            return (
-              <InnerBox>
-                <ColorSchemeBox key={key} colorArray={theme}></ColorSchemeBox>
-              </InnerBox> 
-            )
-          }) : <p>loading...</p> }
-        <div ref={props.targetRef}>ref here</div>
-                <Center>
-                  <MainButton type={MainButtonType.Plain} text="continue" scale={1} width={100} onClick={()=>{}}></MainButton>
-                </Center>
-    </OuterBox>
+    <BoxWrapper>
+          <TitleStyle>Color Theme</TitleStyle>
+      <OuterBox>
+          {props.themeArray && 
+          !props.loading? props.themeArray.map((theme, key) => {
+              return (
+                <InnerBox key={key} onClick={()=>{props.onSetChosen(key)}}
+                  style={{backgroundColor:props.chosen === key ? "gray":"white"}}
+                >
+                  <ColorSchemeBox key={key} colorArray={theme}></ColorSchemeBox>
+                </InnerBox> 
+              )
+            }) : <p>loading...</p> }
+          <div ref={props.targetRef}>ref for scroll fetch</div>
+      </OuterBox>
+      <Center>
+        <MainButton type={MainButtonType.Plain} text="continue" scale={1} width={100} 
+        onClick={props.onContinue}/>
+      </Center>
+    </BoxWrapper>
     )
   }
 

@@ -6,6 +6,7 @@ import { textStyles, theme } from "../../common";
 import React from "react";
 import MainButton, { MainButtonType } from "./common/MainButton";
 import { BeatParent, ButtonsContainer, ThemedCard } from "./common/FeedViewElements";
+import BeatVisualisationPresenter from "../presenters/BeatVisualizationPresenter";
 
 const OuterBox = styled.div`
   display:flex;
@@ -43,19 +44,15 @@ export default function FeedView(props:FeedViewProps){
     function midiCopyHandler():void {
         console.log("copied midi")
     }
-    function feedElementCB(beat: any, key: any){
+    function feedElementCB(beat: Beat, key: any){
         return (<OuterBox key={key}>
             <BeatParent> 
 
-                <ThemedCard color={beat.theme}>
-                <div>{beat.firestoreBeatID}</div>
-
-                    <p> fetch index={key}<br/>
-                    {beat.title} by: <strong>{beat.composerID}user</strong><br />
-                    <strong>Theme:</strong> {beat.theme.join(',')}<br />
-                    </p>
-
-                </ThemedCard>
+                <BeatVisualisationPresenter
+                    bpm={beat.bpm}
+                    tracks={beat.tracks}
+                    colorTheme={beat.theme}
+                />
                 <ButtonsContainer>                                   
                     <MainButton type = {MainButtonType.Like}  onClick={()=>{likeHandler(beat.firestoreBeatID,beat.likes)}} text = {""+beat.likes} scale = {1}></MainButton>
                     <MainButton type = {MainButtonType.Copy} onClick={midiCopyHandler} text = "" scale = {1.03}></MainButton>

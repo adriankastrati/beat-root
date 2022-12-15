@@ -6,7 +6,14 @@ import React from "react";
 import { useEffect } from "react";
 import { getProfilePictures } from "model/firebase/firebaseAuthenticationModel";
 
-
+interface BlankSpaceProps{
+    width:number
+    height:number
+}
+const BlankSpace = styled.div<BlankSpaceProps>`
+height:${props=>props.height}px;
+width:${props=>props.width}px;
+`
 const OuterBox = styled.div`
   display:flex;
   flex-direction:column;
@@ -36,9 +43,12 @@ const InputArea = styled.textarea<SizeProps>`
   height: ${props=>props.height};
   font-size: 22px;
 `
-const InnerBox = styled.div`
+interface InnerBoxProps{
+    flexDir:string
+}
+const InnerBox = styled.div<InnerBoxProps>`
   display:flex;
-  flex-direction:column;
+  flex-direction:${props=>props.flexDir};
   align-items: center;
   justify-content: center;
   margin:2px;
@@ -86,21 +96,23 @@ interface UserPageProps{
     description: string|null
     profilePicture?: string|null
     profilePicChangingState:boolean
-    editingDescription:boolean
+    descriptionChangingState:boolean
+    usernameChangingState:boolean
     loadedImages: string[]
     onUpdateUserName: (username: string)=> void
     onUpdateDescription:(description:string)=>void
     setPictureMenuOpen:(state:boolean)=> void
     setDescriptionState:(state:boolean)=> void
+    setUsernameChangingState:(state:boolean)=>void
     onUpdateProfilePicture: (profilePicture: string)=> void
     refresh:()=>void
 }
 let nameInstructions = 'Choose a name between 5-20 characters'
 export default function UserPageView(props: UserPageProps){
-    const [selectedImage, setSelectedImage] = React.useState<string>(props.profilePicture?props.profilePicture:props.loadedImages[0]);
+    const [selectedImage, setSelectedImage] = React.useState<string>('');
     const [nameBoxContent, setNameBoxContent] = React.useState<string>('')
     const [nameInfoText, setNameInfoText] = React.useState<string>(nameInstructions)
-    const [descriptionBoxText, setDescriptionBoxText] = React.useState<string>(nameInstructions)
+    const [descriptionBoxText, setDescriptionBoxText] = React.useState<string>(props.description?props.description:"Nothing here!")
     
 
     let k = 0; 
@@ -117,7 +129,9 @@ export default function UserPageView(props: UserPageProps){
     }
     function updateProfilePictureCB(){
         let pic = selectedImage
-        props.onUpdateProfilePicture(pic)
+        if(pic != props.profilePicture){
+            props.onUpdateProfilePicture(pic)
+        }
         profileSelectBoxCB()
         props.refresh()
     }
@@ -136,7 +150,7 @@ export default function UserPageView(props: UserPageProps){
             displayErrorMsg('Too many characters!')
             error = true;
         }// set other naming rules
-
+        toggleUsernameCB()
         if (error){
             return
         }
@@ -146,6 +160,7 @@ export default function UserPageView(props: UserPageProps){
 
     function onUpdateDescription(){
         //set rules for description
+        props.refresh()
         props.onUpdateDescription(descriptionBoxText)
     }
     function displayErrorMsg(msg:string){
@@ -155,72 +170,100 @@ export default function UserPageView(props: UserPageProps){
         }, 5000)//display error msg for 5 secs and revert to showing instructions
     }
     function toggleDescriptionCB(){
-        props.setDescriptionState(!props.editingDescription)
+        props.setDescriptionState(!props.descriptionChangingState)
     }
     function saveDescriptionCB(){
         toggleDescriptionCB()
         onUpdateDescription()
     }
+    function toggleUsernameCB(){
+        setNameBoxContent(props.username?props.username:"")
+        props.setUsernameChangingState(!props.usernameChangingState)
+    }
 
     return (<div>
                 <OuterBox>
-                    <InnerBox>
-                        <TitleStyle>
-                            {props.username? "Username: " + props.username: "Username has not been set!"}
-                        </TitleStyle>
-                        <Input onChange={(e)=>setNameBoxContent(e.target.value)}width={"30%"} height ={"50px"}></Input>
-                        <MainButton type = {MainButtonType.Plain} text="Set Name" scale = {0.9} width={122} onClick={updateProfileNameCB}></MainButton>
-                        <p>{nameInfoText}</p>
-                    </InnerBox>
-                    <div>{}</div>
-                    <InnerBox>
+                <InnerBox flexDir="row">
+
+                    {
+                        props.profilePicChangingState?
+                        <MainButton type = {MainButtonType.Save} scale = {0.5} onClick={updateProfilePictureCB} text="Save" width={130}></MainButton>
+                        :<MainButton type = {MainButtonType.Edit} scale = {0.5} onClick={profileSelectBoxCB} text="Edit" width={130}></MainButton>
+                    }
                         
-                        <p>Description:</p>
+                    <ProfilePictureContainer>
                         {
-                            props.editingDescription?(<InnerBox>
-                                                    <DescriptionBox width="100%" height="100px"><p>{props.description?props.description:"Nothing here!"}</p></DescriptionBox>
-                                                    <MainButton type={MainButtonType.Edit} text="Edit" scale = {0.5} width = {130} onClick={toggleDescriptionCB}></MainButton>
-                                                </InnerBox>
+                            props.profilePicChangingState?<Picture src={selectedImage}></Picture>:(
+                                <Picture src={props.profilePicture?props.profilePicture:props.loadedImages[0]}></Picture>
+                                )
+                        }         
+                    </ProfilePictureContainer>
+                    <BlankSpace width={60} height={50}></BlankSpace>
+                </InnerBox>
+                {
+                        props.profilePicChangingState?(<InnerBox flexDir="column">
+                                                            <SelectablePicturesContainer> {/*some better way (map?) to list images maybe*/}
+                                                                {props.loadedImages.map(getImageCB)}
+                                                            </SelectablePicturesContainer>
+                                                        </InnerBox>):
+                        ""
+                    }
+
+                    <InnerBox flexDir="row">
+                    {
+                            props.usernameChangingState?(
+                                    <InnerBox flexDir="column">
+                                        <MainButton type = {MainButtonType.Edit} text="Edit" scale = {0.5} width={130} onClick={toggleUsernameCB}></MainButton>
+                                    </InnerBox>
+                                ):(
+                                    <InnerBox flexDir="column">
+                                        <MainButton type = {MainButtonType.Save} text="Save" scale = {0.5} width={130} onClick={updateProfileNameCB}></MainButton>
+                                    </InnerBox>
+                                )
+                        }
+                        <p>Username:</p>
+                        <TitleStyle>
+                            {props.username? "" + props.username: "-"}
+                        </TitleStyle>
+                        <BlankSpace width={60} height={50}></BlankSpace>
+                        </InnerBox>
+                        {!props.usernameChangingState?
+                        (<InnerBox flexDir="column">
+                            <Input defaultValue={nameBoxContent} onChange={(e)=>setNameBoxContent(e.target.value)}width={"65%"} height ={"50px"}></Input>
+                            <p>{nameInfoText}</p>
+                        </InnerBox>):
+                        (<InnerBox flexDir="column">
+
+                        </InnerBox>)}
+                    
+                    <div>{}</div>
+                    <InnerBox flexDir="row">
+                        {
+                            props.descriptionChangingState?(<InnerBox flexDir="column">
+                                                                <MainButton type={MainButtonType.Edit} text="Edit" scale = {0.5} width = {130} onClick={toggleDescriptionCB}></MainButton>
+                                                            </InnerBox>
                             )
                             :
-                            (<InnerBox>
-                                <InputArea onChange={(e)=>setDescriptionBoxText(e.target.value)} width={"100%"} height = {"100px"}></InputArea>
+                            (<InnerBox flexDir="column">
                                 <MainButton type={MainButtonType.Save} text="Save" scale = {0.5} width = {130} onClick={saveDescriptionCB}></MainButton>  
                             </InnerBox>
                             )
-                        }
-                        
+                        }    
+                        <p>Description:</p>  
+                        <BlankSpace width={60} height={50}></BlankSpace>                  
                     </InnerBox>
-                    <TitleStyle>{props.email?"Email: " + props.email: "Email: logged out"}</TitleStyle>
-                    <InnerBox>
-                        
-                            <ProfilePictureContainer>
-                                {
-                                    props.profilePicChangingState?<Picture src={selectedImage}></Picture>:(
-                                        <Picture src={props.profilePicture!}></Picture>
-                                        )
-                                }         
-                            </ProfilePictureContainer>
-                        
-                            {
-                            props.profilePicChangingState?
-                            <MainButton type = {MainButtonType.Save} scale = {0.65} onClick={updateProfilePictureCB} text="Save Picture" width={195}></MainButton>
-                            :<MainButton type = {MainButtonType.Edit} scale = {0.65} onClick={profileSelectBoxCB} text="Edit Picture" width={190}></MainButton>
-                        }
-                        
-                        {
-                            props.profilePicChangingState?
-                            <SelectablePicturesContainer> {/*some better way (map?) to list images maybe*/}
-                                {props.loadedImages.map(getImageCB)}
-                            </SelectablePicturesContainer>:
-                            ""
-                        }
-                        
-                    </InnerBox>
+                    {
+                        props.descriptionChangingState?(<InnerBox flexDir="column">
+                                                            <DescriptionBox width="100%" height="100px"><p>{props.description?props.description:"Nothing here!"}</p></DescriptionBox>
+                                                        </InnerBox>):
+                                                        (<InnerBox flexDir="column">
+                                                            <InputArea onChange={(e)=>setDescriptionBoxText(e.target.value)} width={"100%"} height = {"100px"} defaultValue={props.description!}></InputArea>    
+                                                        </InnerBox>)
+                    }
 
+                    <TitleStyle>{props.email?"Email: " + props.email: "Email: logged out"}</TitleStyle>            
                     
-                    
-                    <InnerBox>
+                    <InnerBox flexDir="column">
                         <TitleStyle>
                             {props.id?"ID: "+props.id:"ID: ?"}
                         </TitleStyle>
