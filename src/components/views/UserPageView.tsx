@@ -146,6 +146,7 @@ export default function UserPageView(props: UserPageProps){
 
     function onUpdateDescription(){
         //set rules for description
+        props.refresh()
         props.onUpdateDescription(descriptionBoxText)
     }
     function displayErrorMsg(msg:string){
