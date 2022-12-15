@@ -19,8 +19,8 @@ const FeedPresenter = () => {
     const targetRef = useRef<HTMLDivElement | null>(null)
     const intersection = useIntersection(targetRef, {
         root:null,
-        rootMargin: '1px',
-        threshold: 1.0
+        rootMargin: '100px',
+        threshold: 0.3
     });
     
     
@@ -37,7 +37,7 @@ const FeedPresenter = () => {
 
 
     const MAX_FETCHES = 4 // maybe use for rate-limiting
-    const itemsOnFetch = 20 // = intersectionobserver hidden after first fetch
+    const itemsOnFetch = 15 // = large => intersectionobserver hidden after first fetch
 
     useEffect(()=> {
         if(shouldFetch) {
@@ -50,7 +50,9 @@ const FeedPresenter = () => {
                 setBeats(Array.from([...beats, ...newBeats]))
                 setLastBeatID(newBeats[newBeats.length-1].firestoreBeatID)
 
-            } else {console.log("already at the oldest item")}}) 
+            } else {
+                console.log("already at the oldest item")
+            }}) 
             .then(()=>{console.log("last beat fetched has id: ",lastBeatID)})
             .then(()=>{setIsLoading(false)})
             
@@ -69,6 +71,7 @@ const FeedPresenter = () => {
         <FeedView 
             beats={beats}
             isLoading={isLoading}
+            shouldFetch={shouldFetch}
             targetRef={targetRef}
             itemsOnFetch= {itemsOnFetch}
             lastItem = {lastBeatID}
