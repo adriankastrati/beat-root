@@ -4,7 +4,9 @@ import {
 } from "firebase/auth";
 import {initializeApp} from "firebase/app"
 import { firebaseConfig } from "./firebaseConfig";
-import {doc, getFirestore, setDoc } from "firebase/firestore";
+import {collection, doc, getDoc, getFirestore, setDoc, updateDoc } from "firebase/firestore";
+import { ref, listAll, getBlob, getDownloadURL } from "firebase/storage";
+import { storage } from "./firebaseBeat";
 
 
 class firebaseError{
@@ -15,9 +17,19 @@ class firebaseError{
     }
 }
 
+export interface UserInformation{
+    username: string
+    email: string
+    authID: string
+    description: string
+    profilePictureURL: string
+}
+
+
+
 const firebaseApp = initializeApp(firebaseConfig)
 const auth = getAuth(firebaseApp)
-const fs = getFirestore()
+const firestore = getFirestore()
 /**
  * 
  * @returns returns a promise with the current users ID
@@ -28,7 +40,41 @@ async function getCurrentUserID(): Promise<string>{
     return ""
 }
 
-/**s
+async function getUserInformation(userID:string):Promise<UserInformation>{    
+    let docRef = doc(firestore, "users/", userID); 
+    const userSnapshot = await getDoc(docRef);
+    return ({ ...userSnapshot.data() } as UserInformation);
+}
+
+// async function getProfilePictures(): Promise<string[]> {
+ //     let sampleRef = ref(storage, 'profilePictures/')
+ //     return listAll(sampleRef).then((res) => {
+ //         return Promise.all(res.items.map((itemRef) => {
+ //             return getBlob(itemRef).then(blob=>{
+ //                 console.log()
+ //                 return URL.createObjectURL(blob)
+ //             })
+ //         }))
+ //     }).catch((error) => {
+ //         console.log(error)
+ //         return []
+ //     });
+ // }
+
+ async function getProfilePictures(): Promise<string[]> {
+    let sampleRef = ref(storage, 'profilePictures/')
+    return listAll(sampleRef).then((res) => {
+        return Promise.all(res.items.map((itemRef) => {
+            return getDownloadURL(itemRef)
+        }))
+
+    }).catch((error) => {
+        console.log(error)
+        return []
+    })
+}
+
+/**
  * 
  * @param email - email for account
  * @param password - password for account
@@ -72,11 +118,12 @@ async function loginEmailPasswordAccount(email: string, password: string): Promi
 async function createEmailPasswordAccount(email: string, username:string, password: string): Promise<firebaseError|null>{
    //TODO unique username:
     return createUserWithEmailAndPassword(auth, email,password).then((authUser)=>{
-        setDoc(doc(fs,`users/${authUser.user.uid}`),{
+        setDoc(doc(firestore,`users/${authUser.user.uid}`),{
             username: username,
             email: email,
             description:"",
-            authID: authUser.user.uid
+            authID: authUser.user.uid,
+            profilePictureURL: ""
         })
         return null
     }).catch((error)=>{
@@ -98,6 +145,45 @@ async function createEmailPasswordAccount(email: string, username:string, passwo
     })
 }
     
+async function setProfilePicture(newPicture:string): Promise<boolean>{
+    //TODO unique username:
+    return getCurrentUserID().then(async (userID)=>{       
+        let userREF = doc(firestore,"users/", userID)
+        await updateDoc(userREF, {
+            profilePictureURL: newPicture
+        });
+        return true
+    }).catch((e)=>{
+        console.log(e)
+        return false
+    })
+}
+
+async function setDescription(newDescription:string): Promise<boolean>{
+    return getCurrentUserID().then(async (userID)=>{       
+        let userREF = doc(firestore,"users/", userID)
+        await updateDoc(userREF, {
+        description: newDescription
+        });
+        return true
+    }).catch((e)=>{
+        console.log(e)
+        return false
+    })
+}
+
+async function setUsername(newUsername:string): Promise<boolean>{
+    return getCurrentUserID().then(async (userID)=>{       
+        let userREF = doc(firestore,"users/", userID)
+        await updateDoc(userREF, {
+        username: newUsername
+        });
+        return true
+    }).catch(()=>{
+        return false
+    })
+}
+
 /**
  * 
  * @returns the boolean value if a value is logged in
@@ -116,4 +202,4 @@ async function logOutAccount(){
 }
 
 
-export{getCurrentUserID,logOutAccount,isUserLoggedIn,createEmailPasswordAccount,loginEmailPasswordAccount}
+export{setDescription, getProfilePictures,setProfilePicture,setUsername,getUserInformation,getCurrentUserID,logOutAccount,isUserLoggedIn,createEmailPasswordAccount,loginEmailPasswordAccount}

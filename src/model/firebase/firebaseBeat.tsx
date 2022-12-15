@@ -1,10 +1,21 @@
-import {addDoc, arrayRemove, arrayUnion, collection, doc, DocumentData, endAt, endBefore, getDoc, getDocs, getFirestore, limit, orderBy, Query, query, QueryDocumentSnapshot, serverTimestamp, SnapshotOptions, startAfter, startAt, Timestamp, updateDoc, where, WithFieldValue} from "firebase/firestore"
+import {addDoc, arrayRemove, arrayUnion, collection, CollectionReference, doc, DocumentData, DocumentSnapshot, endAt, endBefore, getDoc, getDocs, getFirestore, limit, orderBy, Query, query, QueryDocumentSnapshot, serverTimestamp, SnapshotOptions, startAfter, startAt, Timestamp, updateDoc, where, WithFieldValue} from "firebase/firestore"
 import { getBlob, getStorage, listAll, ref } from "firebase/storage"
-import { Beat, Rhythm, Sample, Track } from "../../common"
-import { getCurrentUserID, isUserLoggedIn } from "./firebaseAuthenticationModel"
+import { Beat, Rhythm, Track } from "../../common"
+import { getCurrentUserID } from "./firebaseAuthenticationModel"
+
+export interface user{
+    authID: string
+    description: string
+    email: string
+    username: string
+}
+export enum SortBy {
+    recent = "creationDate",
+    likes = "likes"
+}
 
 const firestore = getFirestore()
-const storage = getStorage()
+export const storage = getStorage()
 
 const beatConverter ={
     toFirestore:(beat: WithFieldValue<Beat>): DocumentData => {
@@ -14,29 +25,30 @@ const beatConverter ={
             description: beat.description,
             theme: beat.theme,
             likedBy: [],
-            tracks: (beat.tracks as Track[]).map((track)=> { 
+            tracks: (beat.tracks as Track[]).map((track)=> {
                 return {
-                    sample: track.sample, 
+                    sample: track.sample,
                     rhythm: {
-                        steps: track.rhythm.steps, 
-                        pulses: track.rhythm.pulses, 
+                        steps: track.rhythm.steps,
+                        pulses: track.rhythm.pulses,
                         shift: track.rhythm.shift
                     }
                 }
             }),
             bpm: beat.bpm,
-            creationDate: Timestamp.now().valueOf()
+            creationDate: Timestamp.now().valueOf(),
+            likes: 0
         };
     },
 
 
-    fromFirestore(snapshot:  QueryDocumentSnapshot<DocumentData>, options: SnapshotOptions): any {        
+    fromFirestore(snapshot:  QueryDocumentSnapshot<DocumentData>, options: SnapshotOptions): any {
         return {
             composer: snapshot.data().composer,
             title: snapshot.data().title,
             description: snapshot.data().description,
             theme: snapshot.data().theme,
-            likes: snapshot.data().likedBy.length,
+            likes: snapshot.data().likes,
             tracks: (snapshot.data().tracks as any[]).map(track=>{
                 let rhythm = new Rhythm(track.rhythm.steps)
                 rhythm.pulses = track.rhythm.pulses
@@ -45,7 +57,7 @@ const beatConverter ={
                 return {rhythm, sample:track.sample} as Track
             }) ,
             bpm: snapshot.data().bpm,
-            firestoreBeatID: snapshot.id       
+            firestoreBeatID: snapshot.id
         } as unknown as Beat
     }
 }
@@ -56,7 +68,7 @@ async function getBeatByID(beatID: string): Promise<Beat|null>{
         if (beatSnapshot.exists()){
             return beatSnapshot.data()}
         else return null
-    });  
+    });
 }
 
 
@@ -69,116 +81,118 @@ async function createBeat(beat:Beat){
     })
 }
 
-
-async function getQueryBeats(howMany:number, startTimeStamp: Timestamp, startBeatID?:string):Promise<null | Beat[]>{  
-
-    async function getBeats(query: Query<DocumentData>){
-        return getDocs(query.withConverter(beatConverter)).then(async docs=>{
-            return Promise.all(docs.docs.map(async beatSnapshot=>{   
-                return beatSnapshot.data()
-            }))
-        })
-    }
-
-    const beatRef = collection(firestore, "beats");
-    let queryBeats: Query<DocumentData>
-
-   if (startBeatID){
-        let docRef = doc(firestore, "beats/", startBeatID);
-        return getDoc(docRef).then(async startAfterSnapshot=>{
-            queryBeats = query(beatRef,
-                where("creationDate","<",startTimeStamp.valueOf()), 
-                orderBy("creationDate", "desc"), 
-                limit(howMany),
-                startAfter(startAfterSnapshot)
-            );
-        }).then(async ()=>{
-            console.log(getBeats(queryBeats).then(beats=>{
-                return beats
-            }), 2)
-            return getBeats(queryBeats).then(beats=>{
-                return beats
-            })
-        })
-    }
-
-    queryBeats = query(beatRef,
-        where("creationDate","<",startTimeStamp.valueOf()), 
-        orderBy("creationDate", "desc"), 
-        limit(howMany)
-    );
-        
-    console.log(getBeats(queryBeats).then((beats)=>{
-        return beats
-    }),1)
-
-
-    return getBeats(queryBeats).then((beats)=>{
-        return beats
+async function getBeats(query: Query<DocumentData>){
+    return getDocs(query.withConverter(beatConverter)).then(async docs=>{
+        return Promise.all(docs.docs.map(async beatSnapshot=>{
+            return beatSnapshot.data()
+        }))
     })
 }
 
-async function queryBeatsByUser(howMany:number, userID: string, startBeatID?:string  ): Promise<null | Beat[]>{
-   
-    async function getBeats(query: Query<DocumentData>){
-        return getDocs(query.withConverter(beatConverter)).then(async docs=>{
-            return Promise.all(docs.docs.map(async beatSnapshot=>{   
-                return beatSnapshot.data()
-            }))
+function getQueryWithSort(sort: SortBy, howMany: number, startTimeStamp: Timestamp, beatRef: CollectionReference<DocumentData>, startAfterSnapshot?:DocumentSnapshot<DocumentData>): Query<DocumentData>|null{
+    if (sort === SortBy.likes && startAfterSnapshot){
+        return query(beatRef,
+            orderBy("likes", "desc"),
+            startAfter(startAfterSnapshot),
+            limit(howMany)
+        );
+    }
+    else if(sort === SortBy.recent && startAfterSnapshot){
+
+        return query(beatRef,
+            where("creationDate","<",startTimeStamp.valueOf()),
+            orderBy("creationDate", "desc"),
+            startAfter(startAfterSnapshot),    
+            limit(howMany)
+        );
+    }
+    else if(sort === SortBy.likes) {
+
+        return query(beatRef,
+            orderBy(sort, "desc"),
+            limit(howMany)
+        );
+    }else if (sort === SortBy.recent){
+
+        return query(beatRef,
+            where("creationDate","<",startTimeStamp.valueOf()),
+            orderBy("creationDate", "desc"),
+            limit(howMany)
+        );
+    }
+    return null
+}
+
+async function getQueryBeats(howMany:number, startTimeStamp: Timestamp, sort: SortBy, startBeatID?:string):Promise<null | Beat[]>{
+    const beatRef = collection(firestore, "beats");
+
+   if (startBeatID){
+        let docRef = doc(firestore, "beats/", startBeatID);
+        let queryBeats = await getDoc(docRef).then(async startAfterSnapshot=>{
+            return getQueryWithSort(sort, howMany,startTimeStamp,beatRef,startAfterSnapshot)
         })
+
+        if (queryBeats){
+            return getBeats(queryBeats).then((beats)=>{
+                
+                if (beats.length !== 0){
+                    console.log(beats[beats.length-1].title)
+                }
+                return beats   
+            
+            })
+        }
+
+    }else if(!startBeatID){
+        console.log("i should only be printed once, multiple fetches without lastBeatID")
+        let queryBeats = getQueryWithSort(sort, howMany,startTimeStamp,beatRef)
+        
+        if (queryBeats){
+            return getBeats(queryBeats).then((beats)=>{
+                console.log(beats[beats.length-1].title)
+                return beats   
+            })
+        }
     }
 
+    return null
+}
+
+async function queryBeatsByUser(userID: string,howMany:number, startBeatID?:string): Promise<Beat[]>{
     const beatRef = collection(firestore, "beats");
     let queryBeats: Query<DocumentData>
 
    if (startBeatID){
         let docRef = doc(firestore, "beats/", startBeatID);
-        return getDoc(docRef).then(async startAfterSnapshot=>{
-            queryBeats = query(beatRef,
+        queryBeats = await getDoc(docRef).then(async startAfterSnapshot=>{
+            return queryBeats = query(beatRef,
                 where("composer","==",userID),
-                orderBy("creationDate", "desc"), 
+                orderBy("creationDate", "desc"),
                 limit(howMany),
                 startAfter(startAfterSnapshot)
             );
-        }).then(async ()=>{
-            console.log(getBeats(queryBeats).then(beats=>{
-                return beats
-            }), 2)
-            return getBeats(queryBeats).then(beats=>{
-                return beats
-            })
         })
+    }else{
+        queryBeats = query(beatRef,
+            where("composer","==",userID),
+            orderBy("creationDate", "desc"),
+            limit(howMany)
+        );
     }
-
-    queryBeats = query(beatRef,
-        where("composer","==",userID),
-        orderBy("creationDate", "desc"), 
-        limit(howMany)
-    );
-        
-    console.log(getBeats(queryBeats).then((beats)=>{
-        return beats
-    }),1)
-
 
     return getBeats(queryBeats).then((beats)=>{
         return beats
     })
 }
-    
 
 
-export interface user{
-    authID: string 
-    description: string 
-    email: string
-    username: string
-}
+
+
 async function getUserById(userID: string): Promise<user|null>{
 
     let userRef = doc(firestore, "users/", userID);
     return await getDoc(userRef).then(user=> {
-        
+
         if (user.exists()){
             return user.data() as user
         }
@@ -196,7 +210,7 @@ async function isBeatLikedByCurrentUser(beatID: string): Promise<boolean>{
         }
         return false
     })})
-    
+
 }
 
 async function isBeatLikedByUserID(beatID: string, userID:string): Promise<boolean>{
@@ -210,29 +224,32 @@ async function isBeatLikedByUserID(beatID: string, userID:string): Promise<boole
     })
 }
 
-async function likeBeatAsUser(beatID: string):Promise<boolean>{
-
-    return getCurrentUserID().then(async (userID)=>{       
+async function likeBeatAsUser(beatID: string, likes:number):Promise<boolean>{
+    return getCurrentUserID().then(async (userID)=>{
         let beatREF = doc(firestore,"beats/", beatID)
         await updateDoc(beatREF, {
-        likedBy: arrayUnion(userID)
+        likedBy: arrayUnion(userID),
+        likes: (likes+1)
         });
-        
+
         return true
     }).catch((e)=>{
+        console.log(e)
         return false
     })
 }
 
-async function unlikeBeatAsUser(beatID: string):Promise<boolean>{
+async function unlikeBeatAsUser(beatID: string, likes: number):Promise<boolean>{
     return getCurrentUserID().then(async (userID)=>{
-        
+
         let beatREF = doc(firestore,`beats/${beatID}`,)
         await updateDoc(beatREF, {
-        likedBy: arrayRemove(userID)
+        likedBy: arrayRemove(userID),
+        likes: (likes-1)
         });
         return true
-    }).catch(()=>{
+    }).catch((e)=>{
+        console.log(e)
         return false
     })
 }
