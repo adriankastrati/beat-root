@@ -3,13 +3,9 @@ import { useIntersection } from "react-use"
 import { getColorRandomScheme } from "../../common/colorSource"
 import ColorBoxView from "../views/ColorBoxView"
 
-
-// fix 
 const ColorBoxPresenter = () => {
     const [themeArray, setThemeArray] = useState<string[][]>([])       // array of bars
-
     const [shouldFetch, setShouldFetch] = useState(false)
-
     const [rerender, setRerender] = useState(new Object())
 
     const targetRef = useRef<HTMLDivElement | null>(null) // null might be the root of issues
@@ -46,10 +42,6 @@ const ColorBoxPresenter = () => {
         , [shouldFetch])
 
     return (
-        //<div>
-        //    {themeArray.map((theme,index)=><div key={index}>{theme[0]}</div>)}
-        //    <div ref={targetRef}>baj</div>
-        //</div>
         <ColorBoxView 
             themeArray = { themeArray }
             targetRef = { targetRef }
