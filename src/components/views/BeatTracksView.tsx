@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Rhythm, Sample, theme, Track } from "../../common";
 import TrackView from "./TrackView";
 import MainButton, { MainButtonType } from "../views/common/MainButton";
-import { cloneDeep, sample } from "lodash";
+import { cloneDeep } from "lodash";
 
 interface BeatTracksViewProps {
     onAddTrack?:()=>void,
