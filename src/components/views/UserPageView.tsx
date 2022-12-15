@@ -198,7 +198,7 @@ export default function UserPageView(props: UserPageProps){
                                 )
                         }         
                     </ProfilePictureContainer>
-                    <BlankSpace width={45} height={50}></BlankSpace>
+                    <BlankSpace width={60} height={50}></BlankSpace>
                 </InnerBox>
                 {
                         props.profilePicChangingState?(<InnerBox flexDir="column">
@@ -225,7 +225,7 @@ export default function UserPageView(props: UserPageProps){
                         <TitleStyle>
                             {props.username? "" + props.username: "-"}
                         </TitleStyle>
-                        <BlankSpace width={50} height={50}></BlankSpace>
+                        <BlankSpace width={60} height={50}></BlankSpace>
                         </InnerBox>
                         {!props.usernameChangingState?
                         (<InnerBox flexDir="column">
@@ -250,7 +250,7 @@ export default function UserPageView(props: UserPageProps){
                             )
                         }    
                         <p>Description:</p>  
-                        <BlankSpace width={50} height={50}></BlankSpace>                  
+                        <BlankSpace width={60} height={50}></BlankSpace>                  
                     </InnerBox>
                     {
                         props.descriptionChangingState?(<InnerBox flexDir="column">
