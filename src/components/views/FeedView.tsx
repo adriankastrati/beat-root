@@ -51,21 +51,10 @@ export default function FeedView(props:FeedViewProps){
     function midiCopyHandler():void {
         console.log("copied midi(jk)")
     }
-    function DataToSingleCardCB(beat: any, key: any){
-        return (
-        <OuterBox key={key}>
     function feedElementCB(beat: Beat, key: any){
         return (<OuterBox key={key}>
             <BeatParent> 
 
-                <ThemedCard color={beat.theme}>
-                <div>{beat.firestoreBeatID}</div>
-                    <p> key={key}<br/>
-                    {beat.title} by: <strong>{beat.composerID}user</strong><br />
-                    <strong>Theme:</strong> {beat.theme.join(',')}<br />
-                    </p>
-
-                </ThemedCard>
                 <BeatVisualisationPresenter
                     bpm={beat.bpm}
                     tracks={beat.tracks}
@@ -83,10 +72,10 @@ export default function FeedView(props:FeedViewProps){
     return (
         <Center>
             <Feed>
-                {props.beats.map(DataToSingleCardCB)}
+                {props.beats.map(feedElementCB)}
             </Feed>
             <Feed>
-                {!props.targetRef? props.beats.slice(props.beats.length - props.itemsOnFetch, props.beats.length + props.itemsOnFetch).map(DataToSingleCardCB)
+                {!props.targetRef? props.beats.slice(props.beats.length - props.itemsOnFetch, props.beats.length + props.itemsOnFetch).map(feedElementCB)
                     : <SuspenseDiv>loading</SuspenseDiv>
                 }
             </Feed>
