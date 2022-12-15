@@ -14,7 +14,7 @@ const ColorBoxPresenter = () => {
         rootMargin: '200px',
         threshold: 1.0,
     })
-    const AMOUNT_FETCHES = 8
+    const AMOUNT_FETCHES = 10
 
     useEffect(() => {
         if (intersection?.isIntersecting && !shouldFetch) {
@@ -25,7 +25,6 @@ const ColorBoxPresenter = () => {
 
     useEffect(()=>{
         if (shouldFetch) {
-            console.log(Math.floor(Math.random()*6))
             //fetch one time
             Promise.all( new Array(AMOUNT_FETCHES).fill(0).map(()=>getColorRandomScheme(Math.floor(Math.random()*5+1))))
             .then(newStuff => {
