@@ -62,9 +62,6 @@ export default function App(){
                             <Route exact path="/play/create">
                                 <BeatCreatePresenter/>
                             </Route>
-                            <Route exact path = "/play/create/colorbox">
-                                <ColorBoxPresenter/>
-                            </Route>
                         </Switch>
                     </AudioInitializer>
                 </Route>

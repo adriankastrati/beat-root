@@ -3,10 +3,16 @@ import { useIntersection } from "react-use"
 import { getColorRandomScheme } from "../../common/colorSource"
 import ColorBoxView from "../views/ColorBoxView"
 
-const ColorBoxPresenter = () => {
+interface ColorBoxPresenterProps{
+    onSetColorTheme:(theme:string[])=>void
+    onContinue:()=>void
+}
+
+const ColorBoxPresenter = (props:ColorBoxPresenterProps) => {
     const [themeArray, setThemeArray] = useState<string[][]>([])       // array of bars
     const [shouldFetch, setShouldFetch] = useState(false)
     const [rerender, setRerender] = useState(new Object())
+    const [currentlyChosen, setCurrentlyChosen] = useState<number|null>(null)
 
     const targetRef = useRef<HTMLDivElement | null>(null) // null might be the root of issues
     const intersection = useIntersection(targetRef, {
@@ -45,6 +51,14 @@ const ColorBoxPresenter = () => {
             themeArray = { themeArray }
             targetRef = { targetRef }
             loading = { false}//TODO
+            chosen = {currentlyChosen}
+            onSetChosen={(index:number)=>{setCurrentlyChosen(index)}}
+            onContinue={()=>{
+                if (currentlyChosen){
+                    props.onSetColorTheme(themeArray[currentlyChosen])
+                }
+                props.onContinue()
+            }}
         />
     )
 }

@@ -1,12 +1,12 @@
 import { cloneDeep } from "lodash";
 import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
-import { Beat, defaultSample, Rhythm, Sample, textStyles, TextVariant, Track, theme } from "../../common";
+import { defaultSample, Rhythm, Sample, textStyles, TextVariant, Track, theme } from "../../common";
 import ModelContext from "../../contexts/ModelContext";
 import BeatTracksView from "../views/BeatTracksView";
-import EditThemeModalView from "../views/EditThemeModalView";
 import MainButton, { MainButtonType } from "../views/common/MainButton";
 import BeatVisualisationPresenter from "./BeatVisualizationPresenter";
+import ColorBoxPresenter from "./ColorBoxPresenter";
 
 const newTrack:Track = {
     rhythm: new Rhythm(16),
@@ -60,7 +60,7 @@ export default function BeatCreatePresenter(){
     
     const [title, setTitle] = useState("my beat")
     const [description, setDescription] = useState("")
-    const [theme, setTheme] = useState<string[]>([])
+    const [theme, setTheme] = useState<string[]>(["#453C67", "#6D67E4", "#46C2CB", "#F2F7A1"])
     const [bpm, setBpm] = useState(120*4)
     const [tracks, setTracks] = useState<Track[]>([])
 
@@ -97,8 +97,8 @@ export default function BeatCreatePresenter(){
         pause()
     }
 
-    function handleEditTheme(){
-        setEditThemeModal(true)
+    function toggleEditTheme(){
+        setEditThemeModal(!editThemeModal)
     }
 
     function updateTrack(index:number, newTrack:Track){
@@ -109,11 +109,9 @@ export default function BeatCreatePresenter(){
     }
     
     if (editThemeModal){
-        return <EditThemeModalView 
-            theme={theme} 
-            onUpdate={setTheme}
-            onExit={()=>{setEditThemeModal(false)}}
-        />
+        return <ColorBoxPresenter onContinue={toggleEditTheme} onSetColorTheme={(theme:string[])=>{
+            console.log(theme)
+            setTheme(theme)}}/>
     } else {
         return <OuterBox>
             <TitleStyle>Title</TitleStyle>
@@ -122,10 +120,10 @@ export default function BeatCreatePresenter(){
             <BeatVisualisationPresenter
                 tracks={tracks}
                 bpm={bpm}
-                colorTheme={["#453C67", "#6D67E4", "#46C2CB", "#F2F7A1"]} //TODO
+                colorTheme={theme} //TODO
             />
             
-            <MainButton type={MainButtonType.ChooseColorTheme} scale = {1} text = "pick color theme" onClick={()=>{}}></MainButton>
+            <MainButton type={MainButtonType.ChooseColorTheme} scale = {1} text = "pick color theme" onClick={toggleEditTheme}></MainButton>
             </Center>
             <TitleStyle>Tracks</TitleStyle>
             <BeatTracksView
