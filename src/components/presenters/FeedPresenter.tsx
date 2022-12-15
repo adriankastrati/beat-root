@@ -6,69 +6,57 @@ import { getQueryBeats, isBeatLikedByCurrentUser, likeBeatAsUser, unlikeBeatAsUs
 import FeedView from "../views/FeedView";
 import { getCurrentUserID } from "../../model/firebase/firebaseAuthenticationModel";
 import { SortBy } from "./../../model/firebase/firebaseBeat";
-import { sortBy } from "lodash";
 
-//import { contextFree, StyledComponent } from "styled-components"
-
-// TODO: fix first fetch of beats
-// TODO: time-out function when intersection can't change
-// TODO: filters
-// TODO: midi copy
-
-
+// TODO: refreshing entire page through "swiping down"
 const FeedPresenter = () => {
-
-    const [beats, setBeats] = useState<Beat[]>([]) //might be | null?
-    const [offset, setOffset] = useState(0)
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState(false)
+    const [beats, setBeats] = useState<Beat[]>([])
     const [timestamp_now, setTimestamp_now] = useState(Timestamp.fromDate(new Date()))
+    const [isLoading, setIsLoading] = useState(false)
     const [lastBeatID, setLastBeatID] = useState<undefined|string>(undefined)
+    const [shouldFetch, setShouldFetch] = useState(false)
 
     //const fetchCount = useRef(0) // for limiting fetches
     const targetRef = useRef<HTMLDivElement | null>(null)
     const intersection = useIntersection(targetRef, {
         root:null,
-        rootMargin: '200px',
-        threshold: 0.7
+        rootMargin: '1px',
+        threshold: 1.0
     });
+    
     
     //setTimestamp_now(timestamp_now)
 
-    const itemsOnFetch = 10
-    const MAX_FETCHES = 4
-
-
-    function fetchData() {
-            setLoading(true)
-            //setTimestamp_now(Timestamp.fromDate(new Date()))
-            //                                            likes/recent
-            getQueryBeats(itemsOnFetch, timestamp_now, SortBy.recent,lastBeatID).then((newBeats) => {if(newBeats){
-                //setBeats(Array.from([...beats,...newBeats]))
-                // newBeats.reverse()
-                setBeats(beats.concat(newBeats))
-                setLoading(false)
-            }})
-    }
 
     useEffect(() => {
-        if (intersection?.isIntersecting) {
-
-            //console.log("aaaah, I'm intersecting!!!!",intersection?.isIntersecting)
-            if (beats.length > 0) {
-                setLastBeatID(beats[beats.length - 1].firestoreBeatID)
-                setOffset(offset + itemsOnFetch)
-                fetchData()
-            }
-            if(beats.length == 0) {
-                console.log("beats == null", beats)
-                fetchData()
-            } else {
-                console.log("beats != null")
-                return
-            }
+        //console.log("intersecting", intersection, intersection?.isIntersecting)
+        if (intersection?.isIntersecting && !shouldFetch) {
+            setShouldFetch(true)
+            setIsLoading(true)
         }
-    }, [intersection]) 
+    }, [intersection])
+
+
+    const MAX_FETCHES = 4 // maybe use for rate-limiting
+    const itemsOnFetch = 20 // = intersectionobserver hidden after first fetch
+
+    useEffect(()=> {
+        if(shouldFetch) {
+            getQueryBeats(itemsOnFetch, timestamp_now, SortBy.recent, lastBeatID)
+            .then((newBeats) => {
+                if(newBeats && 
+                    newBeats.length > 0 && 
+                    lastBeatID != newBeats[newBeats.length-1].firestoreBeatID
+                    ) {
+                setBeats(Array.from([...beats, ...newBeats]))
+                setLastBeatID(newBeats[newBeats.length-1].firestoreBeatID)
+
+            } else {console.log("already at the oldest item")}}) 
+            .then(()=>{console.log("last beat fetched has id: ",lastBeatID)})
+            .then(()=>{setIsLoading(false)})
+            
+            setShouldFetch(false)
+        } 
+    }, [shouldFetch])
 
 
     function likeBeat(beatID: string, likes:number){
@@ -80,10 +68,10 @@ const FeedPresenter = () => {
     return (
         <FeedView 
             beats={beats}
-            offset={offset}
-            loading={loading}
+            isLoading={isLoading}
             targetRef={targetRef}
             itemsOnFetch= {itemsOnFetch}
+            lastItem = {lastBeatID}
             onLikeBeat = {likeBeat}
         />
     )
