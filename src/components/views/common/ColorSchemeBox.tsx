@@ -20,21 +20,26 @@ const SchemeBox = styled.div`
   width: 100%;
 `
 
-interface Props{
+interface ColorSchemeBoxProps{
     colorArray: string[]
 }
 
-function ColorSchemeBox(props:Props){
-    let c_id = 0;
-    
-    function ColorBoxCB(color:string){
-        c_id++;
-        return <ColorBox boxColor={color} 
-                         width={100/props.colorArray.length+"%"}
-                         key={c_id}></ColorBox>
-    }
-    
+function ColorSchemeBox(props:ColorSchemeBoxProps){
 
-    return <SchemeBox>{props.colorArray.map(ColorBoxCB)}</SchemeBox>
+  return (
+    <SchemeBox>
+      {props.colorArray.map((color, key) => {
+        return (
+          <ColorBox 
+            boxColor={color}
+            width={100/props.colorArray.length+"%"} 
+            key={key}>
+          </ColorBox>
+        )
+      })}
+
+    </SchemeBox>
+  )
 }
+    
 export default ColorSchemeBox

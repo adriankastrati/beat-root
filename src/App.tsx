@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Switch} from "react-router-dom";
 import AudioInitializer from "./components/presenters/AudioInitializer";
 import BeatCreatePresenter from "./components/presenters/BeatCreatePresenter";
+import ColorBoxPresenter from "./components/presenters/ColorBoxPresenter";
 import FeedPresenter from "./components/presenters/FeedPresenter";
 import ColorBoxView from "./components/views/ColorBoxView";
 import NavBar from "./components/views/NavBar";
@@ -46,7 +47,7 @@ export default function App(){
                                 <BeatCreatePresenter/>
                             </Route>
                             <Route exact path = "/play/create/colorbox">
-                                <ColorBoxView/>
+                                <ColorBoxPresenter/>
                             </Route>
                         </Switch>
                     </AudioInitializer>

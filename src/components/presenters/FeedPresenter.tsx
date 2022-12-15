@@ -13,6 +13,7 @@ import { getCurrentUserID } from "../../model/firebase/firebaseAuthenticationMod
 // TODO: filters
 // TODO: midi copy
 
+
 const FeedPresenter = () => {
 
     const [beats, setBeats] = useState<Beat[]>([]) //might be | null?
@@ -67,9 +68,9 @@ const FeedPresenter = () => {
     }, [intersection]) 
 
 
-function likeBeat(beatID: string){
-    likeBeatAsUser(beatID)
-}
+    function likeBeat(beatID: string){
+        likeBeatAsUser(beatID)
+    }
 
     return (
         <FeedView 
