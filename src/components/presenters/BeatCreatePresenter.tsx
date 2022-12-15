@@ -1,12 +1,14 @@
 import { cloneDeep } from "lodash";
+import { createBeat } from "../../model/firebase/firebaseBeat";
 import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
-import { defaultSample, Rhythm, Sample, textStyles, TextVariant, Track, theme } from "../../common";
+import { defaultSample, Rhythm, Sample, textStyles, TextVariant, Track, theme, Beat } from "../../common";
 import ModelContext from "../../contexts/ModelContext";
 import BeatTracksView from "../views/BeatTracksView";
 import MainButton, { MainButtonType } from "../views/common/MainButton";
 import BeatVisualisationPresenter from "./BeatVisualizationPresenter";
 import ColorBoxPresenter from "./ColorBoxPresenter";
+import { useHistory } from "react-router";
 
 const newTrack:Track = {
     rhythm: new Rhythm(16),
@@ -56,7 +58,15 @@ const Block = styled.div`
     
 `
 
+enum CreationState{
+    EditTheme,
+    Saving,
+    Main
+}
+
 export default function BeatCreatePresenter(){
+
+    let history = useHistory()
     
     const [title, setTitle] = useState("my beat")
     const [description, setDescription] = useState("")
@@ -64,7 +74,7 @@ export default function BeatCreatePresenter(){
     const [bpm, setBpm] = useState(120*4)
     const [tracks, setTracks] = useState<Track[]>([])
 
-    const [editThemeModal, setEditThemeModal] = useState(false)
+    const [creationState, SetCreationState] = useState(CreationState.Main)
     const [soundNeedsUpdate, setSoundNeedsUpdate] = useState(false)
     const {audioModel} = useContext(ModelContext)
 
@@ -98,7 +108,11 @@ export default function BeatCreatePresenter(){
     }
 
     function toggleEditTheme(){
-        setEditThemeModal(!editThemeModal)
+        if (creationState === CreationState.EditTheme){
+            SetCreationState(CreationState.Main)
+        } else {
+            SetCreationState(CreationState.EditTheme)
+        }
     }
 
     function updateTrack(index:number, newTrack:Track){
@@ -107,13 +121,10 @@ export default function BeatCreatePresenter(){
         setTracks(newTracks)
         pause()
     }
-    
-    if (editThemeModal){
-        return <ColorBoxPresenter onContinue={toggleEditTheme} onSetColorTheme={(theme:string[])=>{
-            console.log(theme)
-            setTheme(theme)}}/>
-    } else {
-        return <OuterBox>
+
+    switch (creationState) {
+        case CreationState.Main:
+            return <OuterBox>
             <TitleStyle>Title</TitleStyle>
             <TextTitleInput value={title} onChange={e=>setTitle(e.currentTarget.value)}/>
             <Center>
@@ -135,7 +146,33 @@ export default function BeatCreatePresenter(){
             />
             <TitleStyle>Description</TitleStyle>
             <TextBodyTextArea value={description} onChange={e=>setDescription(e.currentTarget.value)}/>
-            <Center><MainButton type={MainButtonType.Save}  scale = {1} text = "save and publish" onClick={console.log("save!")}></MainButton></Center>
-        </OuterBox>
+            <Center>
+                <MainButton type={MainButtonType.Save}  scale = {1} text = "save and publish" 
+                    onClick={()=>{
+                        createBeat(
+                            {
+                                firestoreBeatID:"",
+                                composerID:"",
+                                likes:0,
+
+                                description,
+                                title,
+                                bpm,
+                                tracks,
+                                theme,
+                            }
+                        ).then(()=>{history.push("/home")})
+
+                        SetCreationState(CreationState.Saving)
+                    }}
+                />
+            </Center>
+            </OuterBox>
+
+        case CreationState.EditTheme:
+            return <ColorBoxPresenter onContinue={toggleEditTheme} onSetColorTheme={(theme:string[])=>{setTheme(theme)}}/>
+        case CreationState.Saving:
+            return <div>saving...</div>
     }
+
 }
