@@ -68,7 +68,12 @@ export default function BeatTracksView(props:BeatTracksViewProps){
                 />)
             }
             <Center>
-                <MainButton text = "add sample" type = {MainButtonType.Create} scale = {0.75} onClick={props.onAddTrack}></MainButton>
+                {
+                    props.tracks.length < 5 ? 
+                    <MainButton text = "add sample" type = {MainButtonType.Create} scale = {0.75} onClick={props.onAddTrack}></MainButton>
+                    : null
+
+                }
 
             </Center>
         </TracksContainer>
