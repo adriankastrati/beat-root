@@ -12,7 +12,6 @@ export default class AudioModel {
     playing = false
 
     play(tracks:Track[], bpm:number){ //TODO: Sample lookup table in initialized model. Sample is only a string
-        if (!this.initialized){}
         this.clear()
         //create all samplers
         this.samplers = tracks.map(
@@ -27,6 +26,7 @@ export default class AudioModel {
 
                     onload:()=>{
                         //schedule
+                        console.log("play")
                         Tone.Transport.scheduleRepeat((time:number)=>{
                             console.log(rhythm.getNormalizedLoopSchedule())
                             rhythm.getNormalizedLoopSchedule().forEach(hitTime => {
