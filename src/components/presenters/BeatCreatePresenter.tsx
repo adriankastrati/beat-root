@@ -2,7 +2,7 @@ import { cloneDeep } from "lodash";
 import { createBeat } from "../../model/firebase/firebaseBeat";
 import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
-import { defaultSample, Rhythm, Sample, textStyles, TextVariant, Track, theme, Beat } from "../../common";
+import { defaultSample, Rhythm, textStyles, TextVariant, Track, theme } from "../../common";
 import ModelContext from "../../contexts/ModelContext";
 import BeatTracksView from "../views/BeatTracksView";
 import MainButton, { MainButtonType } from "../views/common/MainButton";
