@@ -149,6 +149,8 @@ export default function UserPageView(props: UserPageProps){
         }else if (nameBoxContent.length>20){
             displayErrorMsg('Too many characters!')
             error = true;
+        }else if (nameBoxContent == props.username){
+            error = true;
         }// set other naming rules
         toggleUsernameCB()
         if (error){
@@ -159,7 +161,10 @@ export default function UserPageView(props: UserPageProps){
     }
 
     function onUpdateDescription(){
-        //set rules for description
+        if(descriptionBoxText == props.description){
+            //dont update if the text is unchanged
+            return;
+        }//set more rules for description
         props.refresh()
         props.onUpdateDescription(descriptionBoxText)
     }
@@ -174,7 +179,7 @@ export default function UserPageView(props: UserPageProps){
     }
     function saveDescriptionCB(){
         toggleDescriptionCB()
-        onUpdateDescription()
+        onUpdateDescription()   
     }
     function toggleUsernameCB(){
         setNameBoxContent(props.username?props.username:"")
