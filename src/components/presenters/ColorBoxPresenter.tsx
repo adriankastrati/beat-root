@@ -39,7 +39,7 @@ const ColorBoxPresenter = (props:ColorBoxPresenterProps) => {
                     ...newStuff
                 ])})
         } else{
-            setRerender(new Object)
+            setRerender(new Object) // ?
         }
         setShouldFetch(false)
         }
