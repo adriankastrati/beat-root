@@ -35,6 +35,7 @@ const FetchDiv = styled.div`
 interface FeedViewProps{
     beats: Beat[]
     isLoading: boolean
+    shouldFetch: boolean
     targetRef: MutableRefObject<HTMLDivElement | null>
     itemsOnFetch: number
     lastItem: string | undefined
@@ -76,7 +77,9 @@ export default function FeedView(props:FeedViewProps){
             </Feed>
             <Feed>
                 {!props.targetRef? props.beats.slice(props.beats.length - props.itemsOnFetch, props.beats.length + props.itemsOnFetch).map(feedElementCB)
-                    : <SuspenseDiv>loading</SuspenseDiv>
+                    : <SuspenseDiv>
+                            {props.isLoading? "loading": ""}  
+                        </SuspenseDiv>
                 }
             </Feed>
             <FetchDiv ref={ props.targetRef }>
