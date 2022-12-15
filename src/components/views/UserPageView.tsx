@@ -97,10 +97,10 @@ interface UserPageProps{
 }
 let nameInstructions = 'Choose a name between 5-20 characters'
 export default function UserPageView(props: UserPageProps){
-    const [selectedImage, setSelectedImage] = React.useState<string>(props.profilePicture?props.profilePicture:props.loadedImages[0]);
+    const [selectedImage, setSelectedImage] = React.useState<string>('');
     const [nameBoxContent, setNameBoxContent] = React.useState<string>('')
     const [nameInfoText, setNameInfoText] = React.useState<string>(nameInstructions)
-    const [descriptionBoxText, setDescriptionBoxText] = React.useState<string>(nameInstructions)
+    const [descriptionBoxText, setDescriptionBoxText] = React.useState<string>(props.description?props.description:"Nothing here!")
     
 
     let k = 0; 
@@ -146,6 +146,7 @@ export default function UserPageView(props: UserPageProps){
 
     function onUpdateDescription(){
         //set rules for description
+        props.refresh()
         props.onUpdateDescription(descriptionBoxText)
     }
     function displayErrorMsg(msg:string){
@@ -169,7 +170,7 @@ export default function UserPageView(props: UserPageProps){
                         <ProfilePictureContainer>
                             {
                                 props.profilePicChangingState?<Picture src={selectedImage}></Picture>:(
-                                    <Picture src={props.profilePicture!}></Picture>
+                                    <Picture src={props.profilePicture?props.profilePicture:props.loadedImages[0]}></Picture>
                                     )
                             }         
                         </ProfilePictureContainer>
@@ -210,7 +211,7 @@ export default function UserPageView(props: UserPageProps){
                             )
                             :
                             (<InnerBox>
-                                <InputArea onChange={(e)=>setDescriptionBoxText(e.target.value)} width={"100%"} height = {"100px"}></InputArea>
+                                <InputArea onChange={(e)=>setDescriptionBoxText(e.target.value)} width={"100%"} height = {"100px"} defaultValue={props.description!}></InputArea>
                                 <MainButton type={MainButtonType.Save} text="Save" scale = {0.5} width = {130} onClick={saveDescriptionCB}></MainButton>  
                             </InnerBox>
                             )

@@ -62,13 +62,6 @@ export default function UserPagePresenter(){
                 setProfileChange("Failed")
         })
     }
-    useEffect(setInitialProfilePic,[])
-
-    function setInitialProfilePic(){
-        if(!userInformation?.profilePictureURL){
-            changePicture(loadedImages[0])
-        }
-    }
     function refreshCB(){
         fetchUser()
         refresh(new Object)
