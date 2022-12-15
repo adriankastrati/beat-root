@@ -41,7 +41,7 @@ const FeedPresenter = () => {
     function fetchData() {
             setLoading(true)
             //setTimestamp_now(Timestamp.fromDate(new Date()))
-            getQueryBeats(itemsOnFetch, timestamp_now, SortBy.likes).then((newBeats) => {if(newBeats){
+            getQueryBeats(itemsOnFetch, timestamp_now, SortBy.likes,lastBeatID).then((newBeats) => {if(newBeats){
                 //setBeats(Array.from([...beats,...newBeats]))
                 // newBeats.reverse()
                 setBeats(beats.concat(newBeats))
@@ -69,13 +69,15 @@ const FeedPresenter = () => {
     }, [intersection]) 
 
 
-function likeBeat(beatID: string, likes:number){
-    console.log(beatID, likes)
-    likeBeatAsUser(beatID, likes)
-}
-
+    function likeBeat(beatID: string, likes:number){
+        likeBeatAsUser(beatID, likes)
+    }
+    function refreshBeats(){
+        setTimestamp_now(Timestamp.fromDate(new Date()))
+    }
     return (
         <FeedView 
+            onNewBeats={refreshBeats}
             beats={beats}
             offset={offset}
             loading={loading}

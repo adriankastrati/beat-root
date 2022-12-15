@@ -61,7 +61,7 @@ export default function BeatCreatePresenter(){
     const [title, setTitle] = useState("my beat")
     const [description, setDescription] = useState("")
     const [theme, setTheme] = useState<string[]>([])
-    const [bpm, setBpm] = useState(120)
+    const [bpm, setBpm] = useState(120*4)
     const [tracks, setTracks] = useState<Track[]>([])
 
     const [editThemeModal, setEditThemeModal] = useState(false)
@@ -76,10 +76,6 @@ export default function BeatCreatePresenter(){
         audioModel.stop()
     }
 
-    function updateSound(){ //TODO useEffect for needing update instead
-        setSoundNeedsUpdate(true)
-    }
-
     useEffect(()=>{
         if(soundNeedsUpdate){
             if (audioModel.playing){
@@ -91,14 +87,14 @@ export default function BeatCreatePresenter(){
 
     function handleAddTrack(){
         setTracks([...tracks, newTrack])
-        updateSound()
+        pause()
     }
 
     function handleRemoveTrack(index:number){
         let newTracks = cloneDeep(tracks)
         newTracks.splice(index,1)
         setTracks(newTracks)
-        updateSound()
+        pause()
     }
 
     function handleEditTheme(){
@@ -109,10 +105,9 @@ export default function BeatCreatePresenter(){
         let newTracks = cloneDeep(tracks)
         newTracks[index] = newTrack
         setTracks(newTracks)
-        updateSound()
+        pause()
     }
     
-
     if (editThemeModal){
         return <EditThemeModalView 
             theme={theme} 
@@ -127,8 +122,8 @@ export default function BeatCreatePresenter(){
             <BeatVisualisationPresenter
                 tracks={tracks}
                 bpm={bpm}
+                colorTheme={["#453C67", "#6D67E4", "#46C2CB", "#F2F7A1"]} //TODO
             />
-            <button onClick={()=>updateSound()}>update</button>
             
             <MainButton type={MainButtonType.ChooseColorTheme} scale = {1} text = "pick color theme" onClick={()=>{}}></MainButton>
             </Center>
