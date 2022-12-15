@@ -2,6 +2,7 @@ import { theme, Track } from "../../common";
 import styled from "styled-components";
 import { useContext, useEffect, useRef, useState } from "react";
 import ModelContext from "../../contexts/ModelContext";
+import MainButton, { MainButtonType } from "components/views/common/MainButton";
 
 interface BeatVisualisationPresenterProps{
     tracks: Track[],
@@ -9,13 +10,10 @@ interface BeatVisualisationPresenterProps{
     colorTheme: string[]
 }
 
-const Center = styled.div`
-align-self: center;
-align-items: center;
-`
 const OuterBox = styled.div`
   display:flex;
   flex-direction:column;
+  align-items:center;
 `
 
 const CanvasWrapper = styled.div`
@@ -59,6 +57,7 @@ export default function BeatVisualisationPresenter(props:BeatVisualisationPresen
             canvasRef.current.height = wrapperRef.current.clientWidth;
 
             setDrawContext(canvasRef.current.getContext("2d"))
+            
         }
     },[canvasRef.current, wrapperRef.current])
 
@@ -91,6 +90,12 @@ export default function BeatVisualisationPresenter(props:BeatVisualisationPresen
             draw()
         }
     },[step, props.tracks, props.colorTheme])
+
+    useEffect(()=>{ //initial draw
+        if (drawContext){
+            draw()
+        }
+    },[drawContext])
 
     function play(){
         audioModel.play(props.tracks, props.bpm)
@@ -217,7 +222,8 @@ export default function BeatVisualisationPresenter(props:BeatVisualisationPresen
         </CanvasWrapper>
 
         {/* <button onClick={draw}> draw! </button> */}
-        <button onClick={()=>isPlaying ? pause(): play()}> play/pause </button>       
+        <MainButton type = {MainButtonType.Plain} scale ={1} text={isPlaying?"Pause":"Play"} onClick={()=>isPlaying ? pause(): play()}></MainButton>
+             
        
     </OuterBox>
 }

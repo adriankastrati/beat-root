@@ -1,4 +1,5 @@
 
+import { wait } from '@testing-library/user-event/dist/utils';
 import { User } from 'firebase/auth';
 import {Timestamp } from 'firebase/firestore';
 import React from 'react';
@@ -26,6 +27,10 @@ export default function ManualFirebaseTest(){
   function loginDummy(){
     loginEmailPasswordAccount("dummys@hej.se", "pastaPasta" )
   }
+
+  const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+
   
   async function logOut(){
     logOutAccount()
@@ -62,8 +67,22 @@ export default function ManualFirebaseTest(){
       theme: ["#000000", "#f01000"],
       bpm:    120
     } 
+    for(let i = 0; i<15; i++){
+    
 
-    createBeat(b)
+    await sleep(4000).then(()=>{
+      createBeat({
+        firestoreBeatID: "",
+        title: i.toString(10),
+        description:"description",
+        composerID: "", //user ID
+        likes:0, //user IDs
+        tracks: [t1,t2], //track IDs
+        theme: ["#000000", "#f01000"],
+        bpm:    120
+      } as Beat)
+    })
+  }
   }
 
   async function getUserInfo(){
