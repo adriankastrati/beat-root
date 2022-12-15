@@ -3,10 +3,10 @@ import { User } from 'firebase/auth';
 import {Timestamp } from 'firebase/firestore';
 import React from 'react';
 import { Beat, Rhythm, Sample, Track } from '../common';
-import {createEmailPasswordAccount,loginEmailPasswordAccount, getCurrentUserID, logOutAccount} from '../model/firebase/firebaseAuthenticationModel'
+import {createEmailPasswordAccount,loginEmailPasswordAccount, getCurrentUserID, logOutAccount, getUserInformation,getProfilePictures} from '../model/firebase/firebaseAuthenticationModel'
 
-import {getBeatByID, createBeat, isBeatLikedByCurrentUser, getQueryBeats, getSamples} from "../model/firebase/firebaseBeat"
-
+import {getBeatByID, createBeat, isBeatLikedByCurrentUser, getQueryBeats, getSamples, queryBeatsByUser} from "../model/firebase/firebaseBeat"
+import { SortBy } from '../model/firebase/firebaseBeat';
 export default function ManualFirebaseTest(){
 
   const [user, setUser] = React.useState<string|null>(null)
@@ -54,7 +54,7 @@ export default function ManualFirebaseTest(){
     
     let b: Beat = {
       firestoreBeatID: "",
-      title: "litty song",
+      title: "2",
       description:"description",
       composerID: "", //user ID
       likes:0, //user IDs
@@ -66,12 +66,23 @@ export default function ManualFirebaseTest(){
     createBeat(b)
   }
 
+  async function getUserInfo(){
+    console.log(getUserInformation("AjOtxWR7GTYJafSDw91R9pGYoX32"))
+  }
+  async function getUserPic(){
+    getProfilePictures()
+  }
+
+  async function getUserTest(){
+    console.log(await queryBeatsByUser("aFSQRyxBjxgyY0knbHdhg3Ck2d83",3))
+  }
+
   function getTestData(){
-    getBeatByID("2AvtSLJxulacApUXRHHA").then(data=>console.log(data))
+    getBeatByID("qbkuwuGUYvCufsWtW4jO").then(data=>console.log(data))
   }
 
   function getQueryBeat(){
-    getQueryBeats(3, Timestamp.fromDate(new Date())).then(beats=>{console.log(beats)})
+    getQueryBeats(3, Timestamp.fromDate(new Date()),SortBy.likes).then(beats=>{console.log(beats)})
   }
   
   function beatLikedByCurrentUser(){
@@ -87,6 +98,11 @@ export default function ManualFirebaseTest(){
   
   return (
     <div className="App">
+      <br />
+      <br />
+      <button onClick={getUserInfo}>log userinfomration</button>
+      <button onClick={getUserPic}>get pictures</button>
+      <button onClick={getUserTest}>get Userbeats</button>
       <button onClick={createDummy}> create</button>
       <button onClick={loginDummy}> login</button>
       <button onClick={logSamples}> log samples</button>

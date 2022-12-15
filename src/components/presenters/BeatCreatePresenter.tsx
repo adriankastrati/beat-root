@@ -1,12 +1,12 @@
 import { cloneDeep } from "lodash";
 import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
-import { Beat, defaultSample, playTracks, Rhythm, Sample, textStyles, TextVariant, Track, theme } from "../../common";
+import { Beat, defaultSample, Rhythm, Sample, textStyles, TextVariant, Track, theme } from "../../common";
 import ModelContext from "../../contexts/ModelContext";
 import BeatTracksView from "../views/BeatTracksView";
-import BeatVisualisationView from "../views/BeatVisualisationView";
 import EditThemeModalView from "../views/EditThemeModalView";
 import MainButton, { MainButtonType } from "../views/common/MainButton";
+import BeatVisualisationPresenter from "./BeatVisualizationPresenter";
 
 const newTrack:Track = {
     rhythm: new Rhythm(16),
@@ -61,31 +61,24 @@ export default function BeatCreatePresenter(){
     const [title, setTitle] = useState("my beat")
     const [description, setDescription] = useState("")
     const [theme, setTheme] = useState<string[]>([])
-    const [bpm, setBpm] = useState(120)
+    const [bpm, setBpm] = useState(120*4)
     const [tracks, setTracks] = useState<Track[]>([])
 
     const [editThemeModal, setEditThemeModal] = useState(false)
-    const [playing, setPlaying] = useState(false)
     const [soundNeedsUpdate, setSoundNeedsUpdate] = useState(false)
     const {audioModel} = useContext(ModelContext)
 
     function play(){
-        setPlaying(true)
-        playTracks(tracks, bpm, audioModel)
+        audioModel.play(tracks,bpm)
     }
 
     function pause(){
-        setPlaying(false)
         audioModel.stop()
-    }
-
-    function updateSound(){ //TODO useEffect for needing update instead
-        setSoundNeedsUpdate(true)
     }
 
     useEffect(()=>{
         if(soundNeedsUpdate){
-            if (playing){
+            if (audioModel.playing){
                 play()
             }
             setSoundNeedsUpdate(false)
@@ -94,14 +87,14 @@ export default function BeatCreatePresenter(){
 
     function handleAddTrack(){
         setTracks([...tracks, newTrack])
-        updateSound()
+        pause()
     }
 
     function handleRemoveTrack(index:number){
         let newTracks = cloneDeep(tracks)
         newTracks.splice(index,1)
         setTracks(newTracks)
-        updateSound()
+        pause()
     }
 
     function handleEditTheme(){
@@ -112,10 +105,9 @@ export default function BeatCreatePresenter(){
         let newTracks = cloneDeep(tracks)
         newTracks[index] = newTrack
         setTracks(newTracks)
-        updateSound()
+        pause()
     }
     
-
     if (editThemeModal){
         return <EditThemeModalView 
             theme={theme} 
@@ -127,14 +119,11 @@ export default function BeatCreatePresenter(){
             <TitleStyle>Title</TitleStyle>
             <TextTitleInput value={title} onChange={e=>setTitle(e.currentTarget.value)}/>
             <Center>
-            <BeatVisualisationView
-                onPlay={()=>play()}
-                onPause={()=>pause()}
-                rhythms={tracks.map(({rhythm})=>rhythm)}
-                currentProgress={0}//TODO
-                amplitude={0}//TODO
+            <BeatVisualisationPresenter
+                tracks={tracks}
+                bpm={bpm}
+                colorTheme={["#453C67", "#6D67E4", "#46C2CB", "#F2F7A1"]} //TODO
             />
-            <button onClick={()=>updateSound()}>update</button>
             
             <MainButton type={MainButtonType.ChooseColorTheme} scale = {1} text = "pick color theme" onClick={()=>{}}></MainButton>
             </Center>

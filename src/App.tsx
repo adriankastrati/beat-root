@@ -10,10 +10,22 @@ import ColorTestPage from "./pages/colorTestPage";
 import ManualFirebaseTest from "./pages/ManualFirebaseTest";
 import RootPage from "./pages/RootPage";
 import SignInTest from "./pages/signInTest";
+import React from "react";
+import styled from "styled-components";
+import UserPage from "./pages/UserPage";
+
+const MainDiv = styled.div/*<MainProps>*/`
+    
+}
+`/*
+interface MainProps{
+    active:boolean
+}*/
 
 export default function App(){
     return <BrowserRouter>
         <div>
+        
             <NavBar/>
             <Switch>
                 <Route exact path="/">
@@ -30,6 +42,10 @@ export default function App(){
 
                 <Route exact path="/test/sign-in">
                     <SignInTest/>
+                </Route>
+
+                <Route exact path="/test/user-page">
+                    <UserPage/>
                 </Route>
                 
                 <Route path="/play">
