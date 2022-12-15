@@ -31,9 +31,10 @@ function ColorSchemeBox(props:ColorSchemeBoxProps){
       {props.colorArray.map((color, key) => {
         return (
           <ColorBox 
+          key={key}
             boxColor={color}
             width={100/props.colorArray.length+"%"} 
-            key={key}>
+            >
           </ColorBox>
         )
       })}
