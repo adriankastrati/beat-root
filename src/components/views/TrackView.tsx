@@ -2,6 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import { Sample, textStyles, TextVariant, theme, Track } from "../../common";
 import DeleteCrossButton from "./common/DeleteCrossButton";
+import MainButton, { MainButtonType } from "./common/MainButton";
 import RhythmView from "./RhythmView";
 
 interface TrackViewProps{
@@ -14,15 +15,33 @@ interface TrackViewProps{
     selectableSamples?: Sample[]
 }
 
-const OuterContainer = styled.div`
+const OuterBox = styled.div`
     background-color: ${theme.light};
-    border-radius: 30px;
+    border-radius: 10px;
+    align-items:center;
     margin-top:10px;
     padding:10px;
+    position: relative;
 `
-
+const Fixed = styled.div`
+    display:flex;
+    flex-direction: column;
+    position:absolute;
+    top:-15px;
+    right: -15px;
+`
+const Innerbox = styled.div`
+display:flex;
+flex-direction:column;
+align-items:center;
+`
 const SampleSelect = styled.select`
     ${textStyles(TextVariant.SUBTITLE)}
+    width: 85%;
+    const Select = styled.select;
+    direction: ltr;
+    border-radius: 5px;
+    border:none;
 `
 
 const SampleDiv = styled.div`
@@ -30,26 +49,33 @@ const SampleDiv = styled.div`
 `
 
 export default function TrackView(props:TrackViewProps){
-    return <OuterContainer>
-        {   //sample
-            props.onChangeSample && props.selectableSamples ? 
-            <SampleSelect onChange={e=>props.onChangeSample!(e.currentTarget.value)}>
-                {
-                    props.selectableSamples.map((sample, i) => <option key={i} value={sample}>{sample}</option>)
-                }
-            </SampleSelect> : 
-            <SampleDiv>{props.track.sample}</SampleDiv>
-        }
+    return (         
+                <OuterBox>
+                    <Fixed>
+                    {   //delete
+                        props.onDelete ? <MainButton onClick={props.onDelete} type={MainButtonType.Cross} scale={0.75} text="" backgroundColor={theme.medium} frameOff={true} borderRad={20}/>: null
+                    }
+                    </Fixed>
+                    <Innerbox>
+                    {   //sample
+                        props.onChangeSample && props.selectableSamples ? 
+                        <SampleSelect onChange={e=>props.onChangeSample!(e.currentTarget.value)}>
+                            {
+                                props.selectableSamples.map((sample, i) => <option key={i} value={sample}>{sample}</option>)
+                            }
+                        </SampleSelect> : 
+                        <SampleDiv>{props.track.sample}</SampleDiv>
+                    }
 
-        {   //delete
-            props.onDelete ? <DeleteCrossButton onClick={props.onDelete}/> : null
-        }
+                    
 
-        <RhythmView
-            rhythm={props.track.rhythm} 
-            onChangePulses={props.onChangePulses}
-            onChangeShift={props.onChangeShift}
-            onChangeSteps={props.onChangeSteps}
-        />
-    </OuterContainer>
+                    <RhythmView
+                        rhythm={props.track.rhythm} 
+                        onChangePulses={props.onChangePulses}
+                        onChangeShift={props.onChangeShift}
+                        onChangeSteps={props.onChangeSteps}
+                    />
+                    </Innerbox>
+                </OuterBox>
+    )
 }
