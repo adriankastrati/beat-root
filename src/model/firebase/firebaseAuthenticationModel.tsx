@@ -4,7 +4,7 @@ import {
 } from "firebase/auth";
 import {initializeApp} from "firebase/app"
 import { firebaseConfig } from "./firebaseConfig";
-import {collection, doc, getDoc, getFirestore, setDoc, updateDoc } from "firebase/firestore";
+import {arrayRemove, arrayUnion, collection, doc, getDoc, getFirestore, setDoc, updateDoc } from "firebase/firestore";
 import { ref, listAll, getBlob, getDownloadURL } from "firebase/storage";
 import { storage } from "./firebaseBeat";
 
@@ -119,7 +119,7 @@ async function createEmailPasswordAccount(email: string, username:string, passwo
    //TODO unique username:
     return createUserWithEmailAndPassword(auth, email,password).then((authUser)=>{
         setDoc(doc(firestore,`users/${authUser.user.uid}`),{
-            username: username,
+            username: authUser.user.uid,
             email: email,
             description:"",
             authID: authUser.user.uid,
@@ -149,12 +149,14 @@ async function setProfilePicture(newPicture:string): Promise<boolean>{
     //TODO unique username:
     return getCurrentUserID().then(async (userID)=>{       
         let userREF = doc(firestore,"users/", userID)
+        console.log(newPicture,"new pic link")
         await updateDoc(userREF, {
             profilePictureURL: newPicture
         });
         return true
     }).catch((e)=>{
-        console.log(e)
+        console.log(e, "failed profilePic change")
+        
         return false
     })
 }
@@ -172,14 +174,36 @@ async function setDescription(newDescription:string): Promise<boolean>{
     })
 }
 
+async function removeUsername(oldUsername:string): Promise<boolean>{
+    return getCurrentUserID().then(async (userID)=>{       
+
+        let userListREF = doc(firestore,"profileConditions/usernames")
+        await updateDoc(userListREF, {
+            takenUsernames: arrayRemove(oldUsername)
+            });
+        return true
+
+    }).catch((e)=>{
+        console.log(e, "failed username change")
+        return false
+    })
+}
+
 async function setUsername(newUsername:string): Promise<boolean>{
     return getCurrentUserID().then(async (userID)=>{       
         let userREF = doc(firestore,"users/", userID)
         await updateDoc(userREF, {
         username: newUsername
         });
+
+        let userListREF = doc(firestore,"profileConditions/usernames")
+        await updateDoc(userListREF, {
+            takenUsernames: arrayUnion(newUsername)
+            });
         return true
-    }).catch(()=>{
+
+    }).catch((e)=>{
+        console.log(e, "failed username change")
         return false
     })
 }
@@ -202,4 +226,4 @@ async function logOutAccount(){
 }
 
 
-export{setDescription, getProfilePictures,setProfilePicture,setUsername,getUserInformation,getCurrentUserID,logOutAccount,isUserLoggedIn,createEmailPasswordAccount,loginEmailPasswordAccount}
+export{removeUsername,setDescription, getProfilePictures,setProfilePicture,setUsername,getUserInformation,getCurrentUserID,logOutAccount,isUserLoggedIn,createEmailPasswordAccount,loginEmailPasswordAccount}
