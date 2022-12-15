@@ -46,7 +46,22 @@ async function getUserInformation(userID:string):Promise<UserInformation>{
     return ({ ...userSnapshot.data() } as UserInformation);
 }
 
-async function getProfilePictures(): Promise<string[]> {
+// async function getProfilePictures(): Promise<string[]> {
+ //     let sampleRef = ref(storage, 'profilePictures/')
+ //     return listAll(sampleRef).then((res) => {
+ //         return Promise.all(res.items.map((itemRef) => {
+ //             return getBlob(itemRef).then(blob=>{
+ //                 console.log()
+ //                 return URL.createObjectURL(blob)
+ //             })
+ //         }))
+ //     }).catch((error) => {
+ //         console.log(error)
+ //         return []
+ //     });
+ // }
+
+ async function getProfilePictures(): Promise<string[]> {
     let sampleRef = ref(storage, 'profilePictures/')
     return listAll(sampleRef).then((res) => {
         return Promise.all(res.items.map((itemRef) => {
@@ -58,7 +73,8 @@ async function getProfilePictures(): Promise<string[]> {
         return []
     })
 }
-/**s
+
+/**
  * 
  * @param email - email for account
  * @param password - password for account
