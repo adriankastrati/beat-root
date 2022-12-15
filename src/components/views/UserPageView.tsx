@@ -57,10 +57,12 @@ const InnerBox = styled.div<InnerBoxProps>`
 
 const ProfilePictureContainer = styled.div`
 width:128px;
+min-width:128px;
 height:128px;
-margin: 10px;
+margin: 3px;
 border: 1px solid black;
 border-radius: 5px;
+
 `
 interface PictureProps{
     width?:number
@@ -201,7 +203,6 @@ export default function UserPageView(props: UserPageProps){
                         <MainButton type = {MainButtonType.Save} scale = {0.5} onClick={updateProfilePictureCB} text="Save" width={130}></MainButton>
                         :<MainButton type = {MainButtonType.Edit} scale = {0.5} onClick={profileSelectBoxCB} text="Edit" width={130}></MainButton>
                     }
-                        
                     <ProfilePictureContainer>
                         {
                             props.profilePicChangingState?<Picture src={selectedImage}></Picture>:(

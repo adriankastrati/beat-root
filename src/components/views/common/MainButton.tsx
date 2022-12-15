@@ -20,6 +20,7 @@ interface ButtonInterface{
 
 const ButtonStyle = styled.button<ButtonInterface>`  display:inline-flex;
 width: ${props => props.width *props.scale}px;
+min-width:${props=> props.width*props.scale}px;
 height: ${props => props.scale}%;
 text-align: center;
 align-items: center;
