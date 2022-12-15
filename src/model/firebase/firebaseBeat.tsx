@@ -107,14 +107,12 @@ function getQueryWithSort(sort: SortBy, howMany: number, startTimeStamp: Timesta
         );
     }
     else if(sort === SortBy.likes) {
-        console.log("i should only be printed once, multiple fetches without lastBeatID")
 
         return query(beatRef,
             orderBy(sort, "desc"),
             limit(howMany)
         );
     }else if (sort === SortBy.recent){
-        console.log("i should only be printed once, multiple fetches without lastBeatID")
 
         return query(beatRef,
             where("creationDate","<",startTimeStamp.valueOf()),
@@ -135,9 +133,14 @@ async function getQueryBeats(howMany:number, startTimeStamp: Timestamp, sort: So
         })
 
         if (queryBeats){
-          return getBeats(queryBeats).then((beats)=>{
-              return beats   
-          })
+            return getBeats(queryBeats).then((beats)=>{
+                
+                if (beats.length !== 0){
+                    console.log(beats[beats.length-1].title)
+                }
+                return beats   
+            
+            })
         }
 
     }else if(!startBeatID){
@@ -146,6 +149,7 @@ async function getQueryBeats(howMany:number, startTimeStamp: Timestamp, sort: So
         
         if (queryBeats){
             return getBeats(queryBeats).then((beats)=>{
+                console.log(beats[beats.length-1].title)
                 return beats   
             })
         }
