@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Rhythm, Sample, theme, Track } from "../../common";
 import TrackView from "./TrackView";
 import MainButton, { MainButtonType } from "../views/common/MainButton";
-import { cloneDeep, sample } from "lodash";
+import { cloneDeep } from "lodash";
 
 interface BeatTracksViewProps {
     onAddTrack?:()=>void,
@@ -52,7 +52,7 @@ export default function BeatTracksView(props:BeatTracksViewProps){
         props.onSetTrack!(index, newTrack)
     }
 
-    return <div>
+    return (
         <TracksContainer>
             {
                 props.tracks.map((track, i)=>
@@ -68,10 +68,15 @@ export default function BeatTracksView(props:BeatTracksViewProps){
                 />)
             }
             <Center>
-                <MainButton text = "add sample" type = {MainButtonType.Create} scale = {0.75} onClick={props.onAddTrack}></MainButton>
+                {
+                    props.tracks.length < 5 ? 
+                    <MainButton text = "add sample" type = {MainButtonType.Create} scale = {0.75} onClick={props.onAddTrack}></MainButton>
+                    : null
+
+                }
 
             </Center>
         </TracksContainer>
     ) 
-    </div>
+    
 }

@@ -3,6 +3,7 @@ import { Beat } from "../../common"
 import styled from "styled-components";
 import MainButton, { MainButtonType } from "./common/MainButton";
 import { BeatParent, ButtonsContainer, ThemedCard } from "./common/FeedViewElements";
+import BeatVisualisationPresenter from "../presenters/BeatVisualizationPresenter";
 
 const OuterBox = styled.div`
   display:flex;
@@ -53,6 +54,8 @@ export default function FeedView(props:FeedViewProps){
     function DataToSingleCardCB(beat: any, key: any){
         return (
         <OuterBox key={key}>
+    function feedElementCB(beat: Beat, key: any){
+        return (<OuterBox key={key}>
             <BeatParent> 
 
                 <ThemedCard color={beat.theme}>
@@ -63,6 +66,11 @@ export default function FeedView(props:FeedViewProps){
                     </p>
 
                 </ThemedCard>
+                <BeatVisualisationPresenter
+                    bpm={beat.bpm}
+                    tracks={beat.tracks}
+                    colorTheme={beat.theme}
+                />
                 <ButtonsContainer>                                   
                     <MainButton type = {MainButtonType.Like}  onClick={()=>{likeHandler(beat.firestoreBeatID,beat.likes)}} text = {""+beat.likes} scale = {1}></MainButton>
                     <MainButton type = {MainButtonType.Copy} onClick={midiCopyHandler} text = "" scale = {1.03}></MainButton>
