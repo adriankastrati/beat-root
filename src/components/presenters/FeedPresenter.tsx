@@ -7,8 +7,8 @@ import FeedView from "../views/FeedView";
 import { getCurrentUserID } from "../../model/firebase/firebaseAuthenticationModel";
 import { SortBy } from "./../../model/firebase/firebaseBeat";
 import { sortBy } from "lodash";
-//import { contextFree, StyledComponent } from "styled-components"
 
+//import { contextFree, StyledComponent } from "styled-components"
 
 // TODO: fix first fetch of beats
 // TODO: time-out function when intersection can't change
@@ -42,7 +42,8 @@ const FeedPresenter = () => {
     function fetchData() {
             setLoading(true)
             //setTimestamp_now(Timestamp.fromDate(new Date()))
-            getQueryBeats(itemsOnFetch, timestamp_now, SortBy.likes,lastBeatID).then((newBeats) => {if(newBeats){
+            //                                            likes/recent
+            getQueryBeats(itemsOnFetch, timestamp_now, SortBy.recent,lastBeatID).then((newBeats) => {if(newBeats){
                 //setBeats(Array.from([...beats,...newBeats]))
                 // newBeats.reverse()
                 setBeats(beats.concat(newBeats))
@@ -52,18 +53,18 @@ const FeedPresenter = () => {
 
     useEffect(() => {
         if (intersection?.isIntersecting) {
-            console.log("aaaah, I'm intersecting!!!!",intersection?.isIntersecting)
-            fetchData()
+
+            //console.log("aaaah, I'm intersecting!!!!",intersection?.isIntersecting)
             if (beats.length > 0) {
                 setLastBeatID(beats[beats.length - 1].firestoreBeatID)
                 setOffset(offset + itemsOnFetch)
+                fetchData()
             }
-            if(beats == null) {
+            if(beats.length == 0) {
                 console.log("beats == null", beats)
                 fetchData()
             } else {
                 console.log("beats != null")
-
                 return
             }
         }

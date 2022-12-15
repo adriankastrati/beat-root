@@ -1,3 +1,4 @@
+import { theme } from "../../../common";
 import styled from "styled-components";
 const ColorBox = styled.div<Color>`
   background-color: ${props => props.boxColor};
@@ -21,19 +22,19 @@ const SchemeBox = styled.div`
 `
 
 interface ColorSchemeBoxProps{
-    colorArray: string[]
+    colorArray: string[],
 }
 
 function ColorSchemeBox(props:ColorSchemeBoxProps){
-
   return (
     <SchemeBox>
       {props.colorArray.map((color, key) => {
         return (
           <ColorBox 
+          key={key}
             boxColor={color}
             width={100/props.colorArray.length+"%"} 
-            key={key}>
+            >
           </ColorBox>
         )
       })}
