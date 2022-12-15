@@ -1,6 +1,7 @@
 import UserPageView from "../views/UserPageView";
 import { getCurrentUserID, getProfilePictures, getUserInformation, isUserLoggedIn, setProfilePicture, setUsername, setDescription, UserInformation } from "../../model/firebase/firebaseAuthenticationModel";
 import { useEffect, useState } from "react";
+import { userInfo } from "os";
 
 export default function UserPagePresenter(){
     const[userInformation, setUserInformation] = useState<UserInformation>()
@@ -39,6 +40,7 @@ export default function UserPagePresenter(){
     }
 
     async function changeUsername(username: string){
+
         return setUsername(username).then(acheived=>{
             if (acheived)
                 setProfileChange("Completed")
@@ -50,8 +52,9 @@ export default function UserPagePresenter(){
         return setDescription(description).then(acheived=>{
             if (acheived)
                 setProfileChange("Completed")
-            else
+            else{
                 setProfileChange("Failed")
+            }
         })
     }
 
