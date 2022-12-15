@@ -97,7 +97,7 @@ interface UserPageProps{
 }
 let nameInstructions = 'Choose a name between 5-20 characters'
 export default function UserPageView(props: UserPageProps){
-    const [selectedImage, setSelectedImage] = React.useState<string>(props.profilePicture?props.profilePicture:props.loadedImages[0]);
+    const [selectedImage, setSelectedImage] = React.useState<string>('');
     const [nameBoxContent, setNameBoxContent] = React.useState<string>('')
     const [nameInfoText, setNameInfoText] = React.useState<string>(nameInstructions)
     const [descriptionBoxText, setDescriptionBoxText] = React.useState<string>(props.description?props.description:"Nothing here!")
@@ -170,7 +170,7 @@ export default function UserPageView(props: UserPageProps){
                         <ProfilePictureContainer>
                             {
                                 props.profilePicChangingState?<Picture src={selectedImage}></Picture>:(
-                                    <Picture src={props.profilePicture!}></Picture>
+                                    <Picture src={props.profilePicture?props.profilePicture:props.loadedImages[0]}></Picture>
                                     )
                             }         
                         </ProfilePictureContainer>
