@@ -6,7 +6,8 @@ export default function UserPagePresenter(){
     const[userInformation, setUserInformation] = useState<UserInformation>()
     const[profileChange, setProfileChange] = useState<string>()
     const [profilePicChangingState, setPictureMenuOpen] = useState<boolean>(false)
-    const [editingDescription, setDescriptionState] = useState<boolean>(true)
+    const [descriptionChangingState, setDescriptionChangingState] = useState<boolean>(true)
+    const [usernameChangingState, setUsernameChangingState] = useState<boolean>(true)
     const [loadedImages, setLoadedImages] =  useState<string[]>([]);
     const [, refresh] = useState(({}))
 
@@ -77,13 +78,15 @@ export default function UserPagePresenter(){
             email={userInformation?userInformation.email:null}
             id={userInformation?userInformation.authID:null}
             description={userInformation?userInformation.description:null}
-            editingDescription={editingDescription}
-            setDescriptionState={setDescriptionState}
+            descriptionChangingState={descriptionChangingState}
+            setDescriptionState={setDescriptionChangingState}
             profilePicture={userInformation?userInformation.profilePictureURL:null}
             setPictureMenuOpen={setPictureMenuOpen}
             loadedImages={loadedImages}
             profilePicChangingState={profilePicChangingState}
+            setUsernameChangingState={setUsernameChangingState}
             refresh = {refreshCB}
+            usernameChangingState={usernameChangingState}
             
         />
     }
