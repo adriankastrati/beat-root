@@ -149,22 +149,28 @@ export default function UserPageView(props: UserPageProps){
         }else if (nameBoxContent.length>20){
             displayErrorMsg('Too many characters!')
             error = true;
-        }else if (nameBoxContent == props.username){
-            error = true;
         }// set other naming rules
-        toggleUsernameCB()
         if (error){
             return
+        }
+        toggleUsernameCB()
+        if (nameBoxContent == props.username){
+            return;
         }
         props.refresh()
         props.onUpdateUserName(nameBoxContent)
     }
 
     function onUpdateDescription(){
-        if(descriptionBoxText == props.description){
+        let error = false;
+       //set rules for description
+       if(descriptionBoxText == props.description){
             //dont update if the text is unchanged
             return;
-        }//set more rules for description
+        }
+        if(error){
+            return;
+        }
         props.refresh()
         props.onUpdateDescription(descriptionBoxText)
     }
