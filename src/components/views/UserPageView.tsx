@@ -164,12 +164,38 @@ export default function UserPageView(props: UserPageProps){
 
     return (<div>
                 <OuterBox>
+                <InnerBox>
+                        
+                        <ProfilePictureContainer>
+                            {
+                                props.profilePicChangingState?<Picture src={selectedImage}></Picture>:(
+                                    <Picture src={props.profilePicture!}></Picture>
+                                    )
+                            }         
+                        </ProfilePictureContainer>
+                    
+                        {
+                        props.profilePicChangingState?
+                        <MainButton type = {MainButtonType.Save} scale = {0.5} onClick={updateProfilePictureCB} text="Save" width={130}></MainButton>
+                        :<MainButton type = {MainButtonType.Edit} scale = {0.5} onClick={profileSelectBoxCB} text="Edit" width={130}></MainButton>
+                    }
+                    
+                    {
+                        props.profilePicChangingState?
+                        <SelectablePicturesContainer> {/*some better way (map?) to list images maybe*/}
+                            {props.loadedImages.map(getImageCB)}
+                        </SelectablePicturesContainer>:
+                        ""
+                    }
+                    
+                </InnerBox>
+
                     <InnerBox>
                         <TitleStyle>
                             {props.username? "Username: " + props.username: "Username has not been set!"}
                         </TitleStyle>
                         <Input onChange={(e)=>setNameBoxContent(e.target.value)}width={"30%"} height ={"50px"}></Input>
-                        <MainButton type = {MainButtonType.Plain} text="Set Name" scale = {0.9} width={122} onClick={updateProfileNameCB}></MainButton>
+                        <MainButton type = {MainButtonType.Plain} text="Set Name" scale = {0.5} width={122} onClick={updateProfileNameCB}></MainButton>
                         <p>{nameInfoText}</p>
                     </InnerBox>
                     <div>{}</div>
@@ -191,34 +217,7 @@ export default function UserPageView(props: UserPageProps){
                         }
                         
                     </InnerBox>
-                    <TitleStyle>{props.email?"Email: " + props.email: "Email: logged out"}</TitleStyle>
-                    <InnerBox>
-                        
-                            <ProfilePictureContainer>
-                                {
-                                    props.profilePicChangingState?<Picture src={selectedImage}></Picture>:(
-                                        <Picture src={props.profilePicture!}></Picture>
-                                        )
-                                }         
-                            </ProfilePictureContainer>
-                        
-                            {
-                            props.profilePicChangingState?
-                            <MainButton type = {MainButtonType.Save} scale = {0.65} onClick={updateProfilePictureCB} text="Save Picture" width={195}></MainButton>
-                            :<MainButton type = {MainButtonType.Edit} scale = {0.65} onClick={profileSelectBoxCB} text="Edit Picture" width={190}></MainButton>
-                        }
-                        
-                        {
-                            props.profilePicChangingState?
-                            <SelectablePicturesContainer> {/*some better way (map?) to list images maybe*/}
-                                {props.loadedImages.map(getImageCB)}
-                            </SelectablePicturesContainer>:
-                            ""
-                        }
-                        
-                    </InnerBox>
-
-                    
+                    <TitleStyle>{props.email?"Email: " + props.email: "Email: logged out"}</TitleStyle>            
                     
                     <InnerBox>
                         <TitleStyle>
