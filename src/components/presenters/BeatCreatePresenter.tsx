@@ -34,29 +34,13 @@ const TitleStyle = styled.div`
     font-size:18px;
     margin:0px;
 `
-const Justify = styled.div`
-    display: flex;
-    justify-content: center;
-`
-const Center = styled.div`
-    align-items: center;
-    align-self: center;
-`
 const OuterBox = styled.div`
   display:flex;
   flex-direction:column;
   margin:40px;
+  align-items:center;
 `
-const ScaledComponent = styled.div<ScaledProp>`
-    width: ${props => props.amount*100}%;
-`
-interface ScaledProp{
-    amount: number
-}
-const Block = styled.div`
-    display: block;
-    
-`
+
 
 enum CreationState{
     EditTheme,
@@ -127,7 +111,7 @@ export default function BeatCreatePresenter(){
             return <OuterBox>
             <TitleStyle>Title</TitleStyle>
             <TextTitleInput value={title} onChange={e=>setTitle(e.currentTarget.value)}/>
-            <Center>
+
             <BeatVisualisationPresenter
                 tracks={tracks}
                 bpm={bpm}
@@ -135,7 +119,7 @@ export default function BeatCreatePresenter(){
             />
             
             <MainButton type={MainButtonType.ChooseColorTheme} scale = {1} text = "pick color theme" onClick={toggleEditTheme}></MainButton>
-            </Center>
+
             <TitleStyle>Tracks</TitleStyle>
             <BeatTracksView
                 onAddTrack={handleAddTrack}
@@ -146,7 +130,7 @@ export default function BeatCreatePresenter(){
             />
             <TitleStyle>Description</TitleStyle>
             <TextBodyTextArea value={description} onChange={e=>setDescription(e.currentTarget.value)}/>
-            <Center>
+            
                 <MainButton type={MainButtonType.Save}  scale = {1} text = "save and publish" 
                     onClick={()=>{
                         createBeat(
@@ -166,7 +150,7 @@ export default function BeatCreatePresenter(){
                         SetCreationState(CreationState.Saving)
                     }}
                 />
-            </Center>
+            
             </OuterBox>
 
         case CreationState.EditTheme:
