@@ -43,14 +43,16 @@ const OuterBox = styled.div`
   display:flex;
   flex-direction:column;
   margin:30px;
-  align-content:flex-start;
+  
   
   @media (max-width: 869px) {
     flex-direction: column;
+    align-items:center;
   }
 
 @media (min-width: 870px) {
     flex-direction: row;
+    justify-content:center;
   }
 `
 const InnerBox = styled.div`
@@ -61,15 +63,6 @@ width: 100%;
 height: fit-content;
 margin: 20px;
 `
-const FixedInnerBox = styled.div`
-display: flex;
-flex-direction: column;
-align-items: center;
-width: 100%;
-height: fit-content;
-margin: 10px;
-`
-
 
 enum CreationState{
     EditTheme,
@@ -133,7 +126,7 @@ export default function BeatCreatePresenter(){
     switch (creationState) {
         case CreationState.Main:
             return <OuterBox>
-                        <FixedInnerBox>
+                        <InnerBox>
                             <BeatParent>
                                 <TextTitleInput value={title} onChange={e=>setTitle(e.currentTarget.value)}/>
                                 <BeatVisualisationPresenter
@@ -144,7 +137,7 @@ export default function BeatCreatePresenter(){
                                 <BlankSpace height={0}></BlankSpace>
                             </BeatParent> 
                             <MainButton type={MainButtonType.ChooseColorTheme} scale = {1} text = "pick color theme" onClick={toggleEditTheme}></MainButton>
-                        </FixedInnerBox>
+                        </InnerBox>
                         <InnerBox>
                             <InnerBox>
                                 <TitleStyle>Tracks</TitleStyle>
