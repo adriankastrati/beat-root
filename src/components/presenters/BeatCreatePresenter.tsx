@@ -152,6 +152,7 @@ export default function BeatCreatePresenter(){
                         ).then(()=>{history.push("/home")})
 
                         SetCreationState(CreationState.Saving)
+                        pause()
                     }}
                 />
             
