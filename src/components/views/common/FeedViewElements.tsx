@@ -3,11 +3,11 @@ import { textStyles, theme } from "../../../common";
 
 export const BeatParent = styled.div`
 display:flex;
-transform: scale(1);
+transform: scale(0.85);
 flex-direction:column;
 align-items: center;
-margin:0px;
-padding: 12px;
+margin:1px;
+padding: 30px;
 position: relative;
 width: 300px;
 border: 1px solid ${theme.medium};
@@ -46,5 +46,8 @@ border: 1px solid ${theme.medium}
 export const ButtonsContainer = styled.div`
     display: flex;
     flex-direction: row;
+    position: fixed;
+    bottom: 5px;
+    left: 0px;
     padding: 10px;
 `;

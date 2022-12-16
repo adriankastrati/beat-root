@@ -29,7 +29,7 @@ const VisCanvas = styled.canvas`
 const Fixed = styled.div`
 display:flex;
 position: absolute;
-bottom: -63px;
+bottom: -14px;
 right: 10px;
 `
 

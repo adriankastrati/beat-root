@@ -9,7 +9,7 @@ const OuterBox = styled.div`
   display:flex;
   flex-direction:column;
   align-items:center;
-  margin: 20px;
+  margin: 0px;
   margin-left: calc(3vw + 3vh);
   margin-right: calc(3vw + 3vh);
   overflow-x:hidden;
@@ -19,7 +19,7 @@ const Feed = styled.div`
     display: flex;
     flex-direction: row;   
     flex-wrap: wrap; 
-    justify-content: center;
+    align-items: center;
 `
 const SuspenseDiv = styled.div`
     z-index: 2;
@@ -46,10 +46,6 @@ export default function FeedView(props:FeedViewProps){
         props.onLikeBeat(beatID,likes)
     }
 
-    function midiCopyHandler():void {
-        console.log("copied midi(jk)")
-    }
-
     function feedElementCB(beat: Beat, key: any){
         return (<OuterBox key={key}>
                     <BeatParent> 
@@ -60,9 +56,9 @@ export default function FeedView(props:FeedViewProps){
                             tracks={beat.tracks}
                             colorTheme={beat.theme}
                         />
-                        <ButtonsContainer>                                   
-                            <MainButton type = {MainButtonType.Like}  onClick={()=>{likeHandler(beat.firestoreBeatID,beat.likes)}} text = {""+beat.likes} scale = {0.5} frameOff={true} backgroundColor={theme.medium} borderRad={40} width={160} fontSize={18}></MainButton>
-                            {/*<MainButton type = {MainButtonType.Copy} onClick={midiCopyHandler} text = "" scale = {1.03}></MainButton>*/}
+                        <ButtonsContainer>                              
+                            <MainButton type = {MainButtonType.Like}  onClick={()=>{likeHandler(beat.firestoreBeatID,beat.likes)}} text = {""+beat.likes} scale = {0.5} frameOff={true} backgroundColor={theme.medium} borderRad={40} width={160} fontSize={18}></MainButton>                         
+                        
                         </ButtonsContainer>
                     </BeatParent>
                 </OuterBox>
