@@ -24,7 +24,6 @@ const InnerBox = styled.div`
   flex-direction:column;
   align-items: center;
   padding: 10px;
-  
   border: 1px solid ${theme.medium};
   width: 80%;
 `
