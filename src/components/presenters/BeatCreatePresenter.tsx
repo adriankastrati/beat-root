@@ -61,7 +61,7 @@ flex-direction: column;
 align-items: center;
 width: 100%;
 height: fit-content;
-margin: 20px;
+margin: 0px;
 `
 
 enum CreationState{
@@ -127,6 +127,7 @@ export default function BeatCreatePresenter(){
         case CreationState.Main:
             return <OuterBox>
                         <InnerBox>
+                            <TitleStyle>Preview</TitleStyle>
                             <BeatParent>
                                 <TextTitleInput value={title} onChange={e=>setTitle(e.currentTarget.value)}/>
                                 <BeatVisualisationPresenter

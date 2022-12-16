@@ -21,6 +21,7 @@ const OuterBox = styled.div`
     align-items:center;
     width:90%;
     margin-top:10px;
+    margin-bottom:10px;
     padding:10px;
     position: relative;
 `
