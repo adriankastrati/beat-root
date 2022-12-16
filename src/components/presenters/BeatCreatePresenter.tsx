@@ -128,7 +128,7 @@ export default function BeatCreatePresenter(){
         case CreationState.Main:
             return <OuterBox>
                         <InnerBox>
-                            <TitleStyle>Preview</TitleStyle>
+                        <BlankSpace height={5}></BlankSpace>
                             <BeatParent>
                                 <TextTitleInput value={title} onChange={e=>setTitle(e.currentTarget.value)}/>
                                 <BeatVisualisationPresenter

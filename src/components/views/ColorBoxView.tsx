@@ -35,34 +35,47 @@ const BoxWrapper = styled.div`
 
   
 `
+const SuspenseDiv = styled.div`
+  z-index: 10;
+`
+const FetchDiv = styled.div`
+  bottom: 0px;
+`
 
 
 interface ColorBoxViewProps {
   themeArray: string[][]
   targetRef: MutableRefObject<HTMLDivElement | null>
   loading: boolean
+  itemsOnFetch: number
   chosen:number|null
   onSetChosen:(index:number)=>void
   onContinue:()=>void
 }
 
+
 function ColorBoxView(props: ColorBoxViewProps) {
+  function themesCB(theme: string[], key: number){
+    return (
+          <InnerBox key={key} onClick={()=>{props.onSetChosen(key)}}style={{backgroundColor:props.chosen === key ? "gray":"white"}}>
+            <ColorSchemeBox key={key} colorArray={theme}></ColorSchemeBox>
+          </InnerBox> )
+  }
 
   return (
             <BoxWrapper>
                   <TitleStyle>Color Theme</TitleStyle>
               <OuterBox>
-                  {props.themeArray && 
-                  !props.loading? props.themeArray.map((theme, key) => {
-                      return (
-                        <InnerBox key={key} onClick={()=>{props.onSetChosen(key)}}
-                          style={{backgroundColor:props.chosen === key ? "gray":"white"}}
-                        >
-                          <ColorSchemeBox key={key} colorArray={theme}></ColorSchemeBox>
-                        </InnerBox> 
-                      )
-                    }) : <p>loading...</p> }
-                  <div ref={props.targetRef}>ref for scroll fetch</div>
+                  {props.themeArray.map(themesCB)}
+                  {!props.loading? 
+                  props.themeArray
+                  .slice(props.themeArray.length - props.itemsOnFetch, props.themeArray?.length + props.itemsOnFetch)
+                  .map(themesCB) 
+                  : <SuspenseDiv>
+                        {props.loading? <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Rotating_earth_%28large%29.gif/100px-Rotating_earth_%28large%29.gif"></img>:""}
+                    </SuspenseDiv>
+                  }
+                  <FetchDiv ref={props.targetRef}>ref for scroll fetch</FetchDiv>
               </OuterBox>
               
                 <MainButton type={MainButtonType.Plain} text="continue" scale={1} width={100} 

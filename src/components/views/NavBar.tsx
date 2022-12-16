@@ -84,10 +84,8 @@ export default function NavBar(){
                                     
                                 }}>Log Out</NavLink>
                             </NavItem>
-
-                          
-
-                            </div>: <NavItem>
+                            </div>: 
+                            <NavItem>
                                 <NavLink to="/sign-in"onClick={()=>{clickHandler()}}>Log In</NavLink>
                             </NavItem>
                             }
