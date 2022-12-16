@@ -13,18 +13,20 @@ const ColorBoxPresenter = (props:ColorBoxPresenterProps) => {
     const [shouldFetch, setShouldFetch] = useState(false)
     const [rerender, setRerender] = useState(new Object())
     const [currentlyChosen, setCurrentlyChosen] = useState<number|null>(null)
+    const [isLoading, setIsLoading] = useState(false)
 
     const targetRef = useRef<HTMLDivElement | null>(null) // null might be the root of issues
     const intersection = useIntersection(targetRef, {
         root:null,
-        rootMargin: '200px 2000px',
-        threshold: 0.8,
+        rootMargin: '1000px 2000px',
+        threshold: 0.1,
     })
-    const AMOUNT_FETCHES = 10
+    const AMOUNT_FETCHES = 20
 
     useEffect(() => {
         if (intersection?.isIntersecting && !shouldFetch) {
             setShouldFetch(true)
+            setIsLoading(true)
         }
 
     },[intersection])
@@ -37,7 +39,7 @@ const ColorBoxPresenter = (props:ColorBoxPresenterProps) => {
                 setThemeArray([
                     ...themeArray,
                     ...newStuff
-                ])})
+                ])}).then(()=>{setIsLoading(false)})
         } else{
             setRerender(new Object) // ?
         }
@@ -50,7 +52,8 @@ const ColorBoxPresenter = (props:ColorBoxPresenterProps) => {
         <ColorBoxView 
             themeArray = { themeArray }
             targetRef = { targetRef }
-            loading = { false}//TODO
+            loading = { isLoading }
+            itemsOnFetch = {AMOUNT_FETCHES}
             chosen = {currentlyChosen}
             onSetChosen={(index:number)=>{setCurrentlyChosen(index)}}
             onContinue={()=>{
