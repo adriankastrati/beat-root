@@ -56,6 +56,9 @@ export default function NavBar(){
                                 <NavLink to="/play/explore"onClick={()=>{clickHandler()}}>explore</NavLink>
                             </NavItem>
                             <NavItem>
+                                <NavLink to="/test/about"onClick={()=>{clickHandler()}}>about</NavLink>
+                            </NavItem>
+                            <NavItem>
                                 <NavLink to="/"onClick={()=>{clickHandler()}}>home</NavLink>
                             </NavItem>
                             <NavItem>

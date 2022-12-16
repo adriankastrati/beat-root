@@ -76,7 +76,7 @@ export default function FeedView(props:FeedViewProps){
             <Feed>
                 {!props.targetRef? props.beats.slice(props.beats.length - props.itemsOnFetch, props.beats.length + props.itemsOnFetch).map(feedElementCB)
                     : <SuspenseDiv>
-                            {props.isLoading? "loading": ""}  
+                            {props.isLoading? <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Rotating_earth_%28large%29.gif/100px-Rotating_earth_%28large%29.gif"></img>: ""}  
                         </SuspenseDiv>
                 }
             </Feed>
