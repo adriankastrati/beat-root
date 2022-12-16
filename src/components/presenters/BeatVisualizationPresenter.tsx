@@ -14,7 +14,7 @@ const OuterBox = styled.div`
   display:flex;
   flex-direction:column;
   align-items:center;
-  margin-top: 40px;
+  margin-top: 5px;
   position:relative;
   padding: 20px;
 `
@@ -224,27 +224,23 @@ export default function BeatVisualisationPresenter(props:BeatVisualisationPresen
     }
 
     return <OuterBox>
-        <CanvasWrapper ref={wrapperRef}>
-        <VisCanvas
-                ref={canvasRef}
-        /> 
-        </CanvasWrapper>
-
-        {/* <button onClick={draw}> draw! </button> */}
-        <Fixed>
-            {
-                isPlaying?
-                (
-                    <MainButton type = {MainButtonType.Pause} scale ={0.5} onClick={()=>isPlaying ? pause(): play()} backgroundColor={theme.medium} frameOff={true} borderRad={30} width={160}></MainButton>
-                )
-                :
-                (
-                    <MainButton type = {MainButtonType.Play} scale ={0.5} onClick={()=>isPlaying ? pause(): play()} backgroundColor={theme.medium} frameOff={true} borderRad={30} width={160}></MainButton>
-                )
-            }
-        </Fixed>
-
-             
-       
-    </OuterBox>
+                <CanvasWrapper ref={wrapperRef}>
+                <VisCanvas
+                        ref={canvasRef}
+                /> 
+                </CanvasWrapper>
+                {/* <button onClick={draw}> draw! </button> */}
+                <Fixed>
+                    {
+                        isPlaying?
+                        (
+                            <MainButton type = {MainButtonType.Pause} scale ={0.5} onClick={()=>isPlaying ? pause(): play()} backgroundColor={theme.medium} frameOff={true} borderRad={30} width={160}></MainButton>
+                        )
+                        :
+                        (
+                            <MainButton type = {MainButtonType.Play} scale ={0.5} onClick={()=>isPlaying ? pause(): play()} backgroundColor={theme.medium} frameOff={true} borderRad={30} width={160}></MainButton>
+                        )
+                    }
+                </Fixed>
+            </OuterBox>
 }
