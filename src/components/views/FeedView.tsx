@@ -15,11 +15,10 @@ const OuterBox = styled.div`
   overflow-x:hidden;
 `
 const Feed = styled.div`
-    height: 95%;
     display: flex;
     flex-direction: row;   
     flex-wrap: wrap; 
-    align-items: center;
+    justify-content: center;
 `
 const SuspenseDiv = styled.div`
     z-index: 2;
