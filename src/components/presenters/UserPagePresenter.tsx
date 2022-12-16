@@ -1,11 +1,11 @@
 import UserPageView from "../views/UserPageView";
-import { getCurrentUserID, getProfilePictures, getUserInformation, isUserLoggedIn, setProfilePicture, setUsername, setDescription, UserInformation } from "../../model/firebase/firebaseAuthenticationModel";
+import { getCurrentUserID, getProfilePictures, getUserInformation, isUserLoggedIn, setProfilePicture, setUsername, setDescription, UserInformation, removeUsername } from "../../model/firebase/firebaseAuthenticationModel";
 import { useEffect, useState } from "react";
 import { userInfo } from "os";
 
 export default function UserPagePresenter(){
     const[userInformation, setUserInformation] = useState<UserInformation>()
-    const[profileChange, setProfileChange] = useState<string>()
+    const[profileChangeMessage, setProfileChangeMessage] = useState<string>()
     const [profilePicChangingState, setPictureMenuOpen] = useState<boolean>(false)
     const [descriptionChangingState, setDescriptionChangingState] = useState<boolean>(true)
     const [usernameChangingState, setUsernameChangingState] = useState<boolean>(true)
@@ -39,21 +39,26 @@ export default function UserPagePresenter(){
         })
     }
 
-    async function changeUsername(username: string){
-
-        return setUsername(username).then(acheived=>{
-            if (acheived)
-                setProfileChange("Completed")
-            else
-                setProfileChange("Failed")
-        })
+    function changeUsername(newUsername: string){
+        if(userInformation){
+            return removeUsername(userInformation.username).then(acc=>{
+                if (acc){
+                    setUsername(newUsername)
+                }
+            }).catch(()=>{
+                setProfileChangeMessage("Failed, try again")
+            })
+        }else{
+            setProfileChangeMessage("Not logged in")
+        }
+        
     }
     async function changeDescription(description:string){
         return setDescription(description).then(acheived=>{
             if (acheived)
-                setProfileChange("Completed")
+            setProfileChangeMessage("Completed")
             else{
-                setProfileChange("Failed")
+                setProfileChangeMessage("Failed")
             }
         })
     }
@@ -61,9 +66,9 @@ export default function UserPagePresenter(){
     async function changePicture(pictureLink: string){
         return setProfilePicture(pictureLink).then(acheived=>{
             if (acheived)
-                setProfileChange("Completed")
+            setProfileChangeMessage("Completed")
             else
-                setProfileChange("Failed")
+            setProfileChangeMessage("Failed")
         })
     }
     function refreshCB(){

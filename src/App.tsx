@@ -56,7 +56,7 @@ export default function App(){
                             </Route>
 
                             <Route exact path="/play/explore">
-                                <FeedPresenter/>
+                                <FeedPresenter userFeed={false}/>
                             </Route>
 
                             <Route exact path="/play/create">
