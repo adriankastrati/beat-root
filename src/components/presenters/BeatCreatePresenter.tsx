@@ -9,6 +9,8 @@ import MainButton, { MainButtonType } from "../views/common/MainButton";
 import BeatVisualisationPresenter from "./BeatVisualizationPresenter";
 import ColorBoxPresenter from "./ColorBoxPresenter";
 import { useHistory } from "react-router";
+import { BeatParent } from "components/views/common/FeedViewElements";
+import { BlankSpace } from "components/views/common/NavBarElements";
 
 const newTrack:Track = {
     rhythm: new Rhythm(16),
@@ -111,12 +113,14 @@ export default function BeatCreatePresenter(){
             return <OuterBox>
             <TitleStyle>Title</TitleStyle>
             <TextTitleInput value={title} onChange={e=>setTitle(e.currentTarget.value)}/>
-
-            <BeatVisualisationPresenter
-                tracks={tracks}
-                bpm={bpm}
-                colorTheme={theme} //TODO
-            />
+            <BeatParent>
+                <BeatVisualisationPresenter
+                    tracks={tracks}
+                    bpm={bpm}
+                    colorTheme={theme} //TODO
+                />
+                <BlankSpace height={70}></BlankSpace>
+            </BeatParent>
             
             <MainButton type={MainButtonType.ChooseColorTheme} scale = {1} text = "pick color theme" onClick={toggleEditTheme}></MainButton>
 
