@@ -3,9 +3,11 @@ import { textStyles, theme } from "../../../common";
 
 export const BeatParent = styled.div`
 display:flex;
+transform: scale(1);
 flex-direction:column;
+align-items: center;
 margin:0px;
-padding: 0px;
+padding: 12px;
 position: relative;
 width: 300px;
 border: 1px solid ${theme.medium};

@@ -8,6 +8,7 @@ import { getUserInformation, UserInformation } from "model/firebase/firebaseAuth
 const OuterBox = styled.div`
   display:flex;
   flex-direction:column;
+  align-items:center;
   margin: 20px;
   margin-left: calc(3vw + 3vh);
   margin-right: calc(3vw + 3vh);
