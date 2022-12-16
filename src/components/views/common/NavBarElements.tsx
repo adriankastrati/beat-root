@@ -82,7 +82,7 @@ export const NavMenu = styled.ul<NavBarProps>`
         width: 120vh;
         height: 120vh;
         position: absolute;
-        left: ${props => !props.active ? "100%":"42%"};
+        right: ${props => !props.active ? "-130vh":"-100vh"};
         opacity: 0.95;
         transition: all 0.2s ease;
         background: #434242;
