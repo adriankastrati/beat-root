@@ -59,7 +59,7 @@ export default function TrackView(props:TrackViewProps){
                     <Innerbox>
                     {   //sample
                         props.onChangeSample && props.selectableSamples ? 
-                        <SampleSelect onChange={e=>props.onChangeSample!(e.currentTarget.value)}>
+                        <SampleSelect onChange={e=>props.onChangeSample!(e.currentTarget.value)} value={props.track.sample}>
                             {
                                 props.selectableSamples.map((sample, i) => <option key={i} value={sample}>{sample}</option>)
                             }
