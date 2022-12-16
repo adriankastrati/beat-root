@@ -44,7 +44,7 @@ const beatConverter ={
 
     fromFirestore(snapshot:  QueryDocumentSnapshot<DocumentData>, options: SnapshotOptions): any {
         return {
-            composer: snapshot.data().composer,
+            composerID: snapshot.data().composer,
             title: snapshot.data().title,
             description: snapshot.data().description,
             theme: snapshot.data().theme,
