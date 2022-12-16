@@ -139,6 +139,16 @@ export default function BeatCreatePresenter(){
                                 <BlankSpace height={0}></BlankSpace>
                             </BeatParent> 
                             <MainButton type={MainButtonType.ChooseColorTheme} scale = {1} text = "pick color theme" onClick={toggleEditTheme}></MainButton>
+                            <div>
+                            slow
+                            <input type="range" min={100} max={8*120} value={bpm} 
+                            onChange={e=>{
+                                pause()
+                                setBpm(+e.currentTarget.value)
+                            }}
+                            />
+                            fast
+                            </div>
                         </InnerBox>
                         <InnerBox>
                             <InnerBox>
