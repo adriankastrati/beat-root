@@ -34,6 +34,7 @@ const TextBodyTextArea = styled.textarea`
     border-color:${theme.medium};
     border-radius:10px;
     margin:0px;
+    resize:none;
 `
 const TitleStyle = styled.div`
     font-size:18px;
