@@ -30,18 +30,21 @@ const TextBodyTextArea = styled.textarea`
     ${textStyles(TextVariant.BODY)}
     margin:3px;
     height: 100px;
-    width: 100%;
+    width: 104%;
+    border-color:${theme.medium};
+    border-radius:10px;
+    margin:0px;
 `
 const TitleStyle = styled.div`
     font-size:18px;
-    margin:0px;
+    margin:10px;
 `
 const OuterBox = styled.div`
   display:flex;
   flex-direction:column;
   margin:30px;
-  align-items:center;
-  justify-content:center;
+  align-content:flex-start;
+  
   @media (max-width: 869px) {
     flex-direction: column;
   }
@@ -56,7 +59,15 @@ flex-direction: column;
 align-items: center;
 width: 100%;
 height: fit-content;
-
+margin: 20px;
+`
+const FixedInnerBox = styled.div`
+display: flex;
+flex-direction: column;
+align-items: center;
+width: 100%;
+height: fit-content;
+margin: 10px;
 `
 
 
@@ -122,7 +133,7 @@ export default function BeatCreatePresenter(){
     switch (creationState) {
         case CreationState.Main:
             return <OuterBox>
-                        <InnerBox>
+                        <FixedInnerBox>
                             <BeatParent>
                                 <TextTitleInput value={title} onChange={e=>setTitle(e.currentTarget.value)}/>
                                 <BeatVisualisationPresenter
@@ -133,7 +144,7 @@ export default function BeatCreatePresenter(){
                                 <BlankSpace height={0}></BlankSpace>
                             </BeatParent> 
                             <MainButton type={MainButtonType.ChooseColorTheme} scale = {1} text = "pick color theme" onClick={toggleEditTheme}></MainButton>
-                        </InnerBox>
+                        </FixedInnerBox>
                         <InnerBox>
                             <InnerBox>
                                 <TitleStyle>Tracks</TitleStyle>

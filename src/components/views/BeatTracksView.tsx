@@ -17,7 +17,7 @@ const TracksContainer = styled.div`
     display: flex;
     flex-direction: column;
     border-radius:10px;
-    border: solid ${theme.dark};
+    border: 1px solid ${theme.medium};
     padding:10px;
     width: 100%;
 `
