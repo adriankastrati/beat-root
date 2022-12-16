@@ -5,6 +5,7 @@ import { textStyles, theme } from "../../common";
 import React from "react";
 import { useEffect } from "react";
 import { getProfilePictures } from "model/firebase/firebaseAuthenticationModel";
+import FeedPresenter from "components/presenters/FeedPresenter";
 
 interface BlankSpaceProps{
     width:number
@@ -18,6 +19,7 @@ const OuterBox = styled.div`
   display:flex;
   flex-direction:column;
   margin:40px;
+  height: fit-content;
   padding: 10px;
   border: 1px solid ${theme.medium}
 `
@@ -90,6 +92,16 @@ const TitleStyle = styled.div`
   font-size:18px;
   margin:10px;
   text-align: center;
+`
+const Frame = styled.div`
+display: flex;
+@media (max-width: 869px) {
+    flex-direction: column;
+  }
+
+@media (min-width: 870px) {
+    flex-direction: row;
+  }
 `
 interface UserPageProps{
     username: string|null
@@ -194,7 +206,7 @@ export default function UserPageView(props: UserPageProps){
         props.setUsernameChangingState(!props.usernameChangingState)
     }
 
-    return (<div>
+    return (<Frame>
                 <OuterBox>
                 <InnerBox flexDir="row">
 
@@ -281,5 +293,9 @@ export default function UserPageView(props: UserPageProps){
                         </TitleStyle>
                     </InnerBox>
                 </OuterBox>
-            </div>)
+                <OuterBox>
+                    <TitleStyle>*User Feed Below*</TitleStyle>
+                    <FeedPresenter/>
+                </OuterBox>
+            </Frame>)
 }
