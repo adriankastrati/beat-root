@@ -19,24 +19,30 @@ const AboutPage = () => {
                 <h1>Euclidean rhythms</h1>
                 <Paragraph>
                     <p>
-                        *the app* builds on an idea discovered in 2004 by Godfried Toussaint
-                        regarding the greatest common denominator between two numbers
-                        and how that number creates the amount of "silences" and "pulses"
-                        in most music around the world.<br></br>
-                        
-                        *moar explain here PepoThink* 
+                        *the app* builds on an idea discovered in 2004 by Godfried Toussaint - 
+                        using the euklidean algorithm to generate "silences" and "pulses" to 
+                        construct rhythms. By defining a number of *steps* to distribute a number
+                        of *pulses* over a unique and intresting rhythm can be aquired. In our app you 
+                        can combine multiple rhythms into a beat, share it on our platform, and explore the creations of others. 
                     </p>  
                     <p>
                         For those who want to read more about Euclidean Rhythms,
                         check out Godfried's <a href="http://cgm.cs.mcgill.ca/~godfried/rhythm-and-mathematics.html">website</a> 
                     </p>
-                    <p>
+                    {/* <p>
                        *Account "guide" here or at the bottom?*
-                    </p>
+                    </p> */}
                 </Paragraph>
             </StandardContainer>
             <RowItems></RowItems>
             <h2>CREATING A BEAT</h2>
+
+            to create a beat, you first have to login (or create an accout if you dont have one). 
+            When logged in "create" will appear in as an option in the app menu (top right) - this is also where
+            the login page can be found.
+
+            <div/>
+            <br/>
             <RowItemsTwo>
                 <Li>1 - set number of silences</Li>
                 <Li>2 - set pulses</Li>
@@ -46,20 +52,21 @@ const AboutPage = () => {
                 <Li>3 - find a sample</Li>
                 <Li>4 - shift the phase of the pulses</Li>
             </RowItems>
-            <Li><br></br></Li>
-            <h2>CREATING AN ACCOUNT</h2>
-            <RowItems>
+            <br></br>
+            {/* <Li><br></br></Li> */}
+            {/* <h2>CREATING AN ACCOUNT</h2> */}
+            {/* <RowItems>
                 <p>open the side-bar and press "sign-in"</p>
                 <AccountIMG src="https://firebasestorage.googleapis.com/v0/b/beat-root-a8d72.appspot.com/o/about%2FCompleteArrow.png?alt=media&token=522fec22-6eab-4651-9cd4-4500ed5ee600"></AccountIMG>
             </RowItems>
             <RowItems>
                 <p>create your account</p>
                 <AccountIMG src="https://firebasestorage.googleapis.com/v0/b/beat-root-a8d72.appspot.com/o/about%2FCompleteCreateAccount.png?alt=media&token=579826fb-07f8-400d-a59f-af2f735639a4"></AccountIMG>
-            </RowItems>
-            <RowItems>
+            </RowItems> */}
+            {/* <RowItems>
                 <Readytxt>are you ready?</Readytxt>
                 <MainButton text="beat creator"type={MainButtonType.Add} width={150}scale={1} onClick={()=>{history.push("/play/create")}}></MainButton>
-            </RowItems>
+            </RowItems> */}
         </AboutWrapper>
     )
 }
