@@ -18,7 +18,7 @@ const SchemeBox = styled.div`
   padding:0px;
   border: 1px solid black;
   border-radius:6px;
-  width: 100%;
+  width: 80%;
 `
 
 interface ColorSchemeBoxProps{
