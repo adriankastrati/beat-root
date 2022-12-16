@@ -61,25 +61,20 @@ export default function BeatCreatePresenter(){
     const [tracks, setTracks] = useState<Track[]>([])
 
     const [creationState, SetCreationState] = useState(CreationState.Main)
-    const [soundNeedsUpdate, setSoundNeedsUpdate] = useState(false)
     const {audioModel} = useContext(ModelContext)
-
-    function play(){
-        audioModel.play(tracks,bpm)
-    }
 
     function pause(){
         audioModel.stop()
     }
 
-    useEffect(()=>{
-        if(soundNeedsUpdate){
-            if (audioModel.playing){
-                play()
-            }
-            setSoundNeedsUpdate(false)
-        }
-    },[soundNeedsUpdate])
+    // useEffect(()=>{
+    //     if(soundNeedsUpdate){
+    //         if (audioModel.playingID !== null){ //?
+    //             play()
+    //         }
+    //         setSoundNeedsUpdate(false)
+    //     }
+    // },[soundNeedsUpdate])
 
     function handleAddTrack(){
         setTracks([...tracks, newTrack])

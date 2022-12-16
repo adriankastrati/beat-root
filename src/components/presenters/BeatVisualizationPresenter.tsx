@@ -56,7 +56,7 @@ export default function BeatVisualisationPresenter(props:BeatVisualisationPresen
     const wrapperRef = useRef<HTMLDivElement>(null)
     const [drawContext, setDrawContext] = useState<CanvasRenderingContext2D | null>(null)
     const [step, setStep] = useState(0)
-    const [isPlaying, setIsPlaying] = useState(false)
+    const [playingID, setPlayingID] = useState<number|null>(null)
     const timer = useRef<NodeJS.Timer>()
 
     useEffect(()=>{
@@ -71,7 +71,7 @@ export default function BeatVisualisationPresenter(props:BeatVisualisationPresen
     },[canvasRef.current, wrapperRef.current])
 
     useEffect(()=>{
-        if(isPlaying){
+        if(playingID !== null){
             timer.current = setInterval(()=>{
                 setStep(prev => prev+1)
             }, 1000*60/props.bpm)
@@ -85,14 +85,14 @@ export default function BeatVisualisationPresenter(props:BeatVisualisationPresen
 
             setStep(0)
         }
-    },[isPlaying])
+    },[playingID])
 
     useEffect(()=>{
-        if (!audioModel.playing){
-            //stop due to external event
+        if (audioModel.playingID !== playingID){
+            //stop due to external event (something elese is playing or stopped)
             pause()
         }
-    },[audioModel.playing])
+    },[audioModel.playingID])
 
     useEffect(()=>{
         if (drawContext) {
@@ -107,13 +107,12 @@ export default function BeatVisualisationPresenter(props:BeatVisualisationPresen
     },[drawContext])
 
     function play(){
-        audioModel.play(props.tracks, props.bpm)
-        setIsPlaying(true)
+        audioModel.playTracks(props.tracks, props.bpm).then(id=>setPlayingID(id))
     }
 
     function pause(){
-        audioModel.stop()
-        setIsPlaying(false)
+        audioModel.stop(playingID as number|undefined)
+        setPlayingID(null)
     }
 
 
@@ -223,6 +222,7 @@ export default function BeatVisualisationPresenter(props:BeatVisualisationPresen
 
     }
 
+    let isPlaying = playingID !== null
     return <OuterBox>
         <CanvasWrapper ref={wrapperRef}>
         <VisCanvas

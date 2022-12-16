@@ -5,7 +5,6 @@ import ColorBoxPresenter from "./components/presenters/ColorBoxPresenter";
 import FeedPresenter from "./components/presenters/FeedPresenter";
 import ColorBoxView from "./components/views/ColorBoxView";
 import NavBar from "./components/views/NavBar";
-import BeatPage from "./pages/BeatPage";
 import ColorTestPage from "./pages/colorTestPage";
 import ManualFirebaseTest from "./pages/ManualFirebaseTest";
 import RootPage from "./pages/RootPage";
@@ -13,6 +12,7 @@ import SignInTest from "./pages/signInTest";
 import React from "react";
 import styled from "styled-components";
 import UserPage from "./pages/UserPage";
+import CreatePage from "pages/CreatePage";
 
 const MainDiv = styled.div/*<MainProps>*/`
     
@@ -51,16 +51,13 @@ export default function App(){
                 <Route path="/play">
                     <AudioInitializer>
                         <Switch>
-                            <Route exact path="/play/beat/:beatID">
-                                <BeatPage/>
-                            </Route>
 
                             <Route exact path="/play/explore">
                                 <FeedPresenter userFeed={false}/>
                             </Route>
 
                             <Route exact path="/play/create">
-                                <BeatCreatePresenter/>
+                                <CreatePage/>
                             </Route>
                         </Switch>
                     </AudioInitializer>
