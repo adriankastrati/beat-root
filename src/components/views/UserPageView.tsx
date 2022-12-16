@@ -295,7 +295,7 @@ export default function UserPageView(props: UserPageProps){
                 </OuterBox>
                 <InnerBox flexDir="column">
                     <TitleStyle>*User Feed Below*</TitleStyle>
-                    <FeedPresenter/>
+                    <FeedPresenter userFeed={true}/>
                 </InnerBox>
             </Frame>)
 }

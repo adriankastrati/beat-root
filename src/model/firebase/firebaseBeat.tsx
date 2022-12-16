@@ -44,7 +44,7 @@ const beatConverter ={
 
     fromFirestore(snapshot:  QueryDocumentSnapshot<DocumentData>, options: SnapshotOptions): any {
         return {
-            composer: snapshot.data().composer,
+            composerID: snapshot.data().composer,
             title: snapshot.data().title,
             description: snapshot.data().description,
             theme: snapshot.data().theme,
@@ -158,7 +158,7 @@ async function getQueryBeats(howMany:number, startTimeStamp: Timestamp, sort: So
     return null
 }
 
-async function queryBeatsByUser(userID: string,howMany:number, startBeatID?:string): Promise<Beat[]>{
+async function queryBeatsByUser(userID: string,howMany:number, startTimeStamp: Timestamp, startBeatID?:string): Promise<Beat[]>{
     const beatRef = collection(firestore, "beats");
     let queryBeats: Query<DocumentData>
 
@@ -167,6 +167,7 @@ async function queryBeatsByUser(userID: string,howMany:number, startBeatID?:stri
         queryBeats = await getDoc(docRef).then(async startAfterSnapshot=>{
             return queryBeats = query(beatRef,
                 where("composer","==",userID),
+                where("creationDate","<",startTimeStamp.valueOf()),
                 orderBy("creationDate", "desc"),
                 limit(howMany),
                 startAfter(startAfterSnapshot)
