@@ -67,7 +67,7 @@ height:100%;
   }
 
 @media (min-width: 870px) {
-    height: 71.75vh;
+    height: 71.825vh;
     overflow-y: scroll;
   }
 
