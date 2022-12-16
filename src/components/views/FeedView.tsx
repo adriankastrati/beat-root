@@ -4,7 +4,8 @@ import styled from "styled-components";
 import MainButton, { MainButtonType } from "./common/MainButton";
 import { BeatParent, ButtonsContainer, ThemedCard, UserTitle, BeatTitle } from "./common/FeedViewElements";
 import BeatVisualisationPresenter from "../presenters/BeatVisualizationPresenter";
-import { getUserInformation, UserInformation } from "model/firebase/firebaseAuthenticationModel";
+import { Link } from "react-router-dom";
+
 const OuterBox = styled.div`
   display:flex;
   flex-direction:column;
@@ -28,6 +29,7 @@ const FetchDiv = styled.div`
 `
 
 interface FeedViewProps{
+    isUser: boolean
     beats: Beat[]
     isLoading: boolean
     shouldFetch: boolean
@@ -42,8 +44,8 @@ interface FeedViewProps{
 export default function FeedView(props:FeedViewProps){
     let userNamePlaceholder = "*username*"
     // need firebase functions for this
-    function likeHandler(beatID: string, likes:number):void {
-        props.onLikeBeat(beatID,likes)
+    function likeHandler(beatID: string, beat:Beat):void {
+        props.onLikeBeat(beatID,beat.likes)
     }
     //function changeInFeedSortingHandler(filter: React.FormEvent):void {
     //    props.setFeedSortedBy(filter)
@@ -59,9 +61,13 @@ export default function FeedView(props:FeedViewProps){
                             tracks={beat.tracks}
                             colorTheme={beat.theme}
                         />
-                        <ButtonsContainer>                              
-                            <MainButton type = {MainButtonType.Like}  onClick={()=>{likeHandler(beat.firestoreBeatID,beat.likes)}} text = {""+beat.likes} scale = {0.5} frameOff={true} backgroundColor={theme.medium} borderRad={40} width={160} fontSize={18}></MainButton>                         
-                        
+                        <ButtonsContainer>                                   
+                            {props.isUser?<MainButton type = {MainButtonType.Like}  onClick={()=>{likeHandler(beat.firestoreBeatID,beat)}} text = {""+beat.likes} scale = {0.5} frameOff={true} backgroundColor={theme.medium} borderRad={40} width={160} fontSize={18}></MainButton>:
+                            <Link style={{ textDecoration: 'none' }} to="../sign-in">
+                                 <MainButton type = {MainButtonType.Like}  onClick={()=>{likeHandler(beat.firestoreBeatID,beat)}} text = {""+beat.likes} scale = {0.5} frameOff={true} backgroundColor={theme.medium} borderRad={40} width={160} fontSize={18}></MainButton>
+                            </Link>
+                           }
+                            {/*<MainButton type = {MainButtonType.Copy} onClick={midiCopyHandler} text = "" scale = {1.03}></MainButton>*/}
                         </ButtonsContainer>
                     </BeatParent>
                 </OuterBox>
