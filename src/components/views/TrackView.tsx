@@ -19,6 +19,7 @@ const OuterBox = styled.div`
     background-color: ${theme.light};
     border-radius: 10px;
     align-items:center;
+    width:90%;
     margin-top:10px;
     padding:10px;
     position: relative;
