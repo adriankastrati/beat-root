@@ -30,7 +30,7 @@ const Fixed = styled.div`
 display:flex;
 position: absolute;
 bottom: -63px;
-right: 20px;
+right: 10px;
 `
 
 enum MarkerType{
@@ -234,11 +234,11 @@ export default function BeatVisualisationPresenter(props:BeatVisualisationPresen
                     {
                         isPlaying?
                         (
-                            <MainButton type = {MainButtonType.Pause} scale ={0.5} imgScale={0.75} onClick={()=>isPlaying ? pause(): play()} backgroundColor={theme.medium} frameOff={true} borderRad={30} width={160}></MainButton>
+                            <MainButton type = {MainButtonType.Pause} scale ={0.5} onClick={()=>isPlaying ? pause(): play()} backgroundColor={theme.medium} frameOff={true} borderRad={30} width={160}></MainButton>
                         )
                         :
                         (
-                            <MainButton type = {MainButtonType.Play} scale ={0.5} imgScale={0.75} onClick={()=>isPlaying ? pause(): play()} backgroundColor={theme.medium} frameOff={true} borderRad={30} width={160}></MainButton>
+                            <MainButton type = {MainButtonType.Play} scale ={0.5} onClick={()=>isPlaying ? pause(): play()} backgroundColor={theme.medium} frameOff={true} borderRad={30} width={160}></MainButton>
                         )
                     }
                 </Fixed>

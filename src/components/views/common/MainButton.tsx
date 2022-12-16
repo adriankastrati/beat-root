@@ -36,13 +36,10 @@ font-size: ${props => 22*props.scale}px;
 cursor: pointer; /* Mouse pointer on hover */ 
 `
 
-interface ImgProps{
-    imgScale:number
-}
 
-const ButtonImg = styled.img<ImgProps>`
-max-width: ${props=>props.imgScale?props.imgScale*30:30}px;
-max-height: ${props=>props.imgScale?props.imgScale*30:30}30px;
+const ButtonImg = styled.img`
+max-width: 30px;
+max-height: 30px;
 `
 interface ButtonTextProps{
     fontSize?:number
@@ -76,7 +73,6 @@ interface Props{
     backgroundColor?:string
     borderRad?:number
     fontSize?:number
-    imgScale?:number
 }
 
 function MainButton(props: Props){
@@ -132,7 +128,7 @@ function MainButton(props: Props){
     if(props.type != MainButtonType.Plain){
         return (<div>
                     <ButtonStyle scale = {props.scale} width = {props.width ? props.width : btnWidth} onClick={props.onClick} frameOff={props.frameOff} backgroundColor = {props.backgroundColor} borderRad={props.borderRad}>
-                        <ButtonImg imgScale = {props.imgScale?props.imgScale:1} src={icon}></ButtonImg>
+                        <ButtonImg src={icon}></ButtonImg>
                         {
                             props.text?<ButtonText fontSize={props.fontSize}>{props.text}</ButtonText>:null
                         }
