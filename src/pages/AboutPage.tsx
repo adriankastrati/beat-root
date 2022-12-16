@@ -1,6 +1,7 @@
 import styled from "styled-components"
 import MainButton, { MainButtonType } from "components/views/common/MainButton"
 import { theme } from "common"
+import { useHistory } from "react-router-dom"
 
 //<StandardContainer>
 //    <h2>FIND YOUR THEME</h2>
@@ -11,6 +12,7 @@ import { theme } from "common"
 //</RowItems>
 
 const AboutPage = () => {
+    let history = useHistory()
     return (
         <AboutWrapper>
             <StandardContainer>
@@ -56,7 +58,7 @@ const AboutPage = () => {
             </RowItems>
             <RowItems>
                 <Readytxt>are you ready?</Readytxt>
-                <MainButton text="beat creator"type={MainButtonType.Add} width={150}scale={1} onClick={()=>{}}></MainButton>
+                <MainButton text="beat creator"type={MainButtonType.Add} width={150}scale={1} onClick={()=>{history.push("/play/create")}}></MainButton>
             </RowItems>
         </AboutWrapper>
     )
