@@ -9,11 +9,13 @@ export const Frame = styled.div`
 margin-top: 80px;
 `
 interface BlankSpaceProps{
-    width:number
+    width?:number
+    height?:number
 }
 export const BlankSpace = styled.div<BlankSpaceProps>`
 height: 1px;
-width: ${props=>props.width}px;
+margin-bottom:${props=>props.height?props.height:1}px;
+width: ${props=>props.width?props.width:1}px;
 `
 // topnav wrapper
 export const TopNav = styled.div<NavBarProps>`

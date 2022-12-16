@@ -9,6 +9,8 @@ import MainButton, { MainButtonType } from "../views/common/MainButton";
 import BeatVisualisationPresenter from "./BeatVisualizationPresenter";
 import ColorBoxPresenter from "./ColorBoxPresenter";
 import { useHistory } from "react-router";
+import { BeatParent } from "components/views/common/FeedViewElements";
+import { BlankSpace } from "components/views/common/NavBarElements";
 
 const newTrack:Track = {
     rhythm: new Rhythm(16),
@@ -20,7 +22,7 @@ const TextTitleInput = styled.input`
     margin:3px;
     border-radius: 6px;
     border:2px solid ${theme.medium};
-    width: 100%;
+    width: 90%;
     
 `
 
@@ -37,8 +39,22 @@ const TitleStyle = styled.div`
 const OuterBox = styled.div`
   display:flex;
   flex-direction:column;
-  margin:40px;
+  margin:100px;
   align-items:center;
+  @media (max-width: 869px) {
+    flex-direction: column;
+  }
+
+@media (min-width: 870px) {
+    flex-direction: row;
+  }
+`
+const InnerBox = styled.div`
+display: flex;
+flex-direction: column;
+align-items: center;
+width: 100%;
+height: fit-content;
 `
 
 
@@ -109,49 +125,55 @@ export default function BeatCreatePresenter(){
     switch (creationState) {
         case CreationState.Main:
             return <OuterBox>
-            <TitleStyle>Title</TitleStyle>
-            <TextTitleInput value={title} onChange={e=>setTitle(e.currentTarget.value)}/>
+                        <InnerBox>
+                            <BeatParent>
+                                <TextTitleInput value={title} onChange={e=>setTitle(e.currentTarget.value)}/>
+                                <BeatVisualisationPresenter
+                                    tracks={tracks}
+                                    bpm={bpm}
+                                    colorTheme={theme} //TODO
+                                />
+                                <BlankSpace height={70}></BlankSpace>
+                            </BeatParent> 
+                            <MainButton type={MainButtonType.ChooseColorTheme} scale = {1} text = "pick color theme" onClick={toggleEditTheme}></MainButton>
+                        </InnerBox>
+                        <InnerBox>
+                            <InnerBox>
+                                <TitleStyle>Tracks</TitleStyle>
+                                <BeatTracksView
+                                    onAddTrack={handleAddTrack}
+                                    tracks={tracks}
+                                    onRemoveTrack={handleRemoveTrack}
+                                    onSetTrack={updateTrack}
+                                    selectableSamples={audioModel.getSamples()}
+                                />
+                            </InnerBox>
+                            <InnerBox>
+                                <TitleStyle>Description</TitleStyle>
+                                <TextBodyTextArea value={description} onChange={e=>setDescription(e.currentTarget.value)}/>
+                                    <MainButton type={MainButtonType.Save}  scale = {1} text = "save and publish" 
+                                        onClick={()=>{
+                                            createBeat(
+                                                {
+                                                    firestoreBeatID:"",
+                                                    composerID:"",
+                                                    likes:0,
 
-            <BeatVisualisationPresenter
-                tracks={tracks}
-                bpm={bpm}
-                colorTheme={theme} //TODO
-            />
-            
-            <MainButton type={MainButtonType.ChooseColorTheme} scale = {1} text = "pick color theme" onClick={toggleEditTheme}></MainButton>
+                                                    description,
+                                                    title,
+                                                    bpm,
+                                                    tracks,
+                                                    theme,
+                                                }
+                                            ).then(()=>{history.push("/home")})
 
-            <TitleStyle>Tracks</TitleStyle>
-            <BeatTracksView
-                onAddTrack={handleAddTrack}
-                tracks={tracks}
-                onRemoveTrack={handleRemoveTrack}
-                onSetTrack={updateTrack}
-                selectableSamples={audioModel.getSamples()}
-            />
-            <TitleStyle>Description</TitleStyle>
-            <TextBodyTextArea value={description} onChange={e=>setDescription(e.currentTarget.value)}/>
-            
-                <MainButton type={MainButtonType.Save}  scale = {1} text = "save and publish" 
-                    onClick={()=>{
-                        createBeat(
-                            {
-                                firestoreBeatID:"",
-                                composerID:"",
-                                likes:0,
-
-                                description,
-                                title,
-                                bpm,
-                                tracks,
-                                theme,
-                            }
-                        ).then(()=>{history.push("/home")})
-
-                        SetCreationState(CreationState.Saving)
-                    }}
-                />
-            
-            </OuterBox>
+                                            SetCreationState(CreationState.Saving)
+                                            pause()
+                                        }}
+                                    />
+                                </InnerBox>
+                        </InnerBox>
+                    </OuterBox>
 
         case CreationState.EditTheme:
             return <ColorBoxPresenter onContinue={toggleEditTheme} onSetColorTheme={(theme:string[])=>{setTheme(theme)}}/>
