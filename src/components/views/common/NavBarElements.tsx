@@ -6,7 +6,16 @@ interface NavBarProps {
     active: boolean
 }
 export const Frame = styled.div`
-margin-top: 50px;
+margin-top: 80px;
+`
+interface BlankSpaceProps{
+    width?:number
+    height?:number
+}
+export const BlankSpace = styled.div<BlankSpaceProps>`
+height: 1px;
+margin-bottom:${props=>props.height?props.height:1}px;
+width: ${props=>props.width?props.width:1}px;
 `
 // topnav wrapper
 export const TopNav = styled.div<NavBarProps>`
@@ -24,7 +33,7 @@ export const NavContainer = styled.div<NavBarProps>`
     display: flex;
     justify-content: space-between;
     width: 200%; // why 
-    height: 2rem;
+    height: 4rem;
     background-color: ${theme.medium};
     margin-bottom: 2px;
     z-index: 10;
@@ -42,10 +51,13 @@ export const NavLogo = styled(Link)`
 
 // text of current page in navbar
 export const NavCurrentPage = styled.div`
+    display: flex;
+    align-items: center;
     margin-top: 1vw;
     justify-self: flex-start;
     cursor: pointer; 
     text-decoration: none;
+    text-align:center
     font-weight: 300;
     color: black;
     z-index: 10;
@@ -62,14 +74,15 @@ export const NavMenu = styled.ul<NavBarProps>`
     list-style: none;
     text-align: center;
     justify-content: flex-start;
+    top:32px;
     z-index: 10;
     @media screen {
         transform: translateY(1rem);
         flex-direction: column;
-        width: 100vh;
-        height: 100vh;
+        width: 120vh;
+        height: 120vh;
         position: absolute;
-        left: ${props => !props.active ? "100%":"42%"};
+        right: ${props => !props.active ? "-130vh":"-100vh"};
         opacity: 0.95;
         transition: all 0.2s ease;
         background: #434242;
