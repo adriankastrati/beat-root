@@ -1,4 +1,4 @@
-import { MutableRefObject } from "react"
+import React, { MutableRefObject } from "react"
 import { Beat } from "../../common"
 import styled from "styled-components";
 import MainButton, { MainButtonType } from "./common/MainButton";
@@ -39,6 +39,7 @@ interface FeedViewProps{
     targetRef: MutableRefObject<HTMLDivElement | null>
     itemsOnFetch: number
     lastItem: string | undefined
+    //setFeedSortedBy: (filter: React.FormEvent) => void
     onLikeBeat: (beatID: string, likes: number) => void
 }
 
@@ -48,6 +49,9 @@ export default function FeedView(props:FeedViewProps){
     function likeHandler(beatID: string, likes:number):void {
         props.onLikeBeat(beatID,likes)
     }
+    //function changeInFeedSortingHandler(filter: React.FormEvent):void {
+    //    props.setFeedSortedBy(filter)
+    //}
 
     function midiCopyHandler():void {
         console.log("copied midi(jk)")

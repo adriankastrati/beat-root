@@ -1,5 +1,5 @@
 import { Timestamp} from "@firebase/firestore";
-import { useEffect, useState, useRef } from "react"
+import React, { useEffect, useState, useRef } from "react"
 import {useIntersection } from 'react-use'
 import { Beat } from "../../common"
 import { getQueryBeats, isBeatLikedByCurrentUser, likeBeatAsUser, unlikeBeatAsUser} from "./../../model/firebase/firebaseBeat"
@@ -14,6 +14,8 @@ const FeedPresenter = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [lastBeatID, setLastBeatID] = useState<undefined|string>(undefined)
     const [shouldFetch, setShouldFetch] = useState(false)
+    // for sorted by-state.
+    const [sortedBy, setSortedBy] = useState<string>()
 
     //const fetchCount = useRef(0) // for limiting fetches
     const targetRef = useRef<HTMLDivElement | null>(null)
@@ -22,7 +24,7 @@ const FeedPresenter = () => {
         rootMargin: '100px',
         threshold: 0.3
     });
-    
+
     
     //setTimestamp_now(timestamp_now)
 
@@ -33,11 +35,18 @@ const FeedPresenter = () => {
             setShouldFetch(true)
             setIsLoading(true)
         }
-    }, [intersection])
+
+    }, [intersection, sortedBy])
 
 
     const MAX_FETCHES = 4 // maybe use for rate-limiting
     const itemsOnFetch = 15 // = large => intersectionobserver hidden after first fetch
+
+    enum Filters {
+        "recent" = SortBy.recent,
+        "likes" = SortBy.likes
+    }
+    
 
     useEffect(()=> {
         if(shouldFetch) {
@@ -67,6 +76,9 @@ const FeedPresenter = () => {
     function refreshBeats(){
         setTimestamp_now(Timestamp.fromDate(new Date()))
     }
+    function handleFilterChange(e: React.FormEvent<HTMLInputElement>) {
+        setSortedBy(e.currentTarget.value)
+    }
     return (
         <FeedView 
             beats={beats}
@@ -75,6 +87,7 @@ const FeedPresenter = () => {
             targetRef={targetRef}
             itemsOnFetch= {itemsOnFetch}
             lastItem = {lastBeatID}
+            //setFeedSortedBy = {handleFilterChange}
             onLikeBeat = {likeBeat}
         />
     )
