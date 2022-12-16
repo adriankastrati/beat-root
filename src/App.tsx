@@ -45,7 +45,7 @@ export default function App(){
                     <UserPage/>
                 </Route>
                 <Route exact path="/about">
-                    {/* <AboutPage/> */}
+                    <AboutPage/>
                 </Route>
                 
                 <Route path="/play">

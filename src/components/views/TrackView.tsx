@@ -51,6 +51,7 @@ const SampleDiv = styled.div`
 `
 
 export default function TrackView(props:TrackViewProps){
+    console.log(props.onDelete)
     return (         
                 <OuterBox>
                     <Fixed>
