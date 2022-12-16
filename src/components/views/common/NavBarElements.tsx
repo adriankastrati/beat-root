@@ -13,7 +13,8 @@ interface BlankSpaceProps{
     height?:number
 }
 export const BlankSpace = styled.div<BlankSpaceProps>`
-height: ${props=>props.height?props.height:1}px;
+height: 1px;
+margin-bottom:${props=>props.height?props.height:1}px;
 width: ${props=>props.width?props.width:1}px;
 `
 // topnav wrapper
