@@ -21,7 +21,7 @@ const OuterBox = styled.div`
     align-items:center;
     width:90%;
     margin-top:10px;
-    margin-bottom:10px;
+    margin-bottom:10px;git
     padding:10px;
     position: relative;
 `
@@ -69,7 +69,6 @@ export default function TrackView(props:TrackViewProps){
                         <SampleDiv>{props.track.sample}</SampleDiv>
                     }
 
-                    
 
                     <RhythmView
                         rhythm={props.track.rhythm} 
