@@ -15,8 +15,8 @@ const OuterBox = styled.div`
   height: 450px;
   overflow-y: scroll;
   flex-direction: column;
-  margin:40px;
-  width: 60%;
+  margin:20px;
+  width: 70%;
   align-items:center;
 `
 const InnerBox = styled.div`
@@ -25,12 +25,14 @@ const InnerBox = styled.div`
   align-items: center;
   padding: 10px;
   border: 1px solid ${theme.medium};
-  width: 80%;
+  width: 90%;
+  margin: 2px;
 `
 const BoxWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
   
 `
 
