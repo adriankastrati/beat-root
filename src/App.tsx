@@ -1,18 +1,14 @@
 import { BrowserRouter, Route, Switch} from "react-router-dom";
 import AudioInitializer from "./components/presenters/AudioInitializer";
-import BeatCreatePresenter from "./components/presenters/BeatCreatePresenter";
-import ColorBoxPresenter from "./components/presenters/ColorBoxPresenter";
-import FeedPresenter from "./components/presenters/FeedPresenter";
-import ColorBoxView from "./components/views/ColorBoxView";
 import NavBar from "./components/views/NavBar";
 import ColorTestPage from "./pages/colorTestPage";
 import ManualFirebaseTest from "./pages/ManualFirebaseTest";
 import RootPage from "./pages/RootPage";
 import SignInTest from "./pages/signInTest";
-import React from "react";
 import styled from "styled-components";
 import UserPage from "./pages/UserPage";
 import CreatePage from "pages/CreatePage";
+import ExplorePage from "pages/ExplorePage";
 
 const MainDiv = styled.div/*<MainProps>*/`
     
@@ -53,7 +49,7 @@ export default function App(){
                         <Switch>
 
                             <Route exact path="/play/explore">
-                                <FeedPresenter userFeed={false}/>
+                                <ExplorePage/>
                             </Route>
 
                             <Route exact path="/play/create">
