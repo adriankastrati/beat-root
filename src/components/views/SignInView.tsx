@@ -7,7 +7,8 @@ const OuterBox = styled.div`
   display:flex;
   flex-direction:column;
   margin:40px;
-  border: 1px solid ${theme.medium}
+  border: 1px solid ${theme.medium};
+  align-items: center;
 `
 const Input = styled.input`
   width:100%;
@@ -19,6 +20,13 @@ const Input = styled.input`
   }
 `
 const InnerBox = styled.div`
+  display:flex;
+  flex-direction:column;
+  margin:2px;
+  padding: 5px;
+  align-items: center;
+`
+const InputBox = styled.div`
   display:flex;
   flex-direction:column;
   margin:2px;
@@ -36,11 +44,11 @@ const ResultStyle = styled.div<LoginProps>`
   text-align: center;
   color: ${props => props.success ? "green": "red"};
 `
-const Center = styled.div`
-align-items: center;
-align-self: center;
-margin: 0 auto;
-`
+// const Center = styled.div`
+// align-items: center;
+// align-self: center;
+// margin: 0 auto;
+// `
 
 interface LoginProps{
   success: boolean
@@ -55,6 +63,8 @@ interface SignInViewProp{
   onCreateAccountAttempt:()=> void
   errorMessage: string|undefined
   welcomeMessage: boolean
+  resetPasswordPrompt: boolean
+  onResetPassword: ()=> void
 }
 
 function SignInView(props:SignInViewProp){
@@ -71,34 +81,37 @@ function SignInView(props:SignInViewProp){
 
   return (
     <OuterBox>
-      <Center>
       <TitleStyle>Welcome to Beat Root</TitleStyle>
           
             <form onSubmit={props.onLogInAttempt}>
               <InnerBox>
+              <InputBox>
                 <label>E-mail</label>
                 <Input type="text" name="email" onChange={e=>{props.onEmailChange(e.target.value)}} required/>
-                
+                </InputBox>
               
+              <InputBox>
                 <label>Password</label>
                 <Input type="password" name="password" onChange={e=>{props.onPasswordChange(e.target.value)}} required/>
+                </InputBox>
+              
               </InnerBox>
               <InnerBox>
-                <Center>
                   <MainButton type={MainButtonType.Plain} text="login" onClick={handleLogin} scale = {0.75} width = {67}></MainButton>
-                </Center> 
-                <Center> 
                   <span>New here? Join Beat Root!</span>
-                </Center>
-                <Center>
                   <MainButton type={MainButtonType.Plain} text="create a new account" onClick={handleCreate} scale = {0.75} width = {234} ></MainButton>
-                </Center>
              </InnerBox>
             </form>
-       
+
+         
           <ResultStyle success = {props.welcomeMessage}>{props.welcomeMessage? "Login success!":props.errorMessage}</ResultStyle>
           
-          </Center>
+
+          {props.resetPasswordPrompt?
+          <MainButton type={MainButtonType.Plain} onClick={props.onResetPassword} text="Click to get a password reset mail" scale = {0.75} width = {234}></MainButton>:
+          null
+          }
+
         </OuterBox> );
 }
 export default SignInView;

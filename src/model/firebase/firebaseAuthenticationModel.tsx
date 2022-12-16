@@ -1,6 +1,6 @@
 import { 
     getAuth, createUserWithEmailAndPassword, 
-    signInWithEmailAndPassword,signOut
+    signInWithEmailAndPassword,signOut, sendPasswordResetEmail
 } from "firebase/auth";
 import {initializeApp} from "firebase/app"
 import { firebaseConfig } from "./firebaseConfig";
@@ -87,16 +87,16 @@ async function loginEmailPasswordAccount(email: string, password: string): Promi
     return signInWithEmailAndPassword(auth, email,password).then(()=>{
         return null;
     }).catch((error)=>{
-        let errorMsg = "unknown-issue";
+        let errorMsg = "wrong password or invalid email";
         switch (error.code){
             case "auth/wrong-password":
-                errorMsg = "Incorrect password"
+                errorMsg = "wrong password or invalid email"
                 break;
             case "auth/user-not-found":
                 errorMsg = "No such user found"
                 break;
             case "auth/invalid-email":
-                errorMsg = "Invalid e-mail address"
+                errorMsg = "wrong password or invalid email"
                 break;
         }
         return new firebaseError(errorMsg);
@@ -208,6 +208,15 @@ async function setUsername(newUsername:string): Promise<boolean>{
     })
 }
 
+async function resetPassword(email: string): Promise<boolean>{
+    try{
+        await sendPasswordResetEmail(auth,email)
+        return true
+    }catch(e){
+    return false
+    }
+}
+
 /**
  * 
  * @returns the boolean value if a value is logged in
@@ -226,4 +235,4 @@ async function logOutAccount(){
 }
 
 
-export{removeUsername,setDescription, getProfilePictures,setProfilePicture,setUsername,getUserInformation,getCurrentUserID,logOutAccount,isUserLoggedIn,createEmailPasswordAccount,loginEmailPasswordAccount}
+export{resetPassword,removeUsername,setDescription, getProfilePictures,setProfilePicture,setUsername,getUserInformation,getCurrentUserID,logOutAccount,isUserLoggedIn,createEmailPasswordAccount,loginEmailPasswordAccount}
