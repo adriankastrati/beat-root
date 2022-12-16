@@ -34,6 +34,7 @@ const TextBodyTextArea = styled.textarea`
     border-color:${theme.medium};
     border-radius:10px;
     margin:0px;
+    resize:none;
 `
 const TitleStyle = styled.div`
     font-size:18px;
@@ -127,7 +128,7 @@ export default function BeatCreatePresenter(){
         case CreationState.Main:
             return <OuterBox>
                         <InnerBox>
-                            <TitleStyle>Preview</TitleStyle>
+                        <BlankSpace height={5}></BlankSpace>
                             <BeatParent>
                                 <TextTitleInput value={title} onChange={e=>setTitle(e.currentTarget.value)}/>
                                 <BeatVisualisationPresenter
