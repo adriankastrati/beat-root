@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createEmailPasswordAccount, loginEmailPasswordAccount } from "../../model/firebase/firebaseAuthenticationModel";
+import { createEmailPasswordAccount, loginEmailPasswordAccount, resetPassword } from "../../model/firebase/firebaseAuthenticationModel";
 import SignInView from "../views/SignInView";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { redirect } from "common";
@@ -10,6 +10,7 @@ function AccountPresenter(props:RouteComponentProps){
   const [email, setEmail] = useState<string>();
   const [accountErrorMessage, setAccountErrorMessage] = useState<string>()
   const [welcomeMessage, setWelcomeMessage] = useState<boolean>(false)
+  const[resetPasswordPrompt, setResetPasswordPrompt] = useState(false)
 
   function handlePasswordChange(password:any){
       setPassword(password)
@@ -20,12 +21,17 @@ function AccountPresenter(props:RouteComponentProps){
   }
   
   async function logInAttempt(){
+    console.log(email)
     if (email && password){
       try{
         let error = await loginEmailPasswordAccount(email,password);
         if (error){
           setAccountErrorMessage(error.errorMessage)
+          console.log(error.errorMessage )
           setWelcomeMessage(false)
+          if(error.errorMessage === "wrong password or invalid email"){
+            setResetPasswordPrompt(true)
+          }
         }else{
           setWelcomeMessage(true)
           redirect(props,'/play/explore',1000);
@@ -56,9 +62,16 @@ function AccountPresenter(props:RouteComponentProps){
     }
   }
 
+  function sendPasswordResetMail(){
+    if (email)
+      resetPassword(email)
+  }
+  
   return(
   <div>
     <SignInView
+        resetPasswordPrompt={resetPasswordPrompt}
+        onResetPassword = {sendPasswordResetMail}
         onEmailChange={handleEmailChange}
         email={email}
         onPasswordChange={handlePasswordChange}
