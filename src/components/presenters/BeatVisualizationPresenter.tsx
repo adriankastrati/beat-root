@@ -14,6 +14,9 @@ const OuterBox = styled.div`
   display:flex;
   flex-direction:column;
   align-items:center;
+  margin-top: 5px;
+  position:relative;
+  padding: 20px;
 `
 
 const CanvasWrapper = styled.div`
@@ -22,6 +25,12 @@ const CanvasWrapper = styled.div`
 
 const VisCanvas = styled.canvas`
 
+`
+const Fixed = styled.div`
+display:flex;
+position: absolute;
+bottom: -63px;
+right: 10px;
 `
 
 enum MarkerType{
@@ -215,15 +224,23 @@ export default function BeatVisualisationPresenter(props:BeatVisualisationPresen
     }
 
     return <OuterBox>
-        <CanvasWrapper ref={wrapperRef}>
-        <VisCanvas
-                ref={canvasRef}
-        /> 
-        </CanvasWrapper>
-
-        {/* <button onClick={draw}> draw! </button> */}
-        <MainButton type = {MainButtonType.Plain} scale ={1} text={isPlaying?"Pause":"Play"} onClick={()=>isPlaying ? pause(): play()}></MainButton>
-             
-       
-    </OuterBox>
+                <CanvasWrapper ref={wrapperRef}>
+                <VisCanvas
+                        ref={canvasRef}
+                /> 
+                </CanvasWrapper>
+                {/* <button onClick={draw}> draw! </button> */}
+                <Fixed>
+                    {
+                        isPlaying?
+                        (
+                            <MainButton type = {MainButtonType.Pause} scale ={0.5} onClick={()=>isPlaying ? pause(): play()} backgroundColor={theme.medium} frameOff={true} borderRad={30} width={160}></MainButton>
+                        )
+                        :
+                        (
+                            <MainButton type = {MainButtonType.Play} scale ={0.5} onClick={()=>isPlaying ? pause(): play()} backgroundColor={theme.medium} frameOff={true} borderRad={30} width={160}></MainButton>
+                        )
+                    }
+                </Fixed>
+            </OuterBox>
 }
