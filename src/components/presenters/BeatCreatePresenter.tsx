@@ -53,7 +53,7 @@ const InnerBox = styled.div`
 display: flex;
 flex-direction: column;
 align-items: center;
-width: 100%;
+width: fit-content;
 height: fit-content;
 `
 
@@ -133,7 +133,7 @@ export default function BeatCreatePresenter(){
                                     bpm={bpm}
                                     colorTheme={theme} //TODO
                                 />
-                                <BlankSpace height={70}></BlankSpace>
+                                <BlankSpace height={0}></BlankSpace>
                             </BeatParent> 
                             <MainButton type={MainButtonType.ChooseColorTheme} scale = {1} text = "pick color theme" onClick={toggleEditTheme}></MainButton>
                         </InnerBox>
