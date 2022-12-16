@@ -54,8 +54,9 @@ const InnerBox = styled.div`
 display: flex;
 flex-direction: column;
 align-items: center;
-width: fit-content;
+width: 100%;
 height: fit-content;
+
 `
 
 
