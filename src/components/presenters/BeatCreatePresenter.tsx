@@ -41,6 +41,7 @@ const OuterBox = styled.div`
   flex-direction:column;
   margin:100px;
   align-items:center;
+  justify-content:center;
   @media (max-width: 869px) {
     flex-direction: column;
   }
