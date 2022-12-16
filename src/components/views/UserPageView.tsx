@@ -11,16 +11,23 @@ import { BlankSpace } from "./common/NavBarElements";
 interface OuterBoxProps{
     frameOff?:boolean
 }
-const OuterBox = styled.div<OuterBoxProps>`
+const OuterBox = styled.div`
   display:flex;
   flex-direction:column;
-  align-items: center;
-  margin:10px;
-  height: fit-content;
-  padding: 10px;
-  border: ${props=> props.frameOff?0:1}px solid ${theme.medium};
+  margin:0px;
+  
+  
+  @media (max-width: 869px) {
+    flex-direction: column;
+    align-items:center;
+  }
 
+@media (min-width: 870px) {
+    flex-direction: row;
+    justify-content:center;
+  }
 `
+
 const DescriptionBox = styled.div<SizeProps>`
 width:${props=>props.width};
 height: ${props=>props.height};
@@ -49,12 +56,17 @@ interface InnerBoxProps{
 }
 const InnerBox = styled.div<InnerBoxProps>`
   display:flex;
-  flex-direction:${props=>props.flexDir};
-  align-items: center;
-  border: ${props=>props.border?"1px solid " + theme.medium:"0px"};
   border-radius: 5px;
-  margin:0px;
   padding: 5px;
+  text-align:center;
+  flex-direction:${props=>props.flexDir};
+  justify-content: center;
+  align-items:center;
+  width: 90%;
+  height: fit-content;
+  margin: 2px;
+  border: ${props=>props.border?"1px solid " + theme.medium:"0px"};
+  position: relative;
   
 `
 const BeatsContainer = styled.div`
@@ -81,6 +93,19 @@ margin: 3px;
 border: 1px solid black;
 border-radius: 5px;
 
+`
+interface FixedProps{
+    top?:number
+    bottom?:number
+    left?:number
+    right?:number
+}
+const Fixed = styled.div<FixedProps>`
+${props=>props.top?"top:"+props.top+"px;":null}
+${props=>props.bottom?"bottom:"+props.bottom+"px;":null}
+${props=>props.right?"right:"+props.right+"px;":null}
+${props=>props.left?"left:"+props.left+"px;":null}
+position: fixed;
 `
 interface PictureProps{
     width?:number
@@ -109,18 +134,12 @@ const TitleStyle = styled.div`
   margin:10px;
   text-align: center;
 `
-const Frame = styled.div`
-display: flex;
-justify-items:center;
-height: 90vh;
-@media (max-width: 869px) {
-    flex-direction: column;
-  }
+const GridRow = styled.div`
+  display: grid;
+  grid-template-rows: 20% 20% 20% 20% 20%;
+  align-items:center;
+`;
 
-@media (min-width: 870px) {
-    flex-direction: row;
-  }
-`
 interface UserPageProps{
     username: string|null
     email: string|null
@@ -224,101 +243,83 @@ export default function UserPageView(props: UserPageProps){
         props.setUsernameChangingState(!props.usernameChangingState)
     }
 
-    return (    <Frame>
-                    
-                    <OuterBox>
-                        
-                            <BlankSpace></BlankSpace>
-                            <InnerBox flexDir="row">
-                                {
-                                    props.profilePicChangingState?
-                                    <MainButton type = {MainButtonType.Save} scale = {0.5} onClick={updateProfilePictureCB} text="Save" width={130}></MainButton>
-                                    :<MainButton type = {MainButtonType.Edit} scale = {0.5} onClick={profileSelectBoxCB} text="Edit" width={130}></MainButton>
-                                }
-                                
-                                <ProfilePictureContainer>
-                                    {
-                                        props.profilePicChangingState?<Picture src={selectedImage}></Picture>:(
-                                            <Picture src={props.profilePicture?props.profilePicture:props.loadedImages[0]}></Picture>
-                                            )
-                                    }         
-                                </ProfilePictureContainer>
-                            
-                            <BlankSpace width={65} height={50}></BlankSpace>
-                        </InnerBox>
-                        {
-                                props.profilePicChangingState?(<InnerBox flexDir="column">
-                                                                    <SelectablePicturesContainer> 
-                                                                        {props.loadedImages.map(getImageCB)}
-                                                                    </SelectablePicturesContainer>
-                                                                </InnerBox>):
-                                                                ""
-                            }
-                            <InnerBox flexDir="row">
+    return (    <OuterBox> 
+                    <InnerBox flexDir="column" border={true}>
+                        <InnerBox flexDir="row">
                             {
-                                    props.usernameChangingState?(
-                                            <InnerBox flexDir="column">
-                                                <MainButton type = {MainButtonType.Edit} text="Edit" scale = {0.5} width={130} onClick={toggleUsernameCB}></MainButton>
-                                            </InnerBox>
-                                        ):(
-                                            <InnerBox flexDir="column">
-                                                <MainButton type = {MainButtonType.Save} text="Save" scale = {0.5} width={130} onClick={updateProfileNameCB}></MainButton>
-                                            </InnerBox>
+                                props.profilePicChangingState?
+                                <MainButton type = {MainButtonType.Save} scale = {0.25} fontSize={10} onClick={updateProfilePictureCB} text="Save" width={130}></MainButton>
+                                :<MainButton type = {MainButtonType.Edit} scale = {0.25} fontSize={10} onClick={profileSelectBoxCB} text="Edit" width={130}></MainButton>
+                            }
+                            <ProfilePictureContainer>                              
+                                {
+                                    props.profilePicChangingState?<Picture src={selectedImage}></Picture>:(
+                                        <Picture src={props.profilePicture?props.profilePicture:props.loadedImages[0]}></Picture>
                                         )
-                                }
-                                <p>Username:</p>
-                                <TitleStyle>
-                                    {props.username? "" + props.username: "-"}
-                                </TitleStyle>
-                                <BlankSpace width={65} height={50}></BlankSpace>
-                                </InnerBox>
-                                {!props.usernameChangingState?
-                                (<InnerBox flexDir="column">
-                                    <Input defaultValue={nameBoxContent} onChange={(e)=>setNameBoxContent(e.target.value)}width={"65%"} height ={"50px"}></Input>
-                                    <p>{nameInfoText}</p>
-                                </InnerBox>):
-                                (<InnerBox flexDir="column">
-
-                                </InnerBox>)}
+                                }                              
+                            </ProfilePictureContainer>
                             
-                            <div>{}</div>
-                            <InnerBox flexDir="row">
-                                {
-                                    props.descriptionChangingState?(<InnerBox flexDir="column">
-                                                                        <MainButton type={MainButtonType.Edit} text="Edit" scale = {0.5} width = {130} onClick={toggleDescriptionCB}></MainButton>
-                                                                    </InnerBox>
-                                    )
-                                    :
-                                    (<InnerBox flexDir="column">
-                                        <MainButton type={MainButtonType.Save} text="Save" scale = {0.5} width = {130} onClick={saveDescriptionCB}></MainButton>  
-                                    </InnerBox>
-                                    )
-                                }    
-                                <p>Description:</p>  
-                                <BlankSpace width={65} height={50}></BlankSpace>                  
-                            </InnerBox>
-                            {
-                                props.descriptionChangingState?(<InnerBox flexDir="column">
-                                                                    <DescriptionBox width="100%" height="100px"><p>{props.description?props.description:"Nothing here!"}</p></DescriptionBox>
-                                                                </InnerBox>):
-                                                                (<InnerBox flexDir="column">
-                                                                    <InputArea onChange={(e)=>setDescriptionBoxText(e.target.value)} width={"100%"} height = {"100px"} defaultValue={props.description!}></InputArea>    
-                                                                </InnerBox>)
-                            }
-
-                            <TitleStyle>{props.email?"Email: " + props.email: "Email: logged out"}</TitleStyle>            
-                            
-                            <InnerBox flexDir="column">
-                                <TitleStyle>
-                                    {props.id?"ID: "+props.id:"ID: ?"}
-                                </TitleStyle>
-                            </InnerBox>
-                        </OuterBox> 
-                        <OuterBox>
-                        <TitleStyle>Beats</TitleStyle>
-                            <BeatsContainer>
-                                <FeedPresenter userFeed={true}/>
-                            </BeatsContainer>
-                        </OuterBox>   
-                    </Frame>)
+                        </InnerBox>
+                        
+                        {
+                            props.profilePicChangingState?(<InnerBox flexDir="column">
+                                                            <SelectablePicturesContainer> 
+                                                                {props.loadedImages.map(getImageCB)}
+                                                            </SelectablePicturesContainer>
+                                                        </InnerBox>):
+                                                        ""
+                        }
+                        
+                    <InnerBox flexDir="row">
+                        {
+                            props.usernameChangingState?
+                            (<MainButton type = {MainButtonType.Edit} text="Edit" scale = {0.25} fontSize={10} width={130} onClick={toggleUsernameCB} ></MainButton>)
+                            :
+                            (<MainButton type = {MainButtonType.Save} text="Save" scale = {0.25} fontSize={10} width={130} onClick={updateProfileNameCB}></MainButton>)
+                        } 
+                        <p>Username:</p>
+                        <TitleStyle>
+                        {props.username? "" + props.username: "-"}
+                        </TitleStyle>                   
+                    </InnerBox>
+                    
+                    {!props.usernameChangingState?
+                            (<InnerBox flexDir="column">
+                                <Input defaultValue={nameBoxContent} onChange={(e)=>setNameBoxContent(e.target.value)}width={"65%"} height ={"50px"}></Input>
+                                <p>{nameInfoText}</p>
+                            </InnerBox>):
+                            (null)}
+                    <InnerBox flexDir="row">  
+                        {
+                            props.descriptionChangingState?(<MainButton type={MainButtonType.Edit} text="Edit" scale = {0.25} fontSize={10} width = {130} onClick={toggleDescriptionCB}></MainButton>)
+                            :
+                            (<MainButton type={MainButtonType.Save} text="Save" scale = {0.25} fontSize={10} width = {130} onClick={saveDescriptionCB}></MainButton>)
+                        }   
+                        <p>Description</p>             
+                    </InnerBox>
+                    
+                    {
+                        props.descriptionChangingState?
+                            (<InnerBox flexDir="column">
+                                <DescriptionBox width="100%" height="100px"><p>{props.description?props.description:"Nothing here!"}</p></DescriptionBox>
+                            </InnerBox>)
+                            :
+                            (<InnerBox flexDir="column">
+                                <InputArea onChange={(e)=>setDescriptionBoxText(e.target.value)} width={"100%"} height = {"100px"} defaultValue={props.description!}></InputArea>    
+                            </InnerBox>)
+                    }
+                    <TitleStyle>{props.email?"Email: " + props.email: "Email: logged out"}</TitleStyle>            
+                    <TitleStyle>
+                        {props.id?"ID: "+props.id:"ID: ?"}
+                    </TitleStyle>
+                </InnerBox>
+            
+                <InnerBox flexDir="column" border={true}>
+                    <TitleStyle>Beats</TitleStyle>
+                    <BeatsContainer>
+                        <FeedPresenter userFeed={true}/>
+                    </BeatsContainer>
+                </InnerBox>
+                
+                    </OuterBox>)
 }
