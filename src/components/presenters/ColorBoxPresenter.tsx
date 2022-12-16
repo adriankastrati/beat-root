@@ -17,8 +17,8 @@ const ColorBoxPresenter = (props:ColorBoxPresenterProps) => {
     const targetRef = useRef<HTMLDivElement | null>(null) // null might be the root of issues
     const intersection = useIntersection(targetRef, {
         root:null,
-        rootMargin: '200px',
-        threshold: 1.0,
+        rootMargin: '200px 2000px',
+        threshold: 0.8,
     })
     const AMOUNT_FETCHES = 10
 

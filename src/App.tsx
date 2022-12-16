@@ -13,6 +13,7 @@ import SignInTest from "./pages/signInTest";
 import React from "react";
 import styled from "styled-components";
 import UserPage from "./pages/UserPage";
+import AboutPage from "pages/AboutPage";
 
 const MainDiv = styled.div/*<MainProps>*/`
     
@@ -42,6 +43,10 @@ export default function App(){
 
                 <Route exact path="/test/sign-in">
                     <SignInTest/>
+                </Route>
+
+                <Route exact path="/test/about">
+                    <AboutPage/>
                 </Route>
 
                 <Route exact path="/test/user-page">
