@@ -27,6 +27,10 @@ const SuspenseDiv = styled.div`
 const FetchDiv = styled.div`
     bottom: 0px;
 `
+const Image = styled.img`
+width: 32px;
+height: 32px;
+`
 
 interface FeedViewProps{
     isUser: boolean
@@ -82,12 +86,12 @@ export default function FeedView(props:FeedViewProps){
             <Feed>
                 {!props.targetRef? props.beats.slice(props.beats.length - props.itemsOnFetch, props.beats.length + props.itemsOnFetch).map(feedElementCB)
                     : <SuspenseDiv>
-                            {props.isLoading? <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Rotating_earth_%28large%29.gif/100px-Rotating_earth_%28large%29.gif"></img>: ""}  
+                            {props.isLoading? <Image src="https://i.ibb.co/P9L7QQ6/Pulse-1s-200px.gif"></Image>: ""}  
                         </SuspenseDiv>
                 }
             </Feed>
             <FetchDiv ref={ props.targetRef }>
-                ...that's all she wrote
+                End of feed
             </FetchDiv>
         </OuterBox>
     )
