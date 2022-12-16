@@ -4,13 +4,14 @@ import styled from "styled-components";
 import MainButton, { MainButtonType } from "./common/MainButton";
 import { BeatParent, ButtonsContainer, ThemedCard, UserTitle, BeatTitle } from "./common/FeedViewElements";
 import BeatVisualisationPresenter from "../presenters/BeatVisualizationPresenter";
-
+import { getUserInformation, UserInformation } from "model/firebase/firebaseAuthenticationModel";
 const OuterBox = styled.div`
   display:flex;
   flex-direction:column;
   margin: 20px;
   margin-left: calc(3vw + 3vh);
   margin-right: calc(3vw + 3vh);
+  overflow-x:hidden;
 `
 const Feed = styled.div`
     height: 95%;
@@ -38,7 +39,7 @@ interface FeedViewProps{
 
 
 export default function FeedView(props:FeedViewProps){
-
+    let userNamePlaceholder = "*username*"
     // need firebase functions for this
     function likeHandler(beatID: string, likes:number):void {
         props.onLikeBeat(beatID,likes)
@@ -47,11 +48,12 @@ export default function FeedView(props:FeedViewProps){
     function midiCopyHandler():void {
         console.log("copied midi(jk)")
     }
+
     function feedElementCB(beat: Beat, key: any){
         return (<OuterBox key={key}>
                     <BeatParent> 
                         <BeatTitle>{beat.title}</BeatTitle>
-                        <UserTitle offset={beat.composerID?beat.composerID.length*2:0}>{beat.composerID}</UserTitle>
+                        <UserTitle offset={userNamePlaceholder.length}>{userNamePlaceholder}</UserTitle>
                         <BeatVisualisationPresenter
                             bpm={beat.bpm}
                             tracks={beat.tracks}
