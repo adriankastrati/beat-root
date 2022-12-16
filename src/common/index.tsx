@@ -1,3 +1,4 @@
+import { RouteComponentProps } from "react-router-dom";
 import AudioModel from "../model/AudioModel";
 
 export interface User{
@@ -129,4 +130,10 @@ export function textStyles(variant:TextVariant){
                 font-size:20px;
             `
     }
+}
+
+export function redirect(source :RouteComponentProps, path: string, time: number){
+    setTimeout(() => {
+      source.history.push(path);
+    }, time);
 }

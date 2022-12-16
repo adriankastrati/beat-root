@@ -4,6 +4,7 @@ import styled from "styled-components";
 import MainButton, { MainButtonType } from "./common/MainButton";
 import { BeatParent, ButtonsContainer, ThemedCard } from "./common/FeedViewElements";
 import BeatVisualisationPresenter from "../presenters/BeatVisualizationPresenter";
+import { Link } from "react-router-dom";
 
 const OuterBox = styled.div`
   display:flex;
@@ -33,6 +34,7 @@ const FetchDiv = styled.div`
 `
 
 interface FeedViewProps{
+    isUser: boolean
     beats: Beat[]
     isLoading: boolean
     shouldFetch: boolean
@@ -45,8 +47,8 @@ interface FeedViewProps{
 export default function FeedView(props:FeedViewProps){
 
     // need firebase functions for this
-    function likeHandler(beatID: string, likes:number):void {
-        props.onLikeBeat(beatID,likes)
+    function likeHandler(beatID: string, beat:Beat):void {
+        props.onLikeBeat(beatID,beat.likes)
     }
 
     function midiCopyHandler():void {
@@ -62,7 +64,12 @@ export default function FeedView(props:FeedViewProps){
                     colorTheme={beat.theme}
                 />
                 <ButtonsContainer>                                   
-                    <MainButton type = {MainButtonType.Like}  onClick={()=>{likeHandler(beat.firestoreBeatID,beat.likes)}} text = {""+beat.likes} scale = {1}></MainButton>
+                    {   
+                        props.isUser?
+                        <MainButton type = {MainButtonType.Like} onClick={()=>{likeHandler(beat.firestoreBeatID,beat)}} text = {""+beat.likes} scale = {1}></MainButton>:
+                        <Link style={{ textDecoration: 'none' }} to="../sign-in"><MainButton type = {MainButtonType.Like} onClick={()=>{}} text = {""+beat.likes} scale = {1}></MainButton></Link>
+                        
+                    }
                     <MainButton type = {MainButtonType.Copy} onClick={midiCopyHandler} text = "" scale = {1.03}></MainButton>
                 </ButtonsContainer>
             </BeatParent>

@@ -40,12 +40,15 @@ export default function App(){
                     <ColorTestPage/>
                 </Route>
 
-                <Route exact path="/test/sign-in">
+                <Route exact path="/sign-in">
                     <SignInTest/>
                 </Route>
 
-                <Route exact path="/test/user-page">
+                <Route exact path="/user-page">
                     <UserPage/>
+                </Route>
+                <Route exact path="/about">
+                    {/* <AboutPage/> */}
                 </Route>
                 
                 <Route path="/play">

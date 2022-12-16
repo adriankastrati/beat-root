@@ -2,6 +2,7 @@ import { useState } from "react";
 import { createEmailPasswordAccount, loginEmailPasswordAccount } from "../../model/firebase/firebaseAuthenticationModel";
 import SignInView from "../views/SignInView";
 import { withRouter, RouteComponentProps } from "react-router-dom";
+import { redirect } from "common";
 
 function AccountPresenter(props:RouteComponentProps){
 
@@ -17,11 +18,7 @@ function AccountPresenter(props:RouteComponentProps){
   function handleEmailChange(email:string){
       setEmail(email)
   }
-  function redirect(){
-    setTimeout(() => {
-      props.history.push('/play/explore');
-    }, 1000);
-  }
+  
   async function logInAttempt(){
     if (email && password){
       try{
@@ -31,7 +28,7 @@ function AccountPresenter(props:RouteComponentProps){
           setWelcomeMessage(false)
         }else{
           setWelcomeMessage(true)
-          redirect();
+          redirect(props,'/play/explore',1000);
         }
 
       }catch(e){
@@ -51,6 +48,7 @@ function AccountPresenter(props:RouteComponentProps){
       }else{
         setAccountErrorMessage("Welcome to beat root!")
         setWelcomeMessage(true)
+        redirect(props,'/play/explore',1000);
       }
     }catch(e){
         console.log(e)
