@@ -39,7 +39,7 @@ const TitleStyle = styled.div`
 const OuterBox = styled.div`
   display:flex;
   flex-direction:column;
-  margin:100px;
+  margin:30px;
   align-items:center;
   justify-content:center;
   @media (max-width: 869px) {
