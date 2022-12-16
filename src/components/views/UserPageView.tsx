@@ -8,14 +8,17 @@ import { getProfilePictures } from "model/firebase/firebaseAuthenticationModel";
 import FeedPresenter from "components/presenters/FeedPresenter";
 import { BlankSpace } from "./common/NavBarElements";
 
-const OuterBox = styled.div`
+interface OuterBoxProps{
+    frameOff?:boolean
+}
+const OuterBox = styled.div<OuterBoxProps>`
   display:flex;
   flex-direction:column;
   align-items: center;
   margin:10px;
   height: fit-content;
   padding: 10px;
-  border: 1px solid ${theme.medium};
+  border: ${props=> props.frameOff?0:1}px solid ${theme.medium};
 
 `
 const DescriptionBox = styled.div<SizeProps>`
@@ -52,21 +55,22 @@ const InnerBox = styled.div<InnerBoxProps>`
   border-radius: 5px;
   margin:0px;
   padding: 5px;
-  @media (max-width: 869px) {
+  
+`
+const BeatsContainer = styled.div`
+transform: scale(1);
+border-radius: 5px;
+width:100%;
+height:100%;
+@media (max-width: 869px) {
    
   }
 
 @media (min-width: 870px) {
-    overflow-y: auto;
+    height: 71.825vh;
+    overflow-y: scroll;
   }
-`
-const BeatsContainer = styled.div`
-transform: scale(1);
-border: ${"1px solid " + theme.medium};
-border-radius: 5px;
-width:100%;
-height: 100%;
-overflow-y: scroll;
+
 `
 
 const ProfilePictureContainer = styled.div`
@@ -221,20 +225,25 @@ export default function UserPageView(props: UserPageProps){
     }
 
     return (    <Frame>
+                    
                     <OuterBox>
-                        <InnerBox flexDir="row">
-                            {
-                                props.profilePicChangingState?
-                                <MainButton type = {MainButtonType.Save} scale = {0.5} onClick={updateProfilePictureCB} text="Save" width={130}></MainButton>
-                                :<MainButton type = {MainButtonType.Edit} scale = {0.5} onClick={profileSelectBoxCB} text="Edit" width={130}></MainButton>
-                            }
-                            <ProfilePictureContainer>
+                        
+                            <BlankSpace></BlankSpace>
+                            <InnerBox flexDir="row">
                                 {
-                                    props.profilePicChangingState?<Picture src={selectedImage}></Picture>:(
-                                        <Picture src={props.profilePicture?props.profilePicture:props.loadedImages[0]}></Picture>
-                                        )
-                                }         
-                            </ProfilePictureContainer>
+                                    props.profilePicChangingState?
+                                    <MainButton type = {MainButtonType.Save} scale = {0.5} onClick={updateProfilePictureCB} text="Save" width={130}></MainButton>
+                                    :<MainButton type = {MainButtonType.Edit} scale = {0.5} onClick={profileSelectBoxCB} text="Edit" width={130}></MainButton>
+                                }
+                                
+                                <ProfilePictureContainer>
+                                    {
+                                        props.profilePicChangingState?<Picture src={selectedImage}></Picture>:(
+                                            <Picture src={props.profilePicture?props.profilePicture:props.loadedImages[0]}></Picture>
+                                            )
+                                    }         
+                                </ProfilePictureContainer>
+                            
                             <BlankSpace width={65} height={50}></BlankSpace>
                         </InnerBox>
                         {
@@ -304,12 +313,12 @@ export default function UserPageView(props: UserPageProps){
                                     {props.id?"ID: "+props.id:"ID: ?"}
                                 </TitleStyle>
                             </InnerBox>
-                        </OuterBox>
-                        <InnerBox flexDir="column" border={false}>
-                            <TitleStyle>Beats</TitleStyle>
+                        </OuterBox> 
+                        <OuterBox>
+                        <TitleStyle>Beats</TitleStyle>
                             <BeatsContainer>
                                 <FeedPresenter userFeed={true}/>
                             </BeatsContainer>
-                        </InnerBox>    
+                        </OuterBox>   
                     </Frame>)
 }

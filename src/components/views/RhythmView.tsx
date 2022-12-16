@@ -30,7 +30,7 @@ const OuterBox = styled.div`
 display: flex;
 padding: 0px;
 flex-direction: rows;
-justify-content: space-betwenn;
+justify-content: space-between;
 `
 
 export default function RhythmView(props:RhythmViewProps){

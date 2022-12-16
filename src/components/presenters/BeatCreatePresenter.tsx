@@ -30,23 +30,30 @@ const TextBodyTextArea = styled.textarea`
     ${textStyles(TextVariant.BODY)}
     margin:3px;
     height: 100px;
-    width: 100%;
+    width: 104%;
+    border-color:${theme.medium};
+    border-radius:10px;
+    margin:0px;
+    resize:none;
 `
 const TitleStyle = styled.div`
     font-size:18px;
-    margin:0px;
+    margin:10px;
 `
 const OuterBox = styled.div`
   display:flex;
   flex-direction:column;
-  margin:100px;
-  align-items:center;
+  margin:30px;
+  
+  
   @media (max-width: 869px) {
     flex-direction: column;
+    align-items:center;
   }
 
 @media (min-width: 870px) {
     flex-direction: row;
+    justify-content:center;
   }
 `
 const InnerBox = styled.div`
@@ -55,8 +62,8 @@ flex-direction: column;
 align-items: center;
 width: 100%;
 height: fit-content;
+margin: 0px;
 `
-
 
 enum CreationState{
     EditTheme,
@@ -75,25 +82,20 @@ export default function BeatCreatePresenter(){
     const [tracks, setTracks] = useState<Track[]>([])
 
     const [creationState, SetCreationState] = useState(CreationState.Main)
-    const [soundNeedsUpdate, setSoundNeedsUpdate] = useState(false)
     const {audioModel} = useContext(ModelContext)
-
-    function play(){
-        audioModel.play(tracks,bpm)
-    }
 
     function pause(){
         audioModel.stop()
     }
 
-    useEffect(()=>{
-        if(soundNeedsUpdate){
-            if (audioModel.playing){
-                play()
-            }
-            setSoundNeedsUpdate(false)
-        }
-    },[soundNeedsUpdate])
+    // useEffect(()=>{
+    //     if(soundNeedsUpdate){
+    //         if (audioModel.playingID !== null){ //?
+    //             play()
+    //         }
+    //         setSoundNeedsUpdate(false)
+    //     }
+    // },[soundNeedsUpdate])
 
     function handleAddTrack(){
         setTracks([...tracks, newTrack])
@@ -126,6 +128,7 @@ export default function BeatCreatePresenter(){
         case CreationState.Main:
             return <OuterBox>
                         <InnerBox>
+                            <TitleStyle>Preview</TitleStyle>
                             <BeatParent>
                                 <TextTitleInput value={title} onChange={e=>setTitle(e.currentTarget.value)}/>
                                 <BeatVisualisationPresenter
@@ -133,7 +136,7 @@ export default function BeatCreatePresenter(){
                                     bpm={bpm}
                                     colorTheme={theme} //TODO
                                 />
-                                <BlankSpace height={70}></BlankSpace>
+                                <BlankSpace height={0}></BlankSpace>
                             </BeatParent> 
                             <MainButton type={MainButtonType.ChooseColorTheme} scale = {1} text = "pick color theme" onClick={toggleEditTheme}></MainButton>
                         </InnerBox>
