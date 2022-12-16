@@ -258,7 +258,7 @@ export default function UserPageView(props: UserPageProps){
                                         )
                                 }                              
                             </ProfilePictureContainer>
-                            
+                            <BlankSpace width={30}></BlankSpace> 
                         </InnerBox>
                         
                         {
@@ -280,7 +280,8 @@ export default function UserPageView(props: UserPageProps){
                         <p>Username:</p>
                         <TitleStyle>
                         {props.username? "" + props.username: "-"}
-                        </TitleStyle>                   
+                        </TitleStyle>  
+                        <BlankSpace width={30}></BlankSpace>                 
                     </InnerBox>
                     
                     {!props.usernameChangingState?
@@ -295,7 +296,7 @@ export default function UserPageView(props: UserPageProps){
                             :
                             (<MainButton type={MainButtonType.Save} text="Save" scale = {0.25} fontSize={10} width = {130} onClick={saveDescriptionCB}></MainButton>)
                         }   
-                        <p>Description</p>             
+                        <p>Description</p><BlankSpace width={30}></BlankSpace>              
                     </InnerBox>
                     
                     {
