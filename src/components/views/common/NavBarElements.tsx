@@ -33,7 +33,7 @@ export const NavContainer = styled.div<NavBarProps>`
     display: flex;
     justify-content: space-between;
     width: 200%; // why 
-    height: 3.75rem;
+    height: 4rem;
     background-color: ${theme.medium};
     margin-bottom: 2px;
     z-index: 10;

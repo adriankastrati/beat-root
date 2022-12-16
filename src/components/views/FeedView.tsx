@@ -13,7 +13,6 @@ const OuterBox = styled.div`
   margin-left: calc(3vw + 3vh);
   margin-right: calc(3vw + 3vh);
   overflow-x:hidden;
-
 `
 const Feed = styled.div`
     height: 95%;
@@ -27,9 +26,6 @@ const SuspenseDiv = styled.div`
 `
 const FetchDiv = styled.div`
     bottom: 0px;
-`
-const Fixed = styled.div`
-    position: fixed;
 `
 
 interface FeedViewProps{
@@ -65,7 +61,7 @@ export default function FeedView(props:FeedViewProps){
                             colorTheme={beat.theme}
                         />
                         <ButtonsContainer>                                   
-                            <MainButton type = {MainButtonType.Like}  imgScale={0.75} onClick={()=>{likeHandler(beat.firestoreBeatID,beat.likes)}} text = {""+beat.likes} scale = {0.5} frameOff={true} backgroundColor={theme.medium} borderRad={40} width={160} fontSize={18}></MainButton>
+                            <MainButton type = {MainButtonType.Like}  onClick={()=>{likeHandler(beat.firestoreBeatID,beat.likes)}} text = {""+beat.likes} scale = {0.5} frameOff={true} backgroundColor={theme.medium} borderRad={40} width={160} fontSize={18}></MainButton>
                             {/*<MainButton type = {MainButtonType.Copy} onClick={midiCopyHandler} text = "" scale = {1.03}></MainButton>*/}
                         </ButtonsContainer>
                     </BeatParent>
@@ -80,7 +76,7 @@ export default function FeedView(props:FeedViewProps){
             </Feed>
             <Feed>
                 {!props.targetRef? props.beats.slice(props.beats.length - props.itemsOnFetch, props.beats.length + props.itemsOnFetch).map(feedElementCB)
-                    :   <SuspenseDiv>
+                    : <SuspenseDiv>
                             {props.isLoading? "loading": ""}  
                         </SuspenseDiv>
                 }
