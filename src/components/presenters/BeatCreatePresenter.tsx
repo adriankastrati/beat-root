@@ -127,7 +127,6 @@ export default function BeatCreatePresenter(){
             return <OuterBox>
                         <InnerBox>
                             <BeatParent>
-                                <TitleStyle>Title</TitleStyle>
                                 <TextTitleInput value={title} onChange={e=>setTitle(e.currentTarget.value)}/>
                                 <BeatVisualisationPresenter
                                     tracks={tracks}
