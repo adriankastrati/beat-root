@@ -19,7 +19,9 @@ const OuterBox = styled.div`
     background-color: ${theme.light};
     border-radius: 10px;
     align-items:center;
+    width:90%;
     margin-top:10px;
+    margin-bottom:10px;
     padding:10px;
     position: relative;
 `
@@ -59,7 +61,7 @@ export default function TrackView(props:TrackViewProps){
                     <Innerbox>
                     {   //sample
                         props.onChangeSample && props.selectableSamples ? 
-                        <SampleSelect onChange={e=>props.onChangeSample!(e.currentTarget.value)}>
+                        <SampleSelect onChange={e=>props.onChangeSample!(e.currentTarget.value)} value={props.track.sample}>
                             {
                                 props.selectableSamples.map((sample, i) => <option key={i} value={sample}>{sample}</option>)
                             }
@@ -67,7 +69,6 @@ export default function TrackView(props:TrackViewProps){
                         <SampleDiv>{props.track.sample}</SampleDiv>
                     }
 
-                    
 
                     <RhythmView
                         rhythm={props.track.rhythm} 
