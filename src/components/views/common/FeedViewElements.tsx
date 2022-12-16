@@ -6,7 +6,7 @@ display:flex;
 transform: scale(0.85);
 flex-direction:column;
 align-items: center;
-margin:1px;
+margin:0px;
 padding: 30px;
 position: relative;
 width: 300px;
