@@ -1,5 +1,5 @@
 import { Timestamp} from "@firebase/firestore";
-import { useEffect, useState, useRef } from "react"
+import React, { useEffect, useState, useRef } from "react"
 import {useIntersection } from 'react-use'
 import { Beat, redirect } from "../../common"
 import { getQueryBeats, isBeatLikedByCurrentUser, likeBeatAsUser, queryBeatsByUser, unlikeBeatAsUser} from "./../../model/firebase/firebaseBeat"
@@ -20,6 +20,9 @@ const FeedPresenter = (props: feedProps) => {
     const [lastBeatID, setLastBeatID] = useState<undefined|string>(undefined)
     const [shouldFetch, setShouldFetch] = useState(false)
     const [isUser, setUser] = useState<boolean>(false)
+    // for sorted by-state.
+    const [sortedBy, setSortedBy] = useState<string>()
+
     //const fetchCount = useRef(0) // for limiting fetches
     
     const targetRef = useRef<HTMLDivElement | null>(null)
@@ -40,7 +43,8 @@ const FeedPresenter = (props: feedProps) => {
             setShouldFetch(true)
             setIsLoading(true)
         }
-    }, [intersection])
+
+    }, [intersection, sortedBy])
 
 
     const MAX_FETCHES = 4 // maybe use for rate-limiting
@@ -50,6 +54,12 @@ const FeedPresenter = (props: feedProps) => {
             setUser(acc)
         })
     },[])
+
+    enum Filters {
+        "recent" = SortBy.recent,
+        "likes" = SortBy.likes
+    }
+    
 
     useEffect(()=> {
         if(shouldFetch) {
@@ -104,7 +114,9 @@ const FeedPresenter = (props: feedProps) => {
     }
 
     
-
+    function handleFilterChange(e: React.FormEvent<HTMLInputElement>) {
+        setSortedBy(e.currentTarget.value)
+    }
     return (
         <FeedView 
             isUser= {isUser}
@@ -114,6 +126,7 @@ const FeedPresenter = (props: feedProps) => {
             targetRef={targetRef}
             itemsOnFetch= {itemsOnFetch}
             lastItem = {lastBeatID}
+            //setFeedSortedBy = {handleFilterChange}
             onLikeBeat = {likeBeat}
         />
     )

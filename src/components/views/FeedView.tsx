@@ -1,4 +1,4 @@
-import { MutableRefObject } from "react"
+import React, { MutableRefObject } from "react"
 import { Beat, theme } from "../../common"
 import styled from "styled-components";
 import MainButton, { MainButtonType } from "./common/MainButton";
@@ -10,13 +10,12 @@ const OuterBox = styled.div`
   display:flex;
   flex-direction:column;
   align-items:center;
-  margin: 20px;
+  margin: 0px;
   margin-left: calc(3vw + 3vh);
   margin-right: calc(3vw + 3vh);
   overflow-x:hidden;
 `
 const Feed = styled.div`
-    height: 95%;
     display: flex;
     flex-direction: row;   
     flex-wrap: wrap; 
@@ -37,6 +36,7 @@ interface FeedViewProps{
     targetRef: MutableRefObject<HTMLDivElement | null>
     itemsOnFetch: number
     lastItem: string | undefined
+    //setFeedSortedBy: (filter: React.FormEvent) => void
     onLikeBeat: (beatID: string, likes: number) => void
 }
 
@@ -47,10 +47,9 @@ export default function FeedView(props:FeedViewProps){
     function likeHandler(beatID: string, beat:Beat):void {
         props.onLikeBeat(beatID,beat.likes)
     }
-
-    function midiCopyHandler():void {
-        console.log("copied midi(jk)")
-    }
+    //function changeInFeedSortingHandler(filter: React.FormEvent):void {
+    //    props.setFeedSortedBy(filter)
+    //}
 
     function feedElementCB(beat: Beat, key: any){
         return (<OuterBox key={key}>
