@@ -13,7 +13,7 @@ import { BeatParent } from "components/views/common/FeedViewElements";
 import { BlankSpace } from "components/views/common/NavBarElements";
 
 const newTrack:Track = {
-    rhythm: new Rhythm(16),
+    rhythm: new Rhythm(8),
     sample: defaultSample
 }
 
@@ -79,7 +79,7 @@ export default function BeatCreatePresenter(){
     const [description, setDescription] = useState("")
     const [theme, setTheme] = useState<string[]>(["#453C67", "#6D67E4", "#46C2CB", "#F2F7A1"])
     const [bpm, setBpm] = useState(120*4)
-    const [tracks, setTracks] = useState<Track[]>([])
+    const [tracks, setTracks] = useState<Track[]>([newTrack])
 
     const [creationState, SetCreationState] = useState(CreationState.Main)
     const {audioModel} = useContext(ModelContext)

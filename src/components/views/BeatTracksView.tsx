@@ -55,7 +55,11 @@ export default function BeatTracksView(props:BeatTracksViewProps){
                     <TrackView 
                     key={i} 
                     track={track} 
-                    onDelete={props.onRemoveTrack ? ()=>props.onRemoveTrack!(i) : undefined}
+                    onDelete={
+                        props.tracks.length > 1 ? 
+                            (props.onRemoveTrack ? ()=> props.onRemoveTrack!(i): undefined) 
+                            : undefined 
+                    }
                     onChangePulses={ props.onSetTrack ? (pulses:number) => handleChangePulses(i,pulses) : undefined}
                     onChangeSample={ props.onSetTrack ? (sample:Sample) => handleChangeSample(i,sample) : undefined}
                     onChangeSteps={ props.onSetTrack ? (steps:number) => handleChangeSteps(i,steps) : undefined}
