@@ -11,6 +11,7 @@ padding: 12px;
 position: relative;
 width: 300px;
 border: 1px solid ${theme.medium};
+padding-bottom:80px;
 border-radius:20px;
 `;
 interface UserTitleProps{
@@ -47,4 +48,7 @@ export const ButtonsContainer = styled.div`
     display: flex;
     flex-direction: row;
     padding: 10px;
+    position: fixed;
+    left: 5px;
+    bottom: 5px;
 `;
