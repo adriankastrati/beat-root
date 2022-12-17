@@ -248,8 +248,8 @@ export default function UserPageView(props: UserPageProps){
                         <InnerBox flexDir="row">
                             {
                                 props.profilePicChangingState?
-                                <MainButton type = {MainButtonType.Save} scale = {0.25} fontSize={10} onClick={updateProfilePictureCB} text="Save" width={130}></MainButton>
-                                :<MainButton type = {MainButtonType.Edit} scale = {0.25} fontSize={10} onClick={profileSelectBoxCB} text="Edit" width={130}></MainButton>
+                                <MainButton type = {MainButtonType.Save} scale = {0.25} fontSize={10} onClick={updateProfilePictureCB} text="" width={130}></MainButton>
+                                :<MainButton type = {MainButtonType.Edit} scale = {0.25} fontSize={10} onClick={profileSelectBoxCB} text="" width={130}></MainButton>
                             }
                             <ProfilePictureContainer>                              
                                 {
@@ -273,9 +273,9 @@ export default function UserPageView(props: UserPageProps){
                     <InnerBox flexDir="row">
                         {
                             props.usernameChangingState?
-                            (<MainButton type = {MainButtonType.Edit} text="Edit" scale = {0.25} fontSize={10} width={130} onClick={toggleUsernameCB} ></MainButton>)
+                            (<MainButton type = {MainButtonType.Edit} text="" scale = {0.25} fontSize={10} width={130} onClick={toggleUsernameCB} ></MainButton>)
                             :
-                            (<MainButton type = {MainButtonType.Save} text="Save" scale = {0.25} fontSize={10} width={130} onClick={updateProfileNameCB}></MainButton>)
+                            (<MainButton type = {MainButtonType.Save} text="" scale = {0.25} fontSize={10} width={130} onClick={updateProfileNameCB}></MainButton>)
                         } 
                         <p>Username:</p>
                         <TitleStyle>
@@ -292,9 +292,9 @@ export default function UserPageView(props: UserPageProps){
                             (null)}
                     <InnerBox flexDir="row">  
                         {
-                            props.descriptionChangingState?(<MainButton type={MainButtonType.Edit} text="Edit" scale = {0.25} fontSize={10} width = {130} onClick={toggleDescriptionCB}></MainButton>)
+                            props.descriptionChangingState?(<MainButton type={MainButtonType.Edit} text="" scale = {0.25} fontSize={10} width = {130} onClick={toggleDescriptionCB}></MainButton>)
                             :
-                            (<MainButton type={MainButtonType.Save} text="Save" scale = {0.25} fontSize={10} width = {130} onClick={saveDescriptionCB}></MainButton>)
+                            (<MainButton type={MainButtonType.Save} text="" scale = {0.25} fontSize={10} width = {130} onClick={saveDescriptionCB}></MainButton>)
                         }   
                         <p>Description:</p><BlankSpace width={30}></BlankSpace>              
                     </InnerBox>
