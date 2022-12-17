@@ -29,8 +29,8 @@ const VisCanvas = styled.canvas`
 const Fixed = styled.div`
 display:flex;
 position: absolute;
-bottom: -14px;
-right: 0px;
+bottom: -65px;
+right: 20px;
 `
 
 enum MarkerType{

@@ -44,10 +44,9 @@ padding: 00px;
 border: 1px solid ${theme.medium}
 `;
 export const ButtonsContainer = styled.div`
-    display: flex;
-    position:absolute;
-    flex-direction: row;
-    bottom:5px;
+    width: 100%;
+    height: 100%;
+    position:sticky;
     left:5px;
     padding: 10px;
 `;
