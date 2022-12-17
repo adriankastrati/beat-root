@@ -27,10 +27,11 @@ const VisCanvas = styled.canvas`
 
 `
 const Fixed = styled.div`
-display:flex;
-position: absolute;
-bottom: -65px;
-right: 0px;
+position:absolute;
+right:-5px;
+bottom:-75px;
+padding: 10px;
+z-index: 100;
 `
 
 enum MarkerType{
@@ -242,5 +243,6 @@ export default function BeatVisualisationPresenter(props:BeatVisualisationPresen
                         )
                     }
                 </Fixed>
+                
             </OuterBox>
 }
