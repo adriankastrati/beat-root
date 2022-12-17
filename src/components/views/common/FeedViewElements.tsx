@@ -14,6 +14,7 @@ position: relative;
 width: 300px;
 border: 1px solid ${theme.medium};
 border-radius:20px;
+height: 430px;
 `;
 interface UserTitleProps{
     offset:number
