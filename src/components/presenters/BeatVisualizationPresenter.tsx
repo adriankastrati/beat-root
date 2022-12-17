@@ -30,7 +30,7 @@ const Fixed = styled.div`
 display:flex;
 position: absolute;
 bottom: -65px;
-right: 20px;
+right: 0px;
 `
 
 enum MarkerType{

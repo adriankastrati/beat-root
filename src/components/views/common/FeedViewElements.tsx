@@ -7,7 +7,7 @@ transform: scale(0.85);
 flex-direction:column;
 align-items: center;
 margin:0px;
-padding-top: 30px;
+padding-top: 50px;
 padding-left: 30px;
 padding-right: 30px;
 position: relative;
