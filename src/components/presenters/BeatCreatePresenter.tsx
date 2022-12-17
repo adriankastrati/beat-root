@@ -128,7 +128,6 @@ export default function BeatCreatePresenter(){
         case CreationState.Main:
             return <OuterBox>
                         <InnerBox>
-                        <BlankSpace height={5}></BlankSpace>
                             <BeatParent>
                                 <TextTitleInput value={title} onChange={e=>setTitle(e.currentTarget.value)}/>
                                 <BeatVisualisationPresenter
@@ -136,7 +135,7 @@ export default function BeatCreatePresenter(){
                                     bpm={bpm}
                                     colorTheme={theme} //TODO
                                 />
-                                <BlankSpace height={0}></BlankSpace>
+
                             </BeatParent> 
                             <MainButton type={MainButtonType.ChooseColorTheme} scale = {1} text = "pick color theme" onClick={toggleEditTheme}></MainButton>
                             <div>
