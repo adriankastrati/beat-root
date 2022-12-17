@@ -5,6 +5,7 @@ import MainButton, { MainButtonType } from "./common/MainButton";
 import { BeatParent, ButtonsContainer, ThemedCard, UserTitle, BeatTitle } from "./common/FeedViewElements";
 import BeatVisualisationPresenter from "../presenters/BeatVisualizationPresenter";
 import { Link } from "react-router-dom";
+import { BlankSpace } from "./common/NavBarElements";
 
 const OuterBox = styled.div`
   display:flex;
@@ -59,6 +60,7 @@ export default function FeedView(props:FeedViewProps){
         return (<OuterBox key={key}>
                     
                     <BeatParent> 
+                        <BlankSpace height={30}></BlankSpace>
                         <BeatTitle>{beat.title}</BeatTitle>
                         <UserTitle offset={userNamePlaceholder.length}>{userNamePlaceholder}</UserTitle>
                         <BeatVisualisationPresenter

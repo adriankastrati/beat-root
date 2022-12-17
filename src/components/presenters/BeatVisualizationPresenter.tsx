@@ -28,7 +28,7 @@ const VisCanvas = styled.canvas`
 `
 const Fixed = styled.div`
 position:absolute;
-right:-5px;
+right:-10px;
 bottom:-75px;
 padding: 10px;
 z-index: 100;
