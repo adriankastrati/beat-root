@@ -16,7 +16,7 @@ const OuterBox = styled.div`
   align-items:center;
   margin-top: 5px;
   position:relative;
-  padding: 20px;
+  padding: 0px;
 `
 
 const CanvasWrapper = styled.div`
