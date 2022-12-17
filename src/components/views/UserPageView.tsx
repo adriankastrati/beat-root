@@ -258,7 +258,7 @@ export default function UserPageView(props: UserPageProps){
                                         )
                                 }                              
                             </ProfilePictureContainer>
-                            <BlankSpace width={30}></BlankSpace> 
+                            <BlankSpace width={30}></BlankSpace>
                         </InnerBox>
                         
                         {
@@ -296,7 +296,7 @@ export default function UserPageView(props: UserPageProps){
                             :
                             (<MainButton type={MainButtonType.Save} text="Save" scale = {0.25} fontSize={10} width = {130} onClick={saveDescriptionCB}></MainButton>)
                         }   
-                        <p>Description</p><BlankSpace width={30}></BlankSpace>              
+                        <p>Description:</p><BlankSpace width={30}></BlankSpace>              
                     </InnerBox>
                     
                     {

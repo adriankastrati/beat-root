@@ -7,7 +7,9 @@ transform: scale(0.85);
 flex-direction:column;
 align-items: center;
 margin:0px;
-padding: 30px;
+padding-top: 50px;
+padding-left: 30px;
+padding-right: 30px;
 position: relative;
 width: 300px;
 border: 1px solid ${theme.medium};
@@ -44,10 +46,9 @@ padding: 00px;
 border: 1px solid ${theme.medium}
 `;
 export const ButtonsContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    position: fixed;
-    bottom: 5px;
-    left: 0px;
+    width: 100%;
+    height: 100%;
+    position:sticky;
+    left:5px;
     padding: 10px;
 `;

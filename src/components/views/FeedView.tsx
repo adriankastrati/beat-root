@@ -57,6 +57,7 @@ export default function FeedView(props:FeedViewProps){
 
     function feedElementCB(beat: Beat, key: any){
         return (<OuterBox key={key}>
+                    
                     <BeatParent> 
                         <BeatTitle>{beat.title}</BeatTitle>
                         <UserTitle offset={userNamePlaceholder.length}>{userNamePlaceholder}</UserTitle>
