@@ -20,7 +20,7 @@ const AboutPage = () => {
                 <Paragraph>
                     <p>
                         *the app* builds on an idea discovered in 2004 by Godfried Toussaint - 
-                        using the euklidean algorithm to generate "silences" and "pulses" to 
+                        using the euclidean algorithm to generate "silences" and "pulses" to 
                         construct rhythms. By defining a number of *steps* to distribute a number
                         of *pulses* over a unique and intresting rhythm can be aquired. In our app you 
                         can combine multiple rhythms into a beat, share it on our platform, and explore the creations of others. 
@@ -37,7 +37,7 @@ const AboutPage = () => {
             <RowItems></RowItems>
             <h2>CREATING A BEAT</h2>
 
-            to create a beat, you first have to login (or create an accout if you dont have one). 
+            To create a beat, you first have to login (or create an account if you don't have one). 
             When logged in "create" will appear in as an option in the app menu (top right) - this is also where
             the login page can be found.
 

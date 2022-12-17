@@ -75,7 +75,7 @@ function ColorBoxView(props: ColorBoxViewProps) {
                         {props.loading? <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Rotating_earth_%28large%29.gif/100px-Rotating_earth_%28large%29.gif"></img>:""}
                     </SuspenseDiv>
                   }
-                  <FetchDiv ref={props.targetRef}>ref for scroll fetch</FetchDiv>
+                  <FetchDiv ref={props.targetRef}>  {/*ref for scroll fetch*/}</FetchDiv>
               </OuterBox>
               
                 <MainButton type={MainButtonType.Plain} text="continue" scale={1} width={100} 

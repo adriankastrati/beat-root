@@ -3,14 +3,14 @@ import styled from "styled-components";
 import MainButton, { MainButtonType } from "./common/MainButton";
 import { textStyles, theme } from "../../common";
 
-const OuterBox = styled.div`
+export const OuterBox = styled.div`
   display:flex;
   flex-direction:column;
   margin:40px;
   border: 1px solid ${theme.medium};
   align-items: center;
 `
-const Input = styled.input`
+export const Input = styled.input`
   width:100%;
   @media (min-width: 475px) {
     width: 350px;
@@ -19,26 +19,26 @@ const Input = styled.input`
     width: 120px;
   }
 `
-const InnerBox = styled.div`
+export const InnerBox = styled.div`
   display:flex;
   flex-direction:column;
   margin:2px;
   padding: 5px;
   align-items: center;
 `
-const InputBox = styled.div`
+export const InputBox = styled.div`
   display:flex;
   flex-direction:column;
   margin:2px;
   padding: 5px;
 `
 
-const TitleStyle = styled.div`
+export const TitleStyle = styled.div`
   font-size:18px;
   margin:10px;
   text-align: center;
 `
-const ResultStyle = styled.div<LoginProps>`
+export const ResultStyle = styled.div<LoginProps>`
   font-size:16px;
   margin:10px;
   text-align: center;

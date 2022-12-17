@@ -21,7 +21,6 @@ function AccountPresenter(props:RouteComponentProps){
   }
   
   async function logInAttempt(){
-    console.log(email)
     if (email && password){
       try{
         let error = await loginEmailPasswordAccount(email,password);
@@ -29,7 +28,7 @@ function AccountPresenter(props:RouteComponentProps){
           setAccountErrorMessage(error.errorMessage)
           console.log(error.errorMessage )
           setWelcomeMessage(false)
-          if(error.errorMessage === "wrong password or invalid email"){
+          if(error.errorMessage === "Incorrect password"){
             setResetPasswordPrompt(true)
           }
         }else{
@@ -44,22 +43,23 @@ function AccountPresenter(props:RouteComponentProps){
   }
 
   async function createAccountAttempt(){
-    console.log(email,password)
-    if (email && password){
-     try{ 
-      let error = await createEmailPasswordAccount(email,"", password)
-      if(error){
-        setAccountErrorMessage(error.errorMessage)
-        setWelcomeMessage(false)
-      }else{
-        setAccountErrorMessage("Welcome to beat root!")
-        setWelcomeMessage(true)
-        redirect(props,'/play/explore',1000);
-      }
-    }catch(e){
-        console.log(e)
-      }
-    }
+    redirect(props,'/create-account',500);
+
+    // if (email && password){
+    //  try{ 
+    //   let error = await createEmailPasswordAccount(email,"", password)
+    //   if(error){
+    //     setAccountErrorMessage(error.errorMessage)
+    //     setWelcomeMessage(false)
+    //   }else{
+    //     setAccountErrorMessage("Welcome to beat root!")
+    //     setWelcomeMessage(true)
+    //     redirect(props,'/play/explore',1000);
+    //   }
+    // }catch(e){
+    //     console.log(e)
+    //   }
+    // }
   }
 
   function sendPasswordResetMail(){

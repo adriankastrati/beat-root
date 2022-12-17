@@ -10,6 +10,7 @@ import UserPage from "./pages/UserPage";
 import AboutPage from "pages/AboutPage";
 import CreatePage from "pages/CreatePage";
 import ExplorePage from "pages/ExplorePage";
+import CreateAccountPage from "pages/CreateAccountPage"
 
 const MainDiv = styled.div/*<MainProps>*/`
     
@@ -46,6 +47,10 @@ export default function App(){
                 </Route>
                 <Route exact path="/about">
                     <AboutPage/>
+                </Route>
+
+                <Route exact path="/create-account">
+                    <CreateAccountPage/>
                 </Route>
                 
                 <Route path="/play">

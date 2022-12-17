@@ -65,14 +65,14 @@ export default function FeedView(props:FeedViewProps){
                             tracks={beat.tracks}
                             colorTheme={beat.theme}
                         />
-                        <ButtonsContainer>                                   
-                            {props.isUser?<MainButton type = {MainButtonType.Like}  onClick={()=>{likeHandler(beat.firestoreBeatID,beat)}} text = {""+beat.likes} scale = {0.5} frameOff={true} backgroundColor={theme.medium} borderRad={40} width={160} fontSize={18}></MainButton>:
+                        {/* <ButtonsContainer>                                   
+                            props.isUser?<MainButton type = {MainButtonType.Like}  onClick={()=>{likeHandler(beat.firestoreBeatID,beat)}} text = {""+beat.likes} scale = {0.5} frameOff={true} backgroundColor={theme.medium} borderRad={40} width={160} fontSize={18}></MainButton>:
                             <Link style={{ textDecoration: 'none' }} to="../sign-in">
                                  <MainButton type = {MainButtonType.Like}  onClick={()=>{likeHandler(beat.firestoreBeatID,beat)}} text = {""+beat.likes} scale = {0.5} frameOff={true} backgroundColor={theme.medium} borderRad={40} width={160} fontSize={18}></MainButton>
                             </Link>
-                           }
-                            {/*<MainButton type = {MainButtonType.Copy} onClick={midiCopyHandler} text = "" scale = {1.03}></MainButton>*/}
-                        </ButtonsContainer>
+                           
+                            <MainButton type = {MainButtonType.Copy} onClick={midiCopyHandler} text = "" scale = {1.03}></MainButton>
+                        </ButtonsContainer> */}
                     </BeatParent>
                 </OuterBox>
         )
@@ -91,7 +91,8 @@ export default function FeedView(props:FeedViewProps){
                 }
             </Feed>
             <FetchDiv ref={ props.targetRef }>
-                End of feed
+
+                {/*add end of feed*/}
             </FetchDiv>
         </OuterBox>
     )

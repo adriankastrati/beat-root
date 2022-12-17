@@ -178,7 +178,7 @@ export default function BeatCreatePresenter(){
                                                     tracks,
                                                     theme,
                                                 }
-                                            ).then(()=>{history.push("/home")})
+                                            ).then(()=>{history.push("/play/explore")})
 
                                             SetCreationState(CreationState.Saving)
                                             pause()
