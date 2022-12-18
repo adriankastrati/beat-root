@@ -36,15 +36,15 @@ const AboutPage = () => {
             </StandardContainer>
             <RowItems></RowItems>
             <h2>CREATING A BEAT</h2>
-
+            <Paragraph>
             To create a beat, you first have to login (or create an account if you don't have one). 
             When logged in "create" will appear in as an option in the app menu (top right) - this is also where
             the login page can be found.
-
+            </Paragraph>
             <div/>
             <br/>
             <RowItemsTwo>
-                <Li>1 - set number of silences</Li>
+                <Li>1 - set number of steps</Li>
                 <Li>2 - set pulses</Li>
             </RowItemsTwo>
             <ImageContainer src="https://firebasestorage.googleapis.com/v0/b/beat-root-a8d72.appspot.com/o/about%2FCompletesamplesStepsPulses.png?alt=media&token=0b0d8171-60fe-43c8-a683-5e7ea9b7229a"></ImageContainer>
