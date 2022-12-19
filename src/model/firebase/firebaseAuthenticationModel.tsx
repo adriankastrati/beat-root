@@ -178,22 +178,58 @@ async function setDescription(newDescription:string): Promise<boolean>{
     })
 }
 
-async function switchUsername(newUsername: string):Promise<undefined|boolean>{
-    
+/*
+async function switchUsername(newUsername: string):Promise<void|FirebaseError>{
+    getCurrentUserID().then(async (userID)=>{
+        if (!userID){
+            return 
+        }
+        
+        getUserInformation(userID).then(async (info)=>{
+        
+            runTransaction(firestore, async (transaction)=>{
+
+                let userREF = doc(firestore,"users/", userID)
+                transaction.update(userREF, {
+                    username: newUsername
+                });
+
+                let userListREF = doc(firestore,"profileConditions/usernames")
+                transaction.update(userListREF, {
+                    takenUsernames: arrayUnion(newUsername)
+                });
+
+                transaction.update(userListREF, {
+                    takenUsernames: arrayRemove(info.username)
+                });
+            }).catch(e=>{return new firebaseError("failed-username-change")})
+            
+        })
+    })
+} */
+
+async function switchUsername(newUsername: string):Promise<boolean>{
+    console.log(newUsername)
     let userListREF = doc(firestore,"profileConditions/usernames")
+    let returnValue = false
 
     return getDoc(userListREF).then(async usernames=>{
         if(usernames.exists()){
-            if(Array.from(usernames.data().takenUsernames as any).includes(newUsername))
-                return false
-        }else{
+            console.log(Array.from(usernames.data().takenUsernames as any)) 
+            if(Array.from(usernames.data().takenUsernames as any).includes(newUsername)){
+                returnValue = false   
+                return             
+            }
+            console.log(returnValue)
             return getCurrentUserID().then(async (userID)=>{
                 if (!userID){
-                    return false
+                    returnValue = false
+                    console.log(returnValue)
+                    return
                 }
-        
+
                 return getUserInformation(userID).then(async (info)=>{
-                    return runTransaction(firestore, async (transaction)=>{
+                    runTransaction(firestore, async (transaction)=>{
         
                         let userREF = doc(firestore,"users/", userID)
                         transaction.update(userREF, {
@@ -207,12 +243,19 @@ async function switchUsername(newUsername: string):Promise<undefined|boolean>{
                         transaction.update(userListREF, {
                             takenUsernames: arrayRemove(info.username)
                         });
-
-                    }).catch(e=>{return false}).then(()=>{return true})
+                    }).catch(()=>{returnValue = false})
+                }).then(()=>{
+                    returnValue = true
+                }).catch(e=>{
+                    returnValue = false
                 })
+                
             })
+
         }
 
+    }).then(()=>{
+        return returnValue
     })
     
 }

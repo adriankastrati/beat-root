@@ -20,7 +20,6 @@ export default function UserPagePresenter(){
           const imagePromise: Promise<string[]> = getProfilePictures();
           const images: string[] = await imagePromise.then((value) => value);
           setLoadedImages(images);
-          setImageLoadingDone(true);
         }
     
         getImages();
@@ -45,13 +44,14 @@ export default function UserPagePresenter(){
         })
     }
 
-    function changeUsername(newUsername: string){
+    async function changeUsername(newUsername: string){
         
         if(userInformation){
-            switchUsername(newUsername)
-            .catch(()=>{
+            let b = switchUsername(newUsername).catch(()=>{
                 setProfileChangeMessage("Failed, try again")
             })
+            console.log(await b)
+
         }else{
             setProfileChangeMessage("Not logged in")
         }
@@ -77,7 +77,11 @@ export default function UserPagePresenter(){
         })
     }
     function refreshCB(){
-        refresh(new Object)
+        setTimeout(( )=>{
+            fetchUser();
+            refresh(new Object)},
+        100)
+        
     }
 
     return<div>
@@ -100,6 +104,7 @@ export default function UserPagePresenter(){
             refresh = {refreshCB}
             usernameChangingState={usernameChangingState}
             imageLoadingDone = {imageLoadingDone}
+            setImageLoadingDone = {setImageLoadingDone}
             
         />
     }
