@@ -326,7 +326,7 @@ export default function UserPageView(props: UserPageProps){
                     {
                         props.descriptionChangingState?
                             (<InnerBox flexDir="column">
-                                <DescriptionBox width="100%" height="100px"><p>{props.description?props.description:"Nothing here!"}</p></DescriptionBox>
+                                <DescriptionBox width="100%" height="100%"><p>{props.description?props.description:"Nothing here!"}</p></DescriptionBox>
                             </InnerBox>)
                             :
                             (<InnerBox flexDir="column">
