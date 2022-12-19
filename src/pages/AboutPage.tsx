@@ -19,27 +19,23 @@ const AboutPage = () => {
                 <h1>Euclidean rhythms</h1>
                 <TextSection>
                     <p>
-                        *the app* builds on an idea discovered in 2004 by Godfried Toussaint - 
-                        using the euclidean algorithm to generate "silences" and "pulses" to 
-                        construct rhythms. By defining a number of *steps* to distribute a number
-                        of *pulses* over a unique and intresting rhythm can be aquired. In our app you 
-                        can combine multiple rhythms into a beat, share it on our platform, and explore the creations of others. 
-                    </p>  
-                    <p>
-                        For those who want to read more about Euclidean Rhythms,
-                        check out Godfried's <a href="http://cgm.cs.mcgill.ca/~godfried/rhythm-and-mathematics.html">website</a> 
+                    This app lets you create and share your own beats using euclidean rhythms. 
+                    Euclidean rhythms are rhythmic patterns based on the euclidean algorithm, 
+                    a mathematical method. Euclidean rhythms are known for their variety and can be found 
+                    in various cultures and historical contexts. The main components of a euclidean 
+                    rhythm are steps and pulses. Steps refer to the number of units until the rhythm 
+                    repeats, while pulses represent the number of "sound triggers" distributed within 
+                    the steps.
                     </p>
-                    {/* <p>
-                       *Account "guide" here or at the bottom?*
-                    </p> */}
                 </TextSection>
             </StandardContainer>
             <RowItems></RowItems>
             <h2>CREATING A BEAT</h2>
             <TextSection>
-            To create a beat, you first have to login (or create an account if you don't have one). 
-            When logged in "create" will appear in as an option in the app menu (top right) - this is also where
-            the login page can be found.
+            To create a beat, you need to log in to the app. 
+            If you don't have an account. 
+            The "create" option is available in the app menu (top right) 
+            once you are logged in.
             </TextSection>
             <div/>
             <br/>
