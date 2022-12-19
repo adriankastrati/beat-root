@@ -34,7 +34,7 @@ height: ${props=>props.height};
 text-align: center;
   margin:5px;
   padding: 10px;
-  border: 1px solid ${theme.light}
+  border: 1px solid ${theme.light};
 `
 interface SizeProps{
     width:string
@@ -285,7 +285,7 @@ export default function UserPageView(props: UserPageProps){
                                                            
                                                             <SelectablePicturesContainer> 
                                                             
-                                                                {props.loadedImages.map(img => (<GetImageCB img={img} />))}
+                                                                {props.loadedImages.map((img, i) => (<GetImageCB key={i} img={img} />))}
                                                             </SelectablePicturesContainer>
                                                         </InnerBox>):
                                                         ""
