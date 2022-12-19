@@ -76,7 +76,11 @@ export default function UserPagePresenter(){
         })
     }
     function refreshCB(){
-        refresh(new Object)
+        setTimeout(( )=>{
+            fetchUser();
+            refresh(new Object)},
+        100)
+        
     }
 
     return<div>

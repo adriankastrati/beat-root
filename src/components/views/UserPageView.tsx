@@ -211,9 +211,6 @@ export default function UserPageView(props: UserPageProps){
         setSelectedImage(img)
     }
     function updateProfileNameCB(){
-        if(!nameBoxContent){
-            return;
-        }
         let error = false;
         if(nameBoxContent.length < 5){
             displayErrorMsg('Too few characters!')
