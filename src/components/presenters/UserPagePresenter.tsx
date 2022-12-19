@@ -76,7 +76,7 @@ export default function UserPagePresenter(){
         })
     }
     function refreshCB(){
-        setTimeout(( )=>{
+        setTimeout(( )=>{ ///it should instead wait for a promise, for whatever info to have finished updated
             fetchUser();
             refresh(new Object)},
         100)

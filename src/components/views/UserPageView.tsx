@@ -160,7 +160,7 @@ interface UserPageProps{
     onUpdateProfilePicture: (profilePicture: string)=> void
     refresh:()=>void
 }
-let nameInstructions = 'Choose a name between 5-20 characters'
+let nameInstructions = 'Choose a name between 3-20 characters'
 export default function UserPageView(props: UserPageProps){
     const [selectedImage, setSelectedImage] = React.useState<string>('');
     const [nameBoxContent, setNameBoxContent] = React.useState<string>('')
@@ -212,7 +212,7 @@ export default function UserPageView(props: UserPageProps){
     }
     function updateProfileNameCB(){
         let error = false;
-        if(nameBoxContent.length < 5){
+        if(nameBoxContent.length < 3){
             displayErrorMsg('Too few characters!')
             error = true;
         }else if (nameBoxContent.length>20){
