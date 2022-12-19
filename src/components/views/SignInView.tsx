@@ -19,9 +19,12 @@ export const Input = styled.input`
     width: 120px;
   }
 `
-export const InnerBox = styled.div`
+interface InnerBoxProps{
+  flexDir?:string
+}
+export const InnerBox = styled.div<InnerBoxProps>`
   display:flex;
-  flex-direction:column;
+  flex-direction:${props=> props.flexDir?props.flexDir:"column"};
   margin:2px;
   padding: 5px;
   align-items: center;

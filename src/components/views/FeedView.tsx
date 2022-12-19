@@ -7,14 +7,20 @@ import BeatVisualisationPresenter from "../presenters/BeatVisualizationPresenter
 import { Link } from "react-router-dom";
 import { BlankSpace } from "./common/NavBarElements";
 import { FeedItem } from "components/presenters/FeedPresenter";
+import { InnerBox } from "./SignInView";
 
 const Select = styled.select`
+    display: flex;
+    flex-direction: column;
+    align-items-center;
     direction: ltr;
+    padding: 3px;
     border-radius: 5px;
-    border:none;
+    border: 1px solid ${theme.medium};
     font-style:italic;
     width: 115px;
     font-size:17px;
+
 `
 
 const Refresh = styled.button`
@@ -99,24 +105,26 @@ export default function FeedView(props:FeedViewProps){
 
     return (
         <OuterBox>
-
-            <Select onChange={e=>props.setFeedSortedBy(e.target.value)} value={props.feedSortedBy}>
-                <option value="recent">recent</option>            
-                <option value="likes">most liked</option>            
+            <InnerBox flexDir="row">
+                {props.onRefresh?
+                <MainButton type={MainButtonType.Refresh} onClick={props.onRefresh} scale={0.6}></MainButton>
+                :undefined
+                }
+                <BlankSpace width={15}></BlankSpace>
+                <Select onChange={e=>props.setFeedSortedBy(e.target.value)} value={props.feedSortedBy}>
+                    <option value="recent">recent</option>            
+                    <option value="likes">most liked</option>            
+                    
+                </Select>
                 
-            </Select>
-            {props.onRefresh?
-            <Refresh onClick={props.onRefresh}> refresh</Refresh>
-            :undefined
-            }
-
+            </InnerBox>
             <Feed>
                 {props.beats.map(feedElementCB)}
             </Feed>
             <Feed>
                 {!props.targetRef? props.beats.slice(props.beats.length - props.itemsOnFetch, props.beats.length + props.itemsOnFetch).map(feedElementCB)
                     :<SuspenseDiv>
-                            {props.isLoading? <Image src="https://i.ibb.co/P9L7QQ6/Pulse-1s-200px.gif"></Image>: ""}  
+                            {props.isLoading? <Image src="https://firebasestorage.googleapis.com/v0/b/beat-root-a8d72.appspot.com/o/about%2FSpin-1.8s-190px.gif?alt=media&token=3b89dc77-08ec-43cc-a2ca-129904e1f740"></Image>: ""}  
                     </SuspenseDiv>
                 }
             </Feed>

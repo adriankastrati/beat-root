@@ -10,6 +10,7 @@ export default function UserPagePresenter(){
     const [descriptionChangingState, setDescriptionChangingState] = useState<boolean>(true)
     const [usernameChangingState, setUsernameChangingState] = useState<boolean>(true)
     const [loadedImages, setLoadedImages] =  useState<string[]>([]);
+    const [imageLoadingDone, setImageLoadingDone] = useState<boolean>(false)
     const [, refresh] = useState(({}))
 
     useEffect(()=>{refreshCB()}, [])
@@ -19,6 +20,7 @@ export default function UserPagePresenter(){
           const imagePromise: Promise<string[]> = getProfilePictures();
           const images: string[] = await imagePromise.then((value) => value);
           setLoadedImages(images);
+          setImageLoadingDone(true);
         }
     
         getImages();
@@ -63,6 +65,7 @@ export default function UserPagePresenter(){
                 setProfileChangeMessage("Failed")
             }
         })
+
     }
 
     async function changePicture(pictureLink: string){
@@ -96,6 +99,7 @@ export default function UserPagePresenter(){
             setUsernameChangingState={setUsernameChangingState}
             refresh = {refreshCB}
             usernameChangingState={usernameChangingState}
+            imageLoadingDone = {imageLoadingDone}
             
         />
     }
