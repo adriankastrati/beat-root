@@ -1,5 +1,5 @@
 import UserPageView from "../views/UserPageView";
-import { getCurrentUserID, getProfilePictures, getUserInformation, isUserLoggedIn, setProfilePicture, setUsername, setDescription, UserInformation, removeUsername } from "../../model/firebase/firebaseAuthenticationModel";
+import { getCurrentUserID, getProfilePictures, getUserInformation, isUserLoggedIn, setProfilePicture, setUsername, setDescription, UserInformation, removeUsername, switchUsername } from "../../model/firebase/firebaseAuthenticationModel";
 import { useEffect, useState } from "react";
 import { userInfo } from "os";
 
@@ -13,6 +13,7 @@ export default function UserPagePresenter(){
     const [, refresh] = useState(({}))
 
     useEffect(()=>{refreshCB()}, [])
+
     useEffect(() => {
         async function getImages() {
           const imagePromise: Promise<string[]> = getProfilePictures();
@@ -21,7 +22,10 @@ export default function UserPagePresenter(){
         }
     
         getImages();
+        fetchUser()
+
       }, []);
+
     function fetchUser(){
         isUserLoggedIn().then(log =>{
             if(log){
@@ -40,12 +44,10 @@ export default function UserPagePresenter(){
     }
 
     function changeUsername(newUsername: string){
+        
         if(userInformation){
-            return removeUsername(userInformation.username).then(acc=>{
-                if (acc){
-                    setUsername(newUsername)
-                }
-            }).catch(()=>{
+            switchUsername(newUsername)
+            .catch(()=>{
                 setProfileChangeMessage("Failed, try again")
             })
         }else{
@@ -72,7 +74,6 @@ export default function UserPagePresenter(){
         })
     }
     function refreshCB(){
-        fetchUser()
         refresh(new Object)
     }
 
