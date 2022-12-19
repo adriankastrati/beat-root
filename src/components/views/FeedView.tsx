@@ -1,5 +1,5 @@
 import React, { MutableRefObject } from "react"
-import { Beat, theme } from "../../common"
+import { Beat, textStyles, TextVariant, theme } from "../../common"
 import styled from "styled-components";
 import MainButton, { MainButtonType } from "./common/MainButton";
 import { BeatParent, ButtonsContainer, ThemedCard, UserTitle, BeatTitle } from "./common/FeedViewElements";
@@ -7,6 +7,21 @@ import BeatVisualisationPresenter from "../presenters/BeatVisualizationPresenter
 import { Link } from "react-router-dom";
 import { BlankSpace } from "./common/NavBarElements";
 import { FeedItem } from "components/presenters/FeedPresenter";
+
+const Select = styled.select`
+    direction: ltr;
+    border-radius: 5px;
+    border:none;
+    font-style:italic;
+    width: 100px;
+    font-size:17px;
+
+`
+
+const Refresh = styled.button`
+
+`
+
 
 const OuterBox = styled.div`
   display:flex;
@@ -42,28 +57,26 @@ interface FeedViewProps{
     targetRef: MutableRefObject<HTMLDivElement | null>
     itemsOnFetch: number
     lastItem: string | undefined
-    //setFeedSortedBy: (filter: React.FormEvent) => void
+    setFeedSortedBy: (filter: string) => void
+    feedSortedBy: string
     onLikeBeat: (beatID: string, likes: number) => void
+    onRefresh: ()=> void
 }
 
 
 export default function FeedView(props:FeedViewProps){
-    let userNamePlaceholder = "*username*"
-    // need firebase functions for this
+
     function likeHandler(beatID: string, beat:Beat):void {
         props.onLikeBeat(beatID,beat.likes)
     }
-    //function changeInFeedSortingHandler(filter: React.FormEvent):void {
-    //    props.setFeedSortedBy(filter)
-    //}
-
+    
     function feedElementCB(beat: FeedItem, key: any){
         return (<OuterBox key={key}>
                     
                     <BeatParent> 
                         <BlankSpace height={30}></BlankSpace>
                         <BeatTitle>{beat.beat.title}</BeatTitle>
-                        <UserTitle offset={userNamePlaceholder.length}>{beat.composerInformation.username}</UserTitle>
+                        <UserTitle offset={10}>{beat.composerInformation.username}</UserTitle>
                         <BeatVisualisationPresenter
                             bpm={beat.beat.bpm}
                             tracks={beat.beat.tracks}
@@ -87,6 +100,14 @@ export default function FeedView(props:FeedViewProps){
 
     return (
         <OuterBox>
+
+            <Select onChange={e=>props.setFeedSortedBy(e.target.value)} value={props.feedSortedBy}>
+                <option value="recent">recent</option>            
+                <option value="likes">most likes</option>            
+                
+            </Select>
+            <Refresh onClick={props.onRefresh}> refresh</Refresh>
+
 
             <Feed>
                 {props.beats.map(feedElementCB)}

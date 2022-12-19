@@ -135,21 +135,16 @@ async function getQueryBeats(howMany:number, startTimeStamp: Timestamp, sort: So
         if (queryBeats){
             return getBeats(queryBeats).then((beats)=>{
                 
-                if (beats.length !== 0){
-                    console.log(beats[beats.length-1].title)
-                }
                 return beats   
             
             })
         }
 
     }else if(!startBeatID){
-        //console.log("i should only be printed once, multiple fetches without lastBeatID")
         let queryBeats = getQueryWithSort(sort, howMany,startTimeStamp,beatRef)
         
         if (queryBeats){
             return getBeats(queryBeats).then((beats)=>{
-                console.log(beats[beats.length-1].title)
                 return beats   
             })
         }
@@ -236,7 +231,6 @@ async function likeBeatAsUser(beatID: string, likes:number):Promise<boolean>{
 
         return true
     }).catch((e)=>{
-        console.log(e)
         return false
     })
 }
@@ -251,7 +245,6 @@ async function unlikeBeatAsUser(beatID: string, likes: number):Promise<boolean>{
         });
         return true
     }).catch((e)=>{
-        console.log(e)
         return false
     })
 }
@@ -268,7 +261,6 @@ async function getSamples(): Promise<void|nameAndUrl[]> {
         }))
 
     }).catch((error) => {
-        console.log(error)
     });
 }
 
