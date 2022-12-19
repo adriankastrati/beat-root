@@ -15,7 +15,7 @@ import play from "../../../icons/play.svg"
 import pause from "../../../icons/pause.svg"
 
 //NOTE: of course this should have been refactored into separate components.. 
-// It is only kept this way because it works and we have other more pressing issues..
+// It is only kept this way because it works prioritised some other issue.
 
 interface ButtonInterface{
     width: number

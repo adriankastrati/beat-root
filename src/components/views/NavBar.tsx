@@ -28,7 +28,6 @@ export default function NavBar(){
             setLoggedStatus(acc)
         })
         setBurgerOpen(!burgerState)
-        console.log(1)
     }
 
     // "/" = home, which isn't undefined.

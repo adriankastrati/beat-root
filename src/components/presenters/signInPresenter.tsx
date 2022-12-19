@@ -31,7 +31,6 @@ export default function SignInPresenter(){
     }
 
     function createAccountAttempt(){
-        console.log(email,password)
         if (email && password)
         createEmailPasswordAccount(email,"test",password)
     }

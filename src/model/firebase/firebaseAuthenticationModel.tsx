@@ -149,7 +149,6 @@ async function setProfilePicture(newPicture:string): Promise<boolean>{
     //TODO unique username:
     return getCurrentUserID().then(async (userID)=>{       
         let userREF = doc(firestore,"users/", userID)
-        console.log(newPicture,"new pic link")
         await updateDoc(userREF, {
             profilePictureURL: newPicture
         });

@@ -17,7 +17,7 @@ const AboutPage = () => {
         <AboutWrapper>
             <StandardContainer>
                 <h1>Euclidean rhythms</h1>
-                <Paragraph>
+                <TextSection>
                     <p>
                         *the app* builds on an idea discovered in 2004 by Godfried Toussaint - 
                         using the euclidean algorithm to generate "silences" and "pulses" to 
@@ -32,15 +32,15 @@ const AboutPage = () => {
                     {/* <p>
                        *Account "guide" here or at the bottom?*
                     </p> */}
-                </Paragraph>
+                </TextSection>
             </StandardContainer>
             <RowItems></RowItems>
             <h2>CREATING A BEAT</h2>
-            <Paragraph>
+            <TextSection>
             To create a beat, you first have to login (or create an account if you don't have one). 
             When logged in "create" will appear in as an option in the app menu (top right) - this is also where
             the login page can be found.
-            </Paragraph>
+            </TextSection>
             <div/>
             <br/>
             <RowItemsTwo>
@@ -132,7 +132,7 @@ const Readytxt= styled.p`
     font-size: 20px;
 `
 
-const Paragraph = styled.p`
+const TextSection = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;

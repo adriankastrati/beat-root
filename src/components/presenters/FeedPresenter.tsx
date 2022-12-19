@@ -74,7 +74,7 @@ const FeedPresenter = (props: feedProps) => {
                         setLastBeatID(newBeats[newBeats.length-1].firestoreBeatID)
 
                     }
-                }).then(()=>{console.log("last beat fetched has id: ",lastBeatID)}).then(()=>{setIsLoading(false)})
+                }).then(()=>{setIsLoading(false)})
                 
                 setShouldFetch(false)
 
@@ -86,7 +86,6 @@ const FeedPresenter = (props: feedProps) => {
                     setLastBeatID(newBeats[newBeats.length-1].firestoreBeatID)
 
                 }}) 
-                .then(()=>{console.log("last beat fetched has id: ",lastBeatID)})
                 .then(()=>{setIsLoading(false)})
                 
                 setShouldFetch(false)
@@ -96,8 +95,7 @@ const FeedPresenter = (props: feedProps) => {
     }, [shouldFetch])
 
 
-    function likeBeat(beatID: string, likes:number){        
-        console.log(1)
+    function likeBeat(beatID: string, likes:number){
         isUserLoggedIn().then(acc=>{
             if (acc){
                 isBeatLikedByCurrentUser(beatID).then(like=>{
