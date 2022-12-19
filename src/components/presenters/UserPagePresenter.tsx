@@ -47,11 +47,12 @@ export default function UserPagePresenter(){
     async function changeUsername(newUsername: string){
         
         if(userInformation){
-            let b = switchUsername(newUsername).catch(()=>{
-                setProfileChangeMessage("Failed, try again")
+            
+            switchUsername(newUsername).then((acc)=>{
+                if (acc)
+                    setProfileChangeMessage(acc.errorMessage)
             })
-            console.log(await b)
-
+        
         }else{
             setProfileChangeMessage("Not logged in")
         }

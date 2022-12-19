@@ -208,24 +208,18 @@ async function switchUsername(newUsername: string):Promise<void|FirebaseError>{
     })
 } */
 
-async function switchUsername(newUsername: string):Promise<boolean>{
+async function switchUsername(newUsername: string):Promise<void|firebaseError>{
     console.log(newUsername)
     let userListREF = doc(firestore,"profileConditions/usernames")
-    let returnValue = false
 
     return getDoc(userListREF).then(async usernames=>{
         if(usernames.exists()){
-            console.log(Array.from(usernames.data().takenUsernames as any)) 
             if(Array.from(usernames.data().takenUsernames as any).includes(newUsername)){
-                returnValue = false   
-                return             
+                return new firebaseError("taken-username")           
             }
-            console.log(returnValue)
             return getCurrentUserID().then(async (userID)=>{
                 if (!userID){
-                    returnValue = false
-                    console.log(returnValue)
-                    return
+                    return new firebaseError("not-logged-in")           
                 }
 
                 return getUserInformation(userID).then(async (info)=>{
@@ -243,21 +237,15 @@ async function switchUsername(newUsername: string):Promise<boolean>{
                         transaction.update(userListREF, {
                             takenUsernames: arrayRemove(info.username)
                         });
-                    }).catch(()=>{returnValue = false})
-                }).then(()=>{
-                    returnValue = true
+                    }).catch(()=>{
+                        return new firebaseError("try again")           
+                    })
                 }).catch(e=>{
-                    returnValue = false
+                    return new firebaseError("try again")           
                 })
-                
             })
-
         }
-
-    }).then(()=>{
-        return returnValue
     })
-    
 }
 
 async function removeUsername(oldUsername:string): Promise<boolean>{
