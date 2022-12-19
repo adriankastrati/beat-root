@@ -134,9 +134,7 @@ async function getQueryBeats(howMany:number, startTimeStamp: Timestamp, sort: So
 
         if (queryBeats){
             return getBeats(queryBeats).then((beats)=>{
-                
-                return beats   
-            
+                return beats
             })
         }
 

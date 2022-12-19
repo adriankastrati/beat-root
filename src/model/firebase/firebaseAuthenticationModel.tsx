@@ -125,6 +125,7 @@ async function createEmailPasswordAccount(email: string, username:string, passwo
             authID: authUser.user.uid,
             profilePictureURL: ""
         })
+        setProfilePicture("https://firebasestorage.googleapis.com/v0/b/beat-root-a8d72.appspot.com/o/profilePictures%2FDALL·E%202022-12-19%2011.37.18%20-%20image%20of%20missing%20profile%20picture%20with%20a%20beet%20as%20unknown%20and%20a%20white%20stylized%20question%20mark%20in%20the%20erased%20area%20.png?alt=media&token=785bd4d7-d325-406c-9578-e1c1d4ea0509")
         return null
     }).catch((error)=>{
         let errorMsg = "unknown-issue";
@@ -151,7 +152,6 @@ async function setProfilePicture(newPicture:string): Promise<boolean>{
         if (!userID)
             return false
         let userREF = doc(firestore,"users/", userID)
-        console.log(newPicture,"new pic link")
         await updateDoc(userREF, {
             profilePictureURL: newPicture
         });

@@ -31,7 +31,6 @@ function CreateAccountPresenter(props:RouteComponentProps){
     }
 
     async function createAccountAttempt(){
-        console.log(email, password, username, passwordCheck)
         if (email && password && username && passwordCheck){
             if(passwordCheck !== password){
                 setAccountErrorMessage("Not matching passwords")

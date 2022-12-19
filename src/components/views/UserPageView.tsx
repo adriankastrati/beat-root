@@ -205,7 +205,7 @@ export default function UserPageView(props: UserPageProps){
             return
         }
         toggleUsernameCB()
-        if (nameBoxContent == props.username){
+        if (nameBoxContent === props.username){
             return;
         }
         props.refresh()
@@ -215,7 +215,7 @@ export default function UserPageView(props: UserPageProps){
     function onUpdateDescription(){
         let error = false;
        //set rules for description
-       if(descriptionBoxText == props.description){
+       if(descriptionBoxText === props.description){
             //dont update if the text is unchanged
             return;
         }
@@ -310,9 +310,6 @@ export default function UserPageView(props: UserPageProps){
                             </InnerBox>)
                     }
                     <TitleStyle>{props.email?"Email: " + props.email: "Email: logged out"}</TitleStyle>            
-                    <TitleStyle>
-                        {props.id?"ID: "+props.id:"ID: ?"}
-                    </TitleStyle>
                 </InnerBox>
             
                 <InnerBox flexDir="column" border={true}>

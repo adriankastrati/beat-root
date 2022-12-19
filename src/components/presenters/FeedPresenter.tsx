@@ -7,7 +7,7 @@ import FeedView from "../views/FeedView";
 import { getCurrentUserID, getUserInformation, isUserLoggedIn, UserInformation } from "../../model/firebase/firebaseAuthenticationModel";
 import { SortBy } from "./../../model/firebase/firebaseBeat";
 import { Link, RouteComponentProps, withRouter } from "react-router-dom";
-import { sortBy } from "lodash";
+import { cloneDeep } from "lodash";
 
 export interface feedProps{
     userFeed: boolean
@@ -139,13 +139,28 @@ const FeedPresenter = (props: feedProps) => {
     }, [shouldFetch])
 
 
-    function likeBeat(beatID: string, likes:number){        
+    function likeBeat(beatID: string, likes:number){
         isUserLoggedIn().then(acc=>{
             if (acc){
                 isBeatLikedByCurrentUser(beatID).then(like=>{
-                    if(like)
-                    unlikeBeatAsUser(beatID, likes)
-                    likeBeatAsUser(beatID,likes)
+                    const index = beats.findIndex(item=>item.beat.firestoreBeatID === beatID)
+                    let newBeats = [...beats]
+                    let newItem = cloneDeep(beats[index])
+
+                    if(like){
+                        unlikeBeatAsUser(beatID, likes)
+                        
+
+                        newItem.isLiked = false
+                        newItem.beat.likes -= 1
+                    } else {
+                        likeBeatAsUser(beatID,likes)
+                        newItem.isLiked = true
+                        newItem.beat.likes += 1
+                    }
+
+                    newBeats[index] = newItem
+                    setBeats(newBeats)
                 })  
             }
         })
@@ -178,7 +193,7 @@ const FeedPresenter = (props: feedProps) => {
             feedSortedBy={sortedBy.toString()}
             setFeedSortedBy = {handleFilterChange}
             onLikeBeat = {likeBeat}
-            onRefresh ={refreshBeats}
+            onRefresh ={props.userFeed?undefined:refreshBeats}
         />
     )
 }

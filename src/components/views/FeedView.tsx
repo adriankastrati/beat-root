@@ -13,9 +13,8 @@ const Select = styled.select`
     border-radius: 5px;
     border:none;
     font-style:italic;
-    width: 100px;
+    width: 115px;
     font-size:17px;
-
 `
 
 const Refresh = styled.button`
@@ -60,7 +59,7 @@ interface FeedViewProps{
     setFeedSortedBy: (filter: string) => void
     feedSortedBy: string
     onLikeBeat: (beatID: string, likes: number) => void
-    onRefresh: ()=> void
+    onRefresh?: ()=> void
 }
 
 
@@ -103,20 +102,22 @@ export default function FeedView(props:FeedViewProps){
 
             <Select onChange={e=>props.setFeedSortedBy(e.target.value)} value={props.feedSortedBy}>
                 <option value="recent">recent</option>            
-                <option value="likes">most likes</option>            
+                <option value="likes">most liked</option>            
                 
             </Select>
+            {props.onRefresh?
             <Refresh onClick={props.onRefresh}> refresh</Refresh>
-
+            :undefined
+            }
 
             <Feed>
                 {props.beats.map(feedElementCB)}
             </Feed>
             <Feed>
                 {!props.targetRef? props.beats.slice(props.beats.length - props.itemsOnFetch, props.beats.length + props.itemsOnFetch).map(feedElementCB)
-                    : <SuspenseDiv>
+                    :<SuspenseDiv>
                             {props.isLoading? <Image src="https://i.ibb.co/P9L7QQ6/Pulse-1s-200px.gif"></Image>: ""}  
-                        </SuspenseDiv>
+                    </SuspenseDiv>
                 }
             </Feed>
             <FetchDiv ref={ props.targetRef }>
