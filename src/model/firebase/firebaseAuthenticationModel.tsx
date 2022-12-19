@@ -178,33 +178,43 @@ async function setDescription(newDescription:string): Promise<boolean>{
     })
 }
 
-async function switchUsername(newUsername: string):Promise<void|FirebaseError>{
-    getCurrentUserID().then(async (userID)=>{
-        if (!userID){
-            return 
+async function switchUsername(newUsername: string):Promise<undefined|boolean>{
+    
+    let userListREF = doc(firestore,"profileConditions/usernames")
+
+    return getDoc(userListREF).then(async usernames=>{
+        if(usernames.exists()){
+            if(Array.from(usernames.data().takenUsernames as any).includes(newUsername))
+                return false
+        }else{
+            return getCurrentUserID().then(async (userID)=>{
+                if (!userID){
+                    return false
+                }
+        
+                return getUserInformation(userID).then(async (info)=>{
+                    return runTransaction(firestore, async (transaction)=>{
+        
+                        let userREF = doc(firestore,"users/", userID)
+                        transaction.update(userREF, {
+                            username: newUsername
+                        });
+        
+                        transaction.update(userListREF, {
+                            takenUsernames: arrayUnion(newUsername)
+                        });
+        
+                        transaction.update(userListREF, {
+                            takenUsernames: arrayRemove(info.username)
+                        });
+
+                    }).catch(e=>{return false}).then(()=>{return true})
+                })
+            })
         }
-        
-        getUserInformation(userID).then(async (info)=>{
-        
-            runTransaction(firestore, async (transaction)=>{
 
-                let userREF = doc(firestore,"users/", userID)
-                transaction.update(userREF, {
-                    username: newUsername
-                });
-
-                let userListREF = doc(firestore,"profileConditions/usernames")
-                transaction.update(userListREF, {
-                    takenUsernames: arrayUnion(newUsername)
-                });
-
-                transaction.update(userListREF, {
-                    takenUsernames: arrayRemove(info.username)
-                });
-            }).catch(e=>{return new firebaseError("failed-username-change")})
-            
-        })
     })
+    
 }
 
 async function removeUsername(oldUsername:string): Promise<boolean>{
@@ -227,26 +237,29 @@ async function removeUsername(oldUsername:string): Promise<boolean>{
     })
 }
 
-async function setUsername(newUsername:string): Promise<void|firebaseError>{
+async function setUsername(newUsername:string): Promise<boolean>{
     getCurrentUserID().then(async (userID)=>{
         if(!userID)       
             return false
             
+        let userListREF = doc(firestore,"profileConditions/usernames")
+        
+        await updateDoc(userListREF, {    
+            takenUsernames: arrayUnion(newUsername)
+        });
+
         let userREF = doc(firestore,"users/", userID)
         await updateDoc(userREF, {
         username: newUsername
         });
 
-        let userListREF = doc(firestore,"profileConditions/usernames")
-        await updateDoc(userListREF, {
-            takenUsernames: arrayUnion(newUsername)
-            });
         return true
+        
 
     }).catch((e)=>{
-    
-        return new firebaseError("failed-username-change")
+        return false
     })
+    return false
 }
 
 async function resetPassword(email: string): Promise<boolean>{
