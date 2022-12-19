@@ -16,7 +16,7 @@ when browsing, filter beats based on what you are looking for.
 </ul>
 
 ### Run the project locally
-if you want to run app locally you need to have out firebase.config files. If you absolutely need them you can contact munkeby.j@gmail.com.
+if you want to run app locally you need to have our firebase.config files. If you absolutely need them you can contact munkeby.j@gmail.com.
 
 to run, use:
 `npm start`
