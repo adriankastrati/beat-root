@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { textStyles, theme } from "../../../common";
+import { textStyles, TextVariant, theme } from "../../../common";
 
 interface NavBarProps {
     active: boolean
@@ -34,7 +34,7 @@ export const NavContainer = styled.div<NavBarProps>`
     justify-content: space-between;
     width: 200%; // why 
     height: 4rem;
-    background-color: ${theme.medium};
+    background-color: ${theme.white};
     margin-bottom: 2px;
     z-index: 10;
 `;
@@ -51,7 +51,7 @@ export const NavLogo = styled(Link)`
 
 // text of current page in navbar
 export const NavCurrentPage = styled.div`
-    display: flex;
+    /* display: flex;
     align-items: center;
     margin-top: 1vw;
     justify-self: flex-start;
@@ -60,7 +60,11 @@ export const NavCurrentPage = styled.div`
     text-align:center
     font-weight: 300;
     color: black;
-    z-index: 10;
+    z-index: 10; */
+    margin-top:20px;
+    text-align: center;
+    width:100%;
+    ${textStyles(TextVariant.SUBTITLE)}
 `;
 
 // the burger button

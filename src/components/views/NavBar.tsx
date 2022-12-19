@@ -5,6 +5,7 @@ import { NavContainer, Frame, TopNav, NavCurrentPage, NavBurgerIcon, NavIcon, Na
 import { textStyles, theme } from "../../common";
 import { isUserLoggedIn, logOutAccount } from "model/firebase/firebaseAuthenticationModel";
 import { onAuthStateChanged, getAuth, signOut} from "firebase/auth";
+import logo from '../../icons/logo.svg'
 // TODO: navbar permanently fixed at top when scrolling
 // TODO: current site to display at top
 // TODO: burger button as actual burger -> cross
@@ -47,14 +48,15 @@ export default function NavBar(){
     return (<Frame>
                 <TopNav active={burgerState}> 
                     <NavContainer active={burgerState}>
+                        <img src={logo}></img>
                         <NavLogo to="/" onClick={()=>{}}> 
-                        logo 
+                        
                         </NavLogo>
-                        <BlankSpace width={40}></BlankSpace>
+                       
                         <NavCurrentPage>
-                        <p>{currentPageName}</p>
+                        {currentPageName}
                         </NavCurrentPage>
-                        <BlankSpace width={0}></BlankSpace>
+
                         {burgerState? 
                         <MainButton type = {MainButtonType.Cross} scale = {1} text = "" onClick={clickHandler} frameOff={true} backgroundColor={theme.medium}></MainButton>:
                         <MainButton type = {MainButtonType.Burger} scale = {1} text = "" onClick={clickHandler} frameOff={true} backgroundColor={theme.medium}></MainButton>}
