@@ -69,7 +69,6 @@ async function getUserInformation(userID:string):Promise<UserInformation>{
         }))
 
     }).catch((error) => {
-        console.log(error)
         return []
     })
 }
@@ -157,7 +156,6 @@ async function setProfilePicture(newPicture:string): Promise<boolean>{
         });
         return true
     }).catch((e)=>{
-        console.log(e, "failed profilePic change")
         
         return false
     })
@@ -173,7 +171,6 @@ async function setDescription(newDescription:string): Promise<boolean>{
         });
         return true
     }).catch((e)=>{
-        console.log(e)
         return false
     })
 }
@@ -209,7 +206,6 @@ async function switchUsername(newUsername: string):Promise<void|FirebaseError>{
 } */
 
 async function switchUsername(newUsername: string):Promise<void|firebaseError>{
-    console.log(newUsername)
     let userListREF = doc(firestore,"profileConditions/usernames")
 
     return getDoc(userListREF).then(async usernames=>{
@@ -263,7 +259,6 @@ async function removeUsername(oldUsername:string): Promise<boolean>{
         return true
     })
     }).catch((e)=>{
-        console.log(e, "failed username change")
         return false
     })
 }

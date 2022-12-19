@@ -48,8 +48,8 @@ function CreateAccountPresenter(props:RouteComponentProps){
             redirect(props,'/play/explore',1000);
             }
         }catch(e){
-            console.log(e)
-            }
+            setAccountErrorMessage("try again")
+        }
         }
         }else{
             setAccountErrorMessage("Missing field")

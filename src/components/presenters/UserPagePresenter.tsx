@@ -35,10 +35,8 @@ export default function UserPagePresenter(){
                    { getUserInformation(userID).then(userInformation=>{
                     setUserInformation(userInformation)
                 }).catch(e=>{
-                    console.log(e)
                 })}
                 }).catch(e=>{
-                    console.log(e)
                 })
             }
         })

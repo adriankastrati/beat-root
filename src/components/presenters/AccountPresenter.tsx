@@ -26,7 +26,6 @@ function AccountPresenter(props:RouteComponentProps){
         let error = await loginEmailPasswordAccount(email,password);
         if (error){
           setAccountErrorMessage(error.errorMessage)
-          console.log(error.errorMessage )
           setWelcomeMessage(false)
           if(error.errorMessage === "Incorrect password"){
             setResetPasswordPrompt(true)
@@ -37,7 +36,6 @@ function AccountPresenter(props:RouteComponentProps){
         }
 
       }catch(e){
-        console.log(e)
       }
     }
   }
