@@ -182,7 +182,7 @@ export default function UserPageView(props: UserPageProps){
                 height={128}
               />
             ) : (
-              <Picture src="https://firebasestorage.googleapis.com/v0/b/beat-root-a8d72.appspot.com/o/about%2FSpin-1.8s-190px.gif?alt=media&token=3b89dc77-08ec-43cc-a2ca-129904e1f740" />
+              <Picture height={128} width={128} src="https://firebasestorage.googleapis.com/v0/b/beat-root-a8d72.appspot.com/o/about%2FSpin-1.8s-190px.gif?alt=media&token=3b89dc77-08ec-43cc-a2ca-129904e1f740" />
             )}
             <img
               src={img}
