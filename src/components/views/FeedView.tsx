@@ -124,7 +124,7 @@ export default function FeedView(props:FeedViewProps){
             <Feed>
                 {!props.targetRef? props.beats.slice(props.beats.length - props.itemsOnFetch, props.beats.length + props.itemsOnFetch).map(feedElementCB)
                     :<SuspenseDiv>
-                            {props.isLoading? <Image src="https://i.ibb.co/P9L7QQ6/Pulse-1s-200px.gif"></Image>: ""}  
+                            {props.isLoading? <Image src="https://firebasestorage.googleapis.com/v0/b/beat-root-a8d72.appspot.com/o/about%2FSpin-1.8s-190px.gif?alt=media&token=3b89dc77-08ec-43cc-a2ca-129904e1f740"></Image>: ""}  
                     </SuspenseDiv>
                 }
             </Feed>

@@ -72,7 +72,7 @@ function ColorBoxView(props: ColorBoxViewProps) {
                   .slice(props.themeArray.length - props.itemsOnFetch, props.themeArray?.length + props.itemsOnFetch)
                   .map(themesCB) 
                   : <SuspenseDiv>
-                        {props.loading? <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Rotating_earth_%28large%29.gif/100px-Rotating_earth_%28large%29.gif"></img>:""}
+                        {props.loading? <img src="https://firebasestorage.googleapis.com/v0/b/beat-root-a8d72.appspot.com/o/about%2FSpin-1.8s-190px.gif?alt=media&token=3b89dc77-08ec-43cc-a2ca-129904e1f740"></img>:""}
                     </SuspenseDiv>
                   }
                   <FetchDiv ref={props.targetRef}>  {/*ref for scroll fetch*/}</FetchDiv>
