@@ -19,7 +19,6 @@ export default function UserPagePresenter(){
           const imagePromise: Promise<string[]> = getProfilePictures();
           const images: string[] = await imagePromise.then((value) => value);
           setLoadedImages(images);
-          setImageLoadingDone(true);
         }
     
         getImages();
@@ -99,6 +98,7 @@ export default function UserPagePresenter(){
             refresh = {refreshCB}
             usernameChangingState={usernameChangingState}
             imageLoadingDone = {imageLoadingDone}
+            setImageLoadingDone = {setImageLoadingDone}
             
         />
     }

@@ -84,11 +84,6 @@ height:100%;
   }
 
 `
-const Image = styled.img`
-width: 32px;
-height: 32px;
-`
-
 const ProfilePictureContainer = styled.div`
 width:128px;
 min-width:128px;
@@ -124,6 +119,7 @@ const Picture = styled.img<PictureProps>`
 const SelectablePicturesContainer = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
   margin: 5px;
   width: 90%;
   padding: 10px;
@@ -159,6 +155,7 @@ interface UserPageProps{
     onUpdateDescription:(description:string)=>void
     setPictureMenuOpen:(state:boolean)=> void
     setDescriptionState:(state:boolean)=> void
+    setImageLoadingDone:(state:boolean)=>void
     setUsernameChangingState:(state:boolean)=>void
     onUpdateProfilePicture: (profilePicture: string)=> void
     refresh:()=>void
@@ -170,14 +167,33 @@ export default function UserPageView(props: UserPageProps){
     const [nameInfoText, setNameInfoText] = React.useState<string>(nameInstructions)
     const [descriptionBoxText, setDescriptionBoxText] = React.useState<string>(props.description?props.description:"Nothing here!")
     
-
-    let k = 0; 
-    function getImageCB(img:string){
+    let k = 0;
+    function GetImageCB({ img }: { img: string }) {
+        const [loaded, setLoaded] = React.useState(false);
         k++;
-        return (<Pad key = {k}>
-                <Picture src={img} onClick={()=> selectImageCB(img)} width={128} height={128}></Picture>
-            </Pad>)
-    }
+        return (
+            
+          <Pad key={k}>
+            {loaded ? (
+              <Picture
+                src={img}
+                onClick={() => selectImageCB(img)}
+                width={128}
+                height={128}
+              />
+            ) : (
+              <Picture src="https://firebasestorage.googleapis.com/v0/b/beat-root-a8d72.appspot.com/o/about%2FSpin-1.8s-190px.gif?alt=media&token=3b89dc77-08ec-43cc-a2ca-129904e1f740" />
+            )}
+            <img
+              src={img}
+              alt=""
+              style={{ display: "none" }}
+              onLoad={() => setLoaded(true)}
+            />
+          </Pad>
+        );
+      }
+      
     
     function profileSelectBoxCB(){
         props.setPictureMenuOpen(!props.profilePicChangingState)
@@ -259,9 +275,9 @@ export default function UserPageView(props: UserPageProps){
                             }
                             <ProfilePictureContainer>                              
                                 {
-                                    props.profilePicChangingState?<Picture src={selectedImage}></Picture>:(
-                                        <Picture src={props.profilePicture?props.profilePicture:props.loadedImages[0]}></Picture>
-                                        )
+                                    props.profilePicChangingState?
+                                    <Picture src={selectedImage}></Picture>
+                                    :<Picture src={props.profilePicture?props.profilePicture:props.loadedImages[0]}></Picture>
                                 }                              
                             </ProfilePictureContainer>
                             <BlankSpace width={30}></BlankSpace>
@@ -269,9 +285,10 @@ export default function UserPageView(props: UserPageProps){
                         
                         {
                             props.profilePicChangingState?(<InnerBox flexDir="column">
-                                                            {props.imageLoadingDone?null:<Image src="https://i.ibb.co/P9L7QQ6/Pulse-1s-200px.gif"></Image>}
+                                                           
                                                             <SelectablePicturesContainer> 
-                                                                {props.imageLoadingDone?props.loadedImages.map(getImageCB):null}
+                                                            
+                                                                {props.loadedImages.map(img => (<GetImageCB img={img} />))}
                                                             </SelectablePicturesContainer>
                                                         </InnerBox>):
                                                         ""
