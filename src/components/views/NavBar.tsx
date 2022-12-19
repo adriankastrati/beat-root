@@ -6,6 +6,7 @@ import { textStyles, theme } from "../../common";
 import { isUserLoggedIn, logOutAccount } from "model/firebase/firebaseAuthenticationModel";
 import { onAuthStateChanged, getAuth, signOut} from "firebase/auth";
 import logo from '../../icons/logo.svg'
+import { Link } from "react-router-dom";
 // TODO: navbar permanently fixed at top when scrolling
 // TODO: current site to display at top
 // TODO: burger button as actual burger -> cross
@@ -49,10 +50,6 @@ export default function NavBar(){
                 <TopNav active={burgerState}> 
                     <NavContainer active={burgerState}>
                         <img src={logo}></img>
-                        <NavLogo to="/" onClick={()=>{}}> 
-                        
-                        </NavLogo>
-                       
                         <NavCurrentPage>
                         {currentPageName}
                         </NavCurrentPage>
