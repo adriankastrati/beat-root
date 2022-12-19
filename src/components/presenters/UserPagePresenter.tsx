@@ -26,12 +26,12 @@ export default function UserPagePresenter(){
         isUserLoggedIn().then(log =>{
             if(log){
                 getCurrentUserID().then(async userID =>{
-                getUserInformation(userID).then(userInformation=>{
-                    
+                if (userID)
+                   { getUserInformation(userID).then(userInformation=>{
                     setUserInformation(userInformation)
                 }).catch(e=>{
                     console.log(e)
-                })
+                })}
                 }).catch(e=>{
                     console.log(e)
                 })

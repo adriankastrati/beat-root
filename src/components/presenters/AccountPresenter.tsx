@@ -44,22 +44,6 @@ function AccountPresenter(props:RouteComponentProps){
 
   async function createAccountAttempt(){
     redirect(props,'/create-account',500);
-
-    // if (email && password){
-    //  try{ 
-    //   let error = await createEmailPasswordAccount(email,"", password)
-    //   if(error){
-    //     setAccountErrorMessage(error.errorMessage)
-    //     setWelcomeMessage(false)
-    //   }else{
-    //     setAccountErrorMessage("Welcome to beat root!")
-    //     setWelcomeMessage(true)
-    //     redirect(props,'/play/explore',1000);
-    //   }
-    // }catch(e){
-    //     console.log(e)
-    //   }
-    // }
   }
 
   function sendPasswordResetMail(){
@@ -70,8 +54,8 @@ function AccountPresenter(props:RouteComponentProps){
   return(
   <div>
     <SignInView
-        resetPasswordPrompt={resetPasswordPrompt}
         onResetPassword = {sendPasswordResetMail}
+        resetPasswordPrompt={resetPasswordPrompt}
         onEmailChange={handleEmailChange}
         email={email}
         onPasswordChange={handlePasswordChange}

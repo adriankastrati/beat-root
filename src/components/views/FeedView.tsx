@@ -6,6 +6,7 @@ import { BeatParent, ButtonsContainer, ThemedCard, UserTitle, BeatTitle } from "
 import BeatVisualisationPresenter from "../presenters/BeatVisualizationPresenter";
 import { Link } from "react-router-dom";
 import { BlankSpace } from "./common/NavBarElements";
+import { FeedItem } from "components/presenters/FeedPresenter";
 
 const OuterBox = styled.div`
   display:flex;
@@ -34,8 +35,8 @@ height: 32px;
 `
 
 interface FeedViewProps{
-    isUser: boolean
-    beats: Beat[]
+    isUser: null|string
+    beats: FeedItem[]
     isLoading: boolean
     shouldFetch: boolean
     targetRef: MutableRefObject<HTMLDivElement | null>
@@ -56,26 +57,30 @@ export default function FeedView(props:FeedViewProps){
     //    props.setFeedSortedBy(filter)
     //}
 
-    function feedElementCB(beat: Beat, key: any){
+    function feedElementCB(beat: FeedItem, key: any){
+        console.log(beat.isLiked)
         return (<OuterBox key={key}>
                     
                     <BeatParent> 
                         <BlankSpace height={30}></BlankSpace>
-                        <BeatTitle>{beat.title}</BeatTitle>
-                        <UserTitle offset={userNamePlaceholder.length}>{userNamePlaceholder}</UserTitle>
+                        <BeatTitle>{beat.beat.title}</BeatTitle>
+                        <UserTitle offset={userNamePlaceholder.length}>{beat.composerInformation.username}</UserTitle>
                         <BeatVisualisationPresenter
-                            bpm={beat.bpm}
-                            tracks={beat.tracks}
-                            colorTheme={beat.theme}
+                            bpm={beat.beat.bpm}
+                            tracks={beat.beat.tracks}
+                            colorTheme={beat.beat.theme}
                         />
-                        {/* <ButtonsContainer>                                   
-                            props.isUser?<MainButton type = {MainButtonType.Like}  onClick={()=>{likeHandler(beat.firestoreBeatID,beat)}} text = {""+beat.likes} scale = {0.5} frameOff={true} backgroundColor={theme.medium} borderRad={40} width={160} fontSize={18}></MainButton>:
-                            <Link style={{ textDecoration: 'none' }} to="../sign-in">
-                                 <MainButton type = {MainButtonType.Like}  onClick={()=>{likeHandler(beat.firestoreBeatID,beat)}} text = {""+beat.likes} scale = {0.5} frameOff={true} backgroundColor={theme.medium} borderRad={40} width={160} fontSize={18}></MainButton>
-                            </Link>
+                        <ButtonsContainer>                                   
+                           {props.isUser?(beat.isLiked?
+                                <MainButton type = {MainButtonType.Liked}  onClick={()=>{likeHandler(beat.beat.firestoreBeatID,beat.beat)}} text = {""+beat.beat.likes} scale = {0.5} frameOff={true} backgroundColor={theme.medium} borderRad={40} width={160} fontSize={18}></MainButton>:
+                                <MainButton type = {MainButtonType.NotLiked}  onClick={()=>{likeHandler(beat.beat.firestoreBeatID,beat.beat)}} text = {""+beat.beat.likes} scale = {0.5} frameOff={true} backgroundColor={theme.medium} borderRad={40} width={160} fontSize={18}></MainButton>
+                            ):
                            
-                            <MainButton type = {MainButtonType.Copy} onClick={midiCopyHandler} text = "" scale = {1.03}></MainButton>
-                        </ButtonsContainer> */}
+                            <Link style={{ textDecoration: 'none' }} to="../sign-in">
+                                 <MainButton type = {MainButtonType.NotLiked}  onClick={()=>{likeHandler(beat.beat.firestoreBeatID,beat.beat)}} text = {""+beat.beat.likes} scale = {0.5} frameOff={true} backgroundColor={theme.medium} borderRad={40} width={160} fontSize={18}></MainButton>
+                            </Link>
+                           }
+                        </ButtonsContainer>
                     </BeatParent>
                 </OuterBox>
         )

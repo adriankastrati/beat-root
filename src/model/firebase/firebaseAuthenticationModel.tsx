@@ -34,10 +34,10 @@ const firestore = getFirestore()
  * 
  * @returns returns a promise with the current users ID
  */
-async function getCurrentUserID(): Promise<string>{    
+async function getCurrentUserID(): Promise<string|null>{    
     if (auth.currentUser){
         return auth.currentUser.uid}
-    return ""
+    return null
 }
 
 async function getUserInformation(userID:string):Promise<UserInformation>{    
@@ -147,7 +147,9 @@ async function createEmailPasswordAccount(email: string, username:string, passwo
     
 async function setProfilePicture(newPicture:string): Promise<boolean>{
     //TODO unique username:
-    return getCurrentUserID().then(async (userID)=>{       
+    return getCurrentUserID().then(async (userID)=>{  
+        if (!userID)
+            return false
         let userREF = doc(firestore,"users/", userID)
         console.log(newPicture,"new pic link")
         await updateDoc(userREF, {
@@ -162,7 +164,9 @@ async function setProfilePicture(newPicture:string): Promise<boolean>{
 }
 
 async function setDescription(newDescription:string): Promise<boolean>{
-    return getCurrentUserID().then(async (userID)=>{       
+    return getCurrentUserID().then(async (userID)=>{  
+        if(!userID)
+            return false     
         let userREF = doc(firestore,"users/", userID)
         await updateDoc(userREF, {
         description: newDescription
@@ -190,7 +194,10 @@ async function removeUsername(oldUsername:string): Promise<boolean>{
 }
 
 async function setUsername(newUsername:string): Promise<boolean>{
-    return getCurrentUserID().then(async (userID)=>{       
+    return getCurrentUserID().then(async (userID)=>{
+        if(!userID)       
+            return false
+            
         let userREF = doc(firestore,"users/", userID)
         await updateDoc(userREF, {
         username: newUsername

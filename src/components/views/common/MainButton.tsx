@@ -4,13 +4,18 @@ import edit from "../../../icons/edit.svg"
 import add from "../../../icons/add.svg"
 import styled from "styled-components";
 import save from "../../../icons/save.svg"
-import like from "../../../icons/heart.svg"
+
+import emptyHeart from "../../../icons/emptyHeart.svg"
+import filledHeart from "../../../icons/filledHeart.svg"
+
 import copy from "../../../icons/copy.svg"
 import burger from "../../../icons/burger.svg"
 import cross from "../../../icons/cross.svg"
 import play from "../../../icons/play.svg"
 import pause from "../../../icons/pause.svg"
-import { isPropertySignature } from "typescript";
+
+//NOTE: of course this should have been refactored into separate components.. 
+// It is only kept this way because it works and we have other more pressing issues..
 
 interface ButtonInterface{
     width: number
@@ -54,7 +59,8 @@ export enum MainButtonType{
     ChooseColorTheme,
     Save,
     Add,
-    Like,
+    NotLiked,
+    Liked,
     Copy,
     Burger,
     Cross,
@@ -100,8 +106,12 @@ function MainButton(props: Props){
         case MainButtonType.Plain:
             btnWidth = props.text?props.text.length*16:16;
             break;
-        case MainButtonType.Like:
-            icon = like;
+        case MainButtonType.NotLiked:
+            icon = emptyHeart;
+            btnWidth = 50 + (props.text?props.text.length*16:0);
+            break;
+        case MainButtonType.Liked:
+            icon = filledHeart;
             btnWidth = 50 + (props.text?props.text.length*16:0);
             break;
         case MainButtonType.Copy:
