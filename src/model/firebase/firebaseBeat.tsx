@@ -197,14 +197,15 @@ async function getUserById(userID: string): Promise<user|null>{
 
 async function isBeatLikedByCurrentUser(beatID: string): Promise<boolean>{
     let beatRef = doc(firestore, "beats/", beatID);
+    if (!beatID)
+        return false
     return await getCurrentUserID().then(async userID=>{
-
-    return await getDoc(beatRef).then(beat =>{
-        if (beat.data()?.likedBy.includes(userID)){
+        return await getDoc(beatRef).then(beat =>{
+         if (beat.data()?.likedBy.includes(userID)){
             return true
         }
         return false
-    })})
+    })}).catch()
 
 }
 

@@ -4,7 +4,7 @@ import {useIntersection } from 'react-use'
 import { Beat, redirect } from "../../common"
 import { getQueryBeats, isBeatLikedByCurrentUser, likeBeatAsUser, queryBeatsByUser, unlikeBeatAsUser} from "./../../model/firebase/firebaseBeat"
 import FeedView from "../views/FeedView";
-import { getCurrentUserID, isUserLoggedIn } from "../../model/firebase/firebaseAuthenticationModel";
+import { getCurrentUserID, getUserInformation, isUserLoggedIn, UserInformation } from "../../model/firebase/firebaseAuthenticationModel";
 import { SortBy } from "./../../model/firebase/firebaseBeat";
 import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 
@@ -12,14 +12,20 @@ export interface feedProps{
     userFeed: boolean
 }
 
+export interface FeedItem{
+    beat: Beat,
+    composerInformation: UserInformation
+    isLiked: boolean
+}
+
 // TODO: refreshing entire page through "swiping down"
 const FeedPresenter = (props: feedProps) => {
-    const [beats, setBeats] = useState<Beat[]>([])
+    const [beats, setBeats] = useState<FeedItem[]>([])
     const [timestamp_now, setTimestamp_now] = useState(Timestamp.fromDate(new Date()))
     const [isLoading, setIsLoading] = useState(false)
     const [lastBeatID, setLastBeatID] = useState<undefined|string>(undefined)
     const [shouldFetch, setShouldFetch] = useState(false)
-    const [isUser, setUser] = useState<boolean>(false)
+    const [isUser, setUser] = useState<string|null>(null)
     // for sorted by-state.
     const [sortedBy, setSortedBy] = useState<string>()
 
@@ -35,6 +41,12 @@ const FeedPresenter = (props: feedProps) => {
 
     
     //setTimestamp_now(timestamp_now)
+    useEffect(() => {
+        getCurrentUserID().then((id)=>{
+            if(id)
+                setUser(id)
+        })
+    }, [])
 
 
     useEffect(() => {
@@ -48,10 +60,12 @@ const FeedPresenter = (props: feedProps) => {
 
 
     const MAX_FETCHES = 4 // maybe use for rate-limiting
-    const itemsOnFetch = 15 // = large => intersectionobserver hidden after first fetch
+    const itemsOnFetch = 5 // = large => intersectionobserver hidden after first fetch
     useEffect(()=>{
-        isUserLoggedIn().then(acc=>{
-            setUser(acc)
+        
+        getCurrentUserID().then(acc=>{
+            if (acc)
+                setUser(acc)
         })
     },[])
 
@@ -65,14 +79,31 @@ const FeedPresenter = (props: feedProps) => {
         if(shouldFetch) {
             if (props.userFeed){
                 getCurrentUserID().then((userID)=>{
-                queryBeatsByUser(userID ,itemsOnFetch, timestamp_now, lastBeatID).then((newBeats) => {
+                if(!userID)
+                    return
+
+                queryBeatsByUser(userID ,itemsOnFetch, timestamp_now, lastBeatID).then(async (newBeats) => {
                     if(newBeats && 
                         newBeats.length > 0 && 
-                        lastBeatID !== newBeats[newBeats.length-1].firestoreBeatID
-                        ){
-                        setBeats(Array.from([...beats, ...newBeats]))
-                        setLastBeatID(newBeats[newBeats.length-1].firestoreBeatID)
+                        lastBeatID !== newBeats[newBeats.length-1].firestoreBeatID){
+                        
+                           
 
+
+                        setBeats(Array.from([...beats, ...await Promise.all(newBeats.map(async (beat) => {
+                            
+                            return isBeatLikedByCurrentUser(isUser!).then((liked)=>{
+                                return getUserInformation(beat.composerID).then((userInfo) => {
+                                return {
+                                    beat: beat,
+                                    composerInformation: userInfo,
+                                    isLiked: liked
+                                } as FeedItem;
+                            });
+                            })
+                            }))
+                        ]))
+                        setLastBeatID(newBeats[newBeats.length-1].firestoreBeatID)
                     }
                 }).then(()=>{setIsLoading(false)})
                 
@@ -80,9 +111,23 @@ const FeedPresenter = (props: feedProps) => {
 
             })
             }else{
-                getQueryBeats(itemsOnFetch, timestamp_now, SortBy.recent, lastBeatID).then((newBeats) => {
+                getQueryBeats(itemsOnFetch, timestamp_now, SortBy.recent, lastBeatID).then(async (newBeats) => {
                     if(newBeats && newBeats.length > 0 && lastBeatID !== newBeats[newBeats.length-1].firestoreBeatID) {
-                    setBeats(Array.from([...beats, ...newBeats]))
+                        setBeats(Array.from([...beats, ...await Promise.all(newBeats.map(async (beat) => {
+                           
+                           
+                            return isBeatLikedByCurrentUser(beat.firestoreBeatID).then((liked)=>{
+                                return getUserInformation(beat.composerID).then((userInfo) => {
+                                    return {
+                                        beat: beat,
+                                        composerInformation: userInfo,
+                                        isLiked: liked
+                                    } as FeedItem;
+                                });
+                            })
+                        }))]))                    
+                        console.log(beats)
+                        
                     setLastBeatID(newBeats[newBeats.length-1].firestoreBeatID)
 
                 }}) 
