@@ -61,6 +61,7 @@ export default function UserPagePresenter(){
                 setProfileChangeMessage("Failed")
             }
         })
+
     }
 
     async function changePicture(pictureLink: string){

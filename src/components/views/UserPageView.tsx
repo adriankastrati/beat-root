@@ -208,8 +208,8 @@ export default function UserPageView(props: UserPageProps){
         if (nameBoxContent === props.username){
             return;
         }
-        props.refresh()
         props.onUpdateUserName(nameBoxContent)
+        props.refresh()
     }
 
     function onUpdateDescription(){
@@ -222,8 +222,9 @@ export default function UserPageView(props: UserPageProps){
         if(error){
             return;
         }
-        props.refresh()
         props.onUpdateDescription(descriptionBoxText)
+        props.refresh()
+
     }
     function displayErrorMsg(msg:string){
         setNameInfoText(msg)

@@ -13,6 +13,7 @@ import burger from "../../../icons/burger.svg"
 import cross from "../../../icons/cross.svg"
 import play from "../../../icons/play.svg"
 import pause from "../../../icons/pause.svg"
+import refresh from "../../../icons/refresh.svg"
 
 //NOTE: of course this should have been refactored into separate components.. 
 // It is only kept this way because it works prioritised some other issue.
@@ -66,14 +67,15 @@ export enum MainButtonType{
     Cross,
     Plain,
     Play,
-    Pause
+    Pause,
+    Refresh
 }
 
 interface Props{
     type: MainButtonType
     text?: string
     onClick: any
-    scale: number
+    scale?: number
     width?: number
     frameOff?:boolean
     backgroundColor?:string
@@ -134,10 +136,14 @@ function MainButton(props: Props){
             btnWidth = 50;
             icon= pause;
             break;
+        case MainButtonType.Refresh:
+            btnWidth = 50;
+            icon = refresh;
+            break;
     }
     if(props.type != MainButtonType.Plain){
         return (<div>
-                    <ButtonStyle scale = {props.scale} width = {props.width ? props.width : btnWidth} onClick={props.onClick} frameOff={props.frameOff} backgroundColor = {props.backgroundColor} borderRad={props.borderRad}>
+                    <ButtonStyle scale = {props.scale?props.scale:1} width = {props.width ? props.width : btnWidth} onClick={props.onClick} frameOff={props.frameOff} backgroundColor = {props.backgroundColor} borderRad={props.borderRad}>
                         <ButtonImg src={icon}></ButtonImg>
                         {
                             props.text?<ButtonText fontSize={props.fontSize}>{props.text}</ButtonText>:null
@@ -146,7 +152,7 @@ function MainButton(props: Props){
                 </div>)
     }else{
         return (<div>
-                    <ButtonStyle scale = {props.scale} width = {props.width ? props.width : btnWidth} onClick={props.onClick} borderRad={props.borderRad}>
+                    <ButtonStyle scale = {props.scale?props.scale:1} width = {props.width ? props.width : btnWidth} onClick={props.onClick} borderRad={props.borderRad}>
                         {
                             props.text?<ButtonText fontSize={props.fontSize}>{props.text}</ButtonText>:null
                         }
