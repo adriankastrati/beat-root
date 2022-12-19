@@ -84,6 +84,10 @@ height:100%;
   }
 
 `
+const Image = styled.img`
+width: 32px;
+height: 32px;
+`
 
 const ProfilePictureContainer = styled.div`
 width:128px;
@@ -150,6 +154,7 @@ interface UserPageProps{
     descriptionChangingState:boolean
     usernameChangingState:boolean
     loadedImages: string[]
+    imageLoadingDone:boolean
     onUpdateUserName: (username: string)=> void
     onUpdateDescription:(description:string)=>void
     setPictureMenuOpen:(state:boolean)=> void
@@ -264,8 +269,9 @@ export default function UserPageView(props: UserPageProps){
                         
                         {
                             props.profilePicChangingState?(<InnerBox flexDir="column">
+                                                            {props.imageLoadingDone?null:<Image src="https://i.ibb.co/P9L7QQ6/Pulse-1s-200px.gif"></Image>}
                                                             <SelectablePicturesContainer> 
-                                                                {props.loadedImages.map(getImageCB)}
+                                                                {props.imageLoadingDone?props.loadedImages.map(getImageCB):null}
                                                             </SelectablePicturesContainer>
                                                         </InnerBox>):
                                                         ""
