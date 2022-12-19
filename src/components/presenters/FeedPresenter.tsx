@@ -7,6 +7,7 @@ import FeedView from "../views/FeedView";
 import { getCurrentUserID, getUserInformation, isUserLoggedIn, UserInformation } from "../../model/firebase/firebaseAuthenticationModel";
 import { SortBy } from "./../../model/firebase/firebaseBeat";
 import { Link, RouteComponentProps, withRouter } from "react-router-dom";
+import { cloneDeep } from "lodash";
 
 export interface feedProps{
     userFeed: boolean
@@ -126,7 +127,6 @@ const FeedPresenter = (props: feedProps) => {
                                 });
                             })
                         }))]))                    
-                        console.log(beats)
                         
                     setLastBeatID(newBeats[newBeats.length-1].firestoreBeatID)
 
@@ -144,9 +144,24 @@ const FeedPresenter = (props: feedProps) => {
         isUserLoggedIn().then(acc=>{
             if (acc){
                 isBeatLikedByCurrentUser(beatID).then(like=>{
-                    if(like)
-                    unlikeBeatAsUser(beatID, likes)
-                    likeBeatAsUser(beatID,likes)
+                    const index = beats.findIndex(item=>item.beat.firestoreBeatID === beatID)
+                    let newBeats = [...beats]
+                    let newItem = cloneDeep(beats[index])
+
+                    if(like){
+                        unlikeBeatAsUser(beatID, likes)
+                        
+
+                        newItem.isLiked = false
+                        newItem.beat.likes -= 1
+                    } else {
+                        likeBeatAsUser(beatID,likes)
+                        newItem.isLiked = true
+                        newItem.beat.likes += 1
+                    }
+
+                    newBeats[index] = newItem
+                    setBeats(newBeats)
                 })  
             }
         })
