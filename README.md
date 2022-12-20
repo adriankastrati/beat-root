@@ -2,7 +2,8 @@
 short and sweet, BeatRoot (working title) is a place where you can 
 browse, create and share small beats with an accompanying mood. </br>
 when browsing, filter beats based on what you are looking for.
-link to BeatRoot: https://beat-root-a8d72.web.app/
+
+Link to BeatRoot: https://beat-root-a8d72.web.app/
 
 ### Guide
 <ul>
