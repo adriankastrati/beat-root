@@ -2,6 +2,7 @@
 short and sweet, BeatRoot (working title) is a place where you can 
 browse, create and share small beats with an accompanying mood. </br>
 when browsing, filter beats based on what you are looking for.
+https://beat-root-a8d72.web.app/
 
 ### Guide
 <ul>
@@ -16,7 +17,7 @@ when browsing, filter beats based on what you are looking for.
 </ul>
 
 ### Run the project locally
-if you want to run app locally you need to have our firebase.config files. If you absolutely need them you can contact munkeby.j@gmail.com.
+If you want to run app locally you need to have our firebase.config files. If you absolutely need them you can contact kastratiadrian00@gmail.com or munkeby.j@gmail.com.
 
 to run, use:
 `npm start`
