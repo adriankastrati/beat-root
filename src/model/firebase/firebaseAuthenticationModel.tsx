@@ -118,7 +118,7 @@ async function createEmailPasswordAccount(email: string, username:string, passwo
    //TODO unique username:
     return createUserWithEmailAndPassword(auth, email,password).then((authUser)=>{
         setDoc(doc(firestore,`users/${authUser.user.uid}`),{
-            username: authUser.user.uid,
+            username: username,
             email: email,
             description:"",
             authID: authUser.user.uid,

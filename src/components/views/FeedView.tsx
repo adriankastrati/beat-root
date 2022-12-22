@@ -81,7 +81,7 @@ export default function FeedView(props:FeedViewProps){
                     <BeatParent> 
                         <BlankSpace height={30}></BlankSpace>
                         <BeatTitle>{beat.beat.title}</BeatTitle>
-                        <UserTitle offset={10}>{beat.composerInformation.username}</UserTitle>
+                        <UserTitle offset={10}>{beat.composerInformation.username.length < 15 ? beat.composerInformation.username : `${beat.composerInformation.username.slice(0,15)}...`}</UserTitle>
                         <BeatVisualisationPresenter
                             bpm={beat.beat.bpm}
                             tracks={beat.beat.tracks}
