@@ -55,8 +55,8 @@ export default function NavBar(){
                         </NavCurrentPage>
 
                         {burgerState? 
-                        <MainButton type = {MainButtonType.Cross} scale = {1} text = "" onClick={clickHandler} frameOff={true} backgroundColor={theme.medium}></MainButton>:
-                        <MainButton type = {MainButtonType.Burger} scale = {1} text = "" onClick={clickHandler} frameOff={true} backgroundColor={theme.white}></MainButton>}
+                        <MainButton type = {MainButtonType.Cross} padding = {10} scale = {1} text = "" onClick={clickHandler} frameOff={true} backgroundColor={theme.medium}></MainButton>:
+                        <MainButton type = {MainButtonType.Burger} padding = {10} scale = {1} text = "" onClick={clickHandler} frameOff={true} backgroundColor={theme.white}></MainButton>}
                         
 
                         <NavMenu active={burgerState}>

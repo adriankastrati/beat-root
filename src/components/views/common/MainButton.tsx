@@ -36,7 +36,7 @@ width: ${props => props.width *props.scale}px;
 border: ${props => props.frameOff? 0 : 1}px solid rgb(155, 155, 155); 
 border-radius: ${props=>props.borderRad?props.borderRad:5}px;
 background-color: ${props=>props.backgroundColor? props.backgroundColor:"rgb(255, 255, 255)"}; 
-padding: ${props=>props.padding?props.padding:10}px; 
+padding: ${props=>props.padding?props.padding:0}px; 
 margin: ${props => 5*props.scale}px;
 font-size: ${props => 22*props.scale}px; 
 cursor: pointer; /* Mouse pointer on hover */ 
@@ -81,6 +81,7 @@ interface Props{
     backgroundColor?:string
     borderRad?:number
     fontSize?:number
+    padding?:number
 }
 
 function MainButton(props: Props){
@@ -143,7 +144,7 @@ function MainButton(props: Props){
     }
     if(props.type != MainButtonType.Plain){
         return (<div>
-                    <ButtonStyle scale = {props.scale?props.scale:1} width = {props.width ? props.width : btnWidth} onClick={props.onClick} frameOff={props.frameOff} backgroundColor = {props.backgroundColor} borderRad={props.borderRad}>
+                    <ButtonStyle padding={props.padding} scale = {props.scale?props.scale:1} width = {props.width ? props.width : btnWidth} onClick={props.onClick} frameOff={props.frameOff} backgroundColor = {props.backgroundColor} borderRad={props.borderRad}>
                         <ButtonImg src={icon}></ButtonImg>
                         {
                             props.text?<ButtonText fontSize={props.fontSize}>{props.text}</ButtonText>:null
@@ -152,7 +153,7 @@ function MainButton(props: Props){
                 </div>)
     }else{
         return (<div>
-                    <ButtonStyle scale = {props.scale?props.scale:1} width = {props.width ? props.width : btnWidth} onClick={props.onClick} borderRad={props.borderRad}>
+                    <ButtonStyle padding={props.padding} scale = {props.scale?props.scale:1} width = {props.width ? props.width : btnWidth} onClick={props.onClick} borderRad={props.borderRad}>
                         {
                             props.text?<ButtonText fontSize={props.fontSize}>{props.text}</ButtonText>:null
                         }

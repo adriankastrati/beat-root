@@ -29,7 +29,7 @@ const VisCanvas = styled.canvas`
 const Fixed = styled.div`
 position:absolute;
 right:-10px;
-bottom:-75px;
+bottom:-65px;
 padding: 10px;
 z-index: 100;
 `
@@ -235,11 +235,11 @@ export default function BeatVisualisationPresenter(props:BeatVisualisationPresen
                     {
                         isPlaying?
                         (
-                            <MainButton type = {MainButtonType.Pause} scale ={0.5} onClick={()=>isPlaying ? pause(): play()} backgroundColor={theme.medium} frameOff={true} borderRad={30} width={160}></MainButton>
+                            <MainButton type = {MainButtonType.Pause} padding = {5} scale ={0.5} onClick={()=>isPlaying ? pause(): play()} backgroundColor={theme.medium} frameOff={true} borderRad={30} width={160}></MainButton>
                         )
                         :
                         (
-                            <MainButton type = {MainButtonType.Play} scale ={0.5} onClick={()=>isPlaying ? pause(): play()} backgroundColor={theme.medium} frameOff={true} borderRad={30} width={160}></MainButton>
+                            <MainButton type = {MainButtonType.Play} padding = {5} scale ={0.5} onClick={()=>isPlaying ? pause(): play()} backgroundColor={theme.medium} frameOff={true} borderRad={30} width={160}></MainButton>
                         )
                     }
                 </Fixed>

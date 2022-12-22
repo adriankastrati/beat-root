@@ -89,8 +89,8 @@ export default function FeedView(props:FeedViewProps){
                         />
                         <ButtonsContainer>                                   
                            {props.isUser?(beat.isLiked?
-                                <MainButton type = {MainButtonType.Liked}  onClick={()=>{likeHandler(beat.beat.firestoreBeatID,beat.beat)}} text = {""+beat.beat.likes} scale = {0.5} frameOff={true} backgroundColor={theme.medium} borderRad={40} width={160} fontSize={18}></MainButton>:
-                                <MainButton type = {MainButtonType.NotLiked}  onClick={()=>{likeHandler(beat.beat.firestoreBeatID,beat.beat)}} text = {""+beat.beat.likes} scale = {0.5} frameOff={true} backgroundColor={theme.medium} borderRad={40} width={160} fontSize={18}></MainButton>
+                                <MainButton type = {MainButtonType.Liked} padding={5} onClick={()=>{likeHandler(beat.beat.firestoreBeatID,beat.beat)}} text = {""+beat.beat.likes} scale = {0.5} frameOff={true} backgroundColor={theme.medium} borderRad={40} width={160} fontSize={18}></MainButton>:
+                                <MainButton type = {MainButtonType.NotLiked} padding={5} onClick={()=>{likeHandler(beat.beat.firestoreBeatID,beat.beat)}} text = {""+beat.beat.likes} scale = {0.5} frameOff={true} backgroundColor={theme.medium} borderRad={40} width={160} fontSize={18}></MainButton>
                             ):
                            
                             <Link style={{ textDecoration: 'none' }} to="../sign-in">
