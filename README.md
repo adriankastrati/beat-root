@@ -3,6 +3,9 @@ short and sweet, BeatRoot (working title) is a place where you can
 browse, create and share small beats with an accompanying mood. </br>
 when browsing, filter beats based on what you are looking for.
 
+<img width="1680" alt="Screenshot 2023-04-06 at 15 16 40" src="https://user-images.githubusercontent.com/39971336/230390054-c6631aa5-8268-4f38-b608-5e94d9706ad5.png">
+<img width="1680" alt="Screenshot 2023-04-06 at 15 16 51" src="https://user-images.githubusercontent.com/39971336/230390058-09b548d3-bfca-4f0f-afd7-2127841696bf.png">
+
 Link to BeatRoot: https://beat-root-a8d72.web.app/
 
 ### Guide
